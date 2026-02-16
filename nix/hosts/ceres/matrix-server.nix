@@ -1,28 +1,47 @@
 {config, ...}: let
   dirs = config.vars.dataDirs;
-  ports = config.services.matrix-tuwunel.settings.global.port;
+  port = 8008;
   MAX = "50000";
 in {
-  networking.firewall.allowedTCPPorts = ports;
+  networking.firewall.allowedTCPPorts = [port];
   services = {
-    matrix-tuwunel = {
+    matrix-synapse = {
       enable = true;
-      settings.global = {
-        address = ["0.0.0.0" "::"];
-        server_name = "jort.pavilion";
-        database_backup_path = "${dirs.archive}/tuwunel";
-        database_backup_paths_to_keep = 2;
-        ip_lookup_strategy = 4;
-        encryption_enabled_by_default_for_room_type = "all";
-      };
+      server_name = "jort.pavilion";
+      listeners = [
+        {
+          bind_addresses = [
+            "0.0.0.0"
+            "::"
+          ];
+          port = port;
+          resources = [
+            {
+              compress = true;
+              names = [
+                "client"
+              ];
+            }
+            {
+              compress = false;
+              names = [
+                "federation"
+              ];
+            }
+          ];
+          tls = false;
+          type = "http";
+          x_forwarded = true;
+        }
+      ];
     };
     mautrix-discord = {
       enable = true;
       dataDir = "${dirs.apps}/mautrix-discord";
       settings = {
         homeserver = {
-          domain = config.services.matrix-tuwunel.settings.global.server_name;
-          address = "http://127.0.0.1:${toString (builtins.elemAt ports 0)}/";
+          domain = config.services.matrix-synapse.server_name;
+          address = "http://127.0.0.1:${toString port}/";
         };
         bridge = {
           backfill = {
