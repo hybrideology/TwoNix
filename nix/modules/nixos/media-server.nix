@@ -45,7 +45,6 @@ in {
       enable = true; # torrent client
       vpn.enable = true;
     };
-    vpn.accessibleFrom = ["127.0.0.1"];
   };
   networking.firewall.allowedTCPPorts = [80 443];
   services.nginx = {
