@@ -68,20 +68,6 @@ in {
             "@hybrideology:matrix.org" = "admin";
           };
         };
-        appservice = {
-          address = "http://localhost:${config.services.mautrix-discord.settings.appservice.port}";
-          hostname = "127.0.0.1";
-          port = 29334;
-          ephemeral_events = true;
-          database = {
-            type = "sqlite3";
-            uri = "file:${config.services.mautrix-discord.dataDir}/mautrix-discord.db?_txlock=immediate";
-            max_open_conns = 20;
-            max_idle_conns = 2;
-            max_conn_idle_time = null;
-            max_conn_lifetime = null;
-          };
-        };
       };
     };
   };
