@@ -3,7 +3,7 @@
     flake.nixosModules.server
     ./disko.nix
     ./hardware.nix
-    ./matrix-server.nix
+    # ./matrix-server.nix
     ./secrets.nix
     ./users.nix
     ./vpn.nix

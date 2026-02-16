@@ -1,11 +1,9 @@
 {config, ...}: let
   dirs = config.vars.dataDirs;
   ports = config.services.matrix-tuwunel.settings.global.port;
+  MAX = "50000";
 in {
   networking.firewall.allowedTCPPorts = ports;
-  nixpkgs.config.permittedInsecurePackages = [
-    "olm-3.2.16"
-  ];
   services = {
     matrix-tuwunel = {
       enable = true;
@@ -16,10 +14,6 @@ in {
         database_backup_paths_to_keep = 2;
         ip_lookup_strategy = 4;
         encryption_enabled_by_default_for_room_type = "all";
-        appservice."mautrix-discord" = {
-          url = config.services.mautrix-discord.settings.appservice.address;
-          receive_ephemeral = true;
-        };
       };
     };
     mautrix-discord = {
@@ -30,9 +24,25 @@ in {
           domain = config.services.matrix-tuwunel.settings.global.server_name;
           address = "http://127.0.0.1:${toString (builtins.elemAt ports 0)}/";
         };
-        bridge.permissions = {
-          "*" = "relay";
-          "@hybrideology:matrix.org" = "admin";
+        bridge = {
+          backfill = {
+            forward_limits = {
+              initial = {
+                dm = MAX;
+                channel = MAX;
+                thread = MAX;
+              };
+              missed = {
+                dm = "-1";
+                channel = "-1";
+                thread = "-1";
+              };
+            };
+          };
+          permissions = {
+            "*" = "relay";
+            "@hybrideology:matrix.org" = "admin";
+          };
         };
         appservice = {
           address = "http://localhost:${config.services.mautrix-discord.settings.appservice.port}";
