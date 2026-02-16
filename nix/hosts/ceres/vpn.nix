@@ -11,6 +11,7 @@ in {
     owner = config.users.users.systemd-network.name;
     inherit (config.users.users.systemd-network) group;
   };
+  nixarr.vpn.accessibleFrom = ["10.0.0.0/24"];
   services = {
     dnsmasq = {
       enable = true;

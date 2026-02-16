@@ -44,7 +44,6 @@ in {
     transmission = {
       enable = true; # torrent client
       vpn.enable = true;
-      extraAllowedIps = ["10.0.0.1" "10.0.0.2"];
     };
   };
   networking.firewall.allowedTCPPorts = [80 443];
