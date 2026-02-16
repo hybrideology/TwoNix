@@ -7,33 +7,35 @@ in {
   services = {
     matrix-synapse = {
       enable = true;
-      server_name = "jort.pavilion";
-      listeners = [
-        {
-          bind_addresses = [
-            "0.0.0.0"
-            "::"
-          ];
-          port = port;
-          resources = [
-            {
-              compress = true;
-              names = [
-                "client"
-              ];
-            }
-            {
-              compress = false;
-              names = [
-                "federation"
-              ];
-            }
-          ];
-          tls = false;
-          type = "http";
-          x_forwarded = true;
-        }
-      ];
+      settings = {
+        server_name = "jort.pavilion";
+        listeners = [
+          {
+            bind_addresses = [
+              "0.0.0.0"
+              "::"
+            ];
+            port = port;
+            resources = [
+              {
+                compress = true;
+                names = [
+                  "client"
+                ];
+              }
+              {
+                compress = false;
+                names = [
+                  "federation"
+                ];
+              }
+            ];
+            tls = false;
+            type = "http";
+            x_forwarded = true;
+          }
+        ];
+      };
     };
     mautrix-discord = {
       enable = true;
