@@ -70,9 +70,5 @@ in {
         };
       };
     };
-    postgresql = {
-      enable = true;
-      dataDir = "${dirs.apps}/postgresql/${config.services.postgresql.package.psqlSchema}";
-    };
   };
 }
