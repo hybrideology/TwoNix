@@ -42,7 +42,7 @@ in {
       dataDir = "${dirs.apps}/mautrix-discord";
       settings = {
         homeserver = {
-          domain = config.services.matrix-synapse.server_name;
+          domain = config.services.matrix-synapse.settings.server_name;
           address = "http://127.0.0.1:${toString port}/";
         };
         bridge = {
