@@ -4,6 +4,9 @@
   MAX = "50000";
 in {
   networking.firewall.allowedTCPPorts = [port];
+  nixpkgs.config.permittedInsecurePackages = [
+    "olm-3.2.16"
+  ];
   services = {
     matrix-synapse = {
       enable = true;
