@@ -1,7 +1,7 @@
 {config, ...}: let
   dirs = config.vars.dataDirs;
   port = 8008;
-  MAX = "50000";
+  MAX = 50000;
 in {
   networking.firewall.allowedTCPPorts = [port];
   nixpkgs.config.permittedInsecurePackages = [
@@ -57,9 +57,9 @@ in {
                 thread = MAX;
               };
               missed = {
-                dm = "-1";
-                channel = "-1";
-                thread = "-1";
+                dm = -1;
+                channel = -1;
+                thread = -1;
               };
             };
           };
@@ -71,8 +71,16 @@ in {
         appservice = {
           address = "http://localhost:${config.services.mautrix-discord.settings.appservice.port}";
           hostname = "127.0.0.1";
-          port = "29334";
+          port = 29334;
           ephemeral_events = true;
+          database = {
+            type = "sqlite3";
+            uri = "file:${config.services.mautrix-discord.dataDir}/mautrix-discord.db?_txlock=immediate";
+            max_open_conns = 20;
+            max_idle_conns = 2;
+            max_conn_idle_time = null;
+            max_conn_lifetime = null;
+          };
         };
       };
     };
