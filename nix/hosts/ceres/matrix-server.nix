@@ -45,6 +45,12 @@ in {
       enable = true;
       dataDir = "${dirs.apps}/mautrix-discord";
       settings = {
+        appservice = {
+          database = {
+            type = "postgres";
+            uri = "postgres:///mautrix-discord?host=/var/run/postgresql";
+          };
+        };
         homeserver = {
           domain = config.services.matrix-synapse.settings.server_name;
           address = "http://127.0.0.1:${toString port}/";
@@ -73,6 +79,11 @@ in {
     };
     postgresql = {
       enable = true;
+      ensureUsers = [
+        {
+          name = "matrix-synapse";
+        }
+      ];
       authentication = ''
         local all all trust
       '';
