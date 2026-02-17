@@ -76,7 +76,8 @@ in {
       authentication = ''
         local all all trust
       '';
+      dataDir = "${dirs.db}/postgres/${config.services.postgresql.package.psqlSchema}";
     };
   };
-  environment.persistence.${config.vars.persistence.dir}.directories = [config.services.postgresql.dataDir]; # the module does not gracefully handle custom data dirs
+  systemd.tmpfiles.rules = ["d ${config.services.postgresql.dataDir} 700 ${config.users.users.postgres.name} ${config.users.users.postgres.group} -"];
 }
