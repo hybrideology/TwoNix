@@ -11,6 +11,7 @@ in {
   nixpkgs.config.permittedInsecurePackages = [
     "olm-3.2.16"
   ];
+  users.users.matrix-synapse.extraGroups = [config.users.users.mautrix-discord.group];
   services = {
     matrix-synapse = {
       enable = true;
