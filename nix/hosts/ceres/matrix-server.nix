@@ -1,6 +1,5 @@
 {config, ...}: let
   dirs = config.vars.dataDirs;
-  matrix-server-dir = "${dirs.apps}/matrix-synapse/";
   port = 8008;
   MAX = 50000;
 in {
@@ -13,8 +12,7 @@ in {
       enable = true;
       settings = {
         server_name = "jort.pavilion";
-        signing_key_path = "${matrix-server-dir}/homeserver.signing.key";
-        media_store_path = "${matrix-server-dir}/media";
+        dataDir = "${dirs.apps}/matrix-synapse/";
         listeners = [
           {
             bind_addresses = [
@@ -78,7 +76,7 @@ in {
       authentication = ''
         local all all trust
       '';
-      dataDir = "${dirs.apps}/postgresql/${config.services.postgresql.package.psqlSchema}";
     };
   };
+  environment.persistence.${config.vars.persistence.dir}.directories = [config.services.postgresql.dataDir]; # the module does not gracefully handle custom data dirs
 }
