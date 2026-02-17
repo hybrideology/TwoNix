@@ -1,5 +1,6 @@
 {config, ...}: let
   dirs = config.vars.dataDirs;
+  matrix-server-dir = "${dirs.apps}/matrix-synapse/";
   port = 8008;
   MAX = 50000;
 in {
@@ -12,6 +13,8 @@ in {
       enable = true;
       settings = {
         server_name = "jort.pavilion";
+        signing_key_path = "${matrix-server-dir}/homeserver.signing.key";
+        media_store_path = "${matrix-server-dir}/media";
         listeners = [
           {
             bind_addresses = [
@@ -69,6 +72,13 @@ in {
           };
         };
       };
+    };
+    postgresql = {
+      enable = true;
+      authentication = ''
+        local all all trust
+      '';
+      dataDir = "${dirs.apps}/postgresql/${config.services.postgresql.package.psqlSchema}";
     };
   };
 }

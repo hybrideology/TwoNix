@@ -12,6 +12,7 @@ in {
     inherit (config.users.users.systemd-network) group;
   };
   nixarr.vpn.accessibleFrom = ["10.0.0.0/24"];
+  environment.persistence.${config.vars.persistence.dir}.directories = ["/var/lib/dnsmasq"];
   services = {
     dnsmasq = {
       enable = true;
