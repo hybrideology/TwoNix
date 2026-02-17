@@ -79,9 +79,18 @@ in {
     };
     postgresql = {
       enable = true;
+      ensureDatabases = [
+        "matrix-synapse"
+        "mautrix-discord"
+      ];
       ensureUsers = [
         {
           name = "matrix-synapse";
+          ensureDBOwnership = true;
+        }
+        {
+          name = "mautrix-discord";
+          ensureDBOwnership = true;
         }
       ];
       authentication = ''
