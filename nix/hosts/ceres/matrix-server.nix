@@ -1,4 +1,8 @@
-{config, ...}: let
+{
+  config,
+  pkgs,
+  ...
+}: let
   dirs = config.vars.dataDirs;
   port = 8008;
   MAX = 50000;
@@ -11,7 +15,7 @@ in {
     matrix-synapse = {
       enable = true;
       settings = {
-        server_name = "jort.pavilion";
+        server_name = "465241395.xyz";
         dataDir = "${dirs.apps}/matrix-synapse/";
         listeners = [
           {
@@ -80,13 +84,11 @@ in {
     postgresql = {
       enable = true;
       ensureDatabases = [
-        "matrix-synapse"
         "mautrix-discord"
       ];
       ensureUsers = [
         {
           name = "matrix-synapse";
-          ensureDBOwnership = true;
         }
         {
           name = "mautrix-discord";
@@ -97,6 +99,14 @@ in {
         local all all trust
       '';
       dataDir = "${dirs.db}/postgres/${config.services.postgresql.package.psqlSchema}";
+      initialScript = pkgs.writeText "init-sql-script" ''
+        CREATE DATABASE matrix-synapse
+          WITH
+          TEMPLATE template0
+          ENCODING 'UTF8'
+          LOCALE 'C'
+          OWNER 'matrix-synapse';
+      '';
     };
   };
   systemd.tmpfiles.rules = ["d ${config.services.postgresql.dataDir} 700 ${config.users.users.postgres.name} ${config.users.users.postgres.group} -"];
