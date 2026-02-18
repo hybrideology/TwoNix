@@ -110,8 +110,8 @@ in {
                 thread = -1;
               };
             };
-            encryption.allow = "true";
           };
+          encryption.allow = "true";
           permissions = {
             "*" = "relay";
             "@hybrideology:${config.services.matrix-tuwunel.settings.global.server_name}" = "admin";
