@@ -14,6 +14,7 @@ in {
   nixarr.vpn.accessibleFrom = ["10.0.0.0/24"];
   environment.persistence.${config.vars.persistence.dir}.directories = ["/var/lib/dnsmasq"];
   services = {
+    nginx.defaultListenAddresses = ["10.0.0.1"];
     dnsmasq = {
       enable = true;
       resolveLocalQueries = false;

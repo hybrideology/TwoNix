@@ -51,6 +51,8 @@ in {
     enable = true;
     recommendedProxySettings = true;
     recommendedBrotliSettings = true;
+    recommendedOptimisation = true;
+    recommendedTlsSettings = true;
     virtualHosts = {
       "audiobookshelf.${fqdn}".locations."/".proxyPass = "http://127.0.0.1:${toString config.nixarr.audiobookshelf.port}";
       "aurobrr.${fqdn}".locations."/".proxyPass = "http://127.0.0.1:${toString config.nixarr.autobrr.settings.port}";

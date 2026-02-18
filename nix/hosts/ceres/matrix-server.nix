@@ -13,7 +13,7 @@ in {
     group = config.services.matrix-tuwunel.group;
     format = "binary";
   };
-  networking.firewall.allowedTCPPorts = config.services.matrix-tuwunel.settings.global.port;
+  networking.firewall.allowedTCPPorts = [443 8448];
   nixpkgs.config.permittedInsecurePackages = [
     "olm-3.2.16"
   ];
@@ -21,7 +21,7 @@ in {
     matrix-tuwunel = {
       enable = true;
       settings.global = {
-        address = ["0.0.0.0" "::"];
+        address = ["127.0.0.1" "::1"];
         server_name = "jortpavilion.org";
         database_backup_path = "${dirs.archive}/tuwunel";
         database_backup_paths_to_keep = 2;
