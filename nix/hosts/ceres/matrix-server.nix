@@ -13,7 +13,6 @@ in {
     group = config.services.matrix-tuwunel.group;
     format = "binary";
   };
-  networking.firewall.allowedTCPPorts = [443 8448];
   nixpkgs.config.permittedInsecurePackages = [
     "olm-3.2.16"
   ];
@@ -24,7 +23,7 @@ in {
         address = ["127.0.0.1" "::1"];
         server_name = "jortpavilion.org";
         database_backup_path = "${dirs.archive}/tuwunel";
-        database_backup_paths_to_keep = 2;
+        database_backups_to_keep = 2;
         ip_lookup_strategy = 4;
         encryption_enabled_by_default_for_room_type = "all";
         allow_registration = true;
