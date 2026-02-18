@@ -110,6 +110,7 @@ in {
                 thread = -1;
               };
             };
+            encryption.allow = true;
           };
           permissions = {
             "*" = "relay";
