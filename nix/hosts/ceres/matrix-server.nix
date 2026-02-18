@@ -46,7 +46,7 @@ in {
         enableACME = true;
         acmeRoot = null; # needed for DNS challenge from ACME module
         locations."/" = {
-          proxyPass = "http://localhost:${port}";
+          proxyPass = "http://localhost:${toString port}";
         };
       };
     };
