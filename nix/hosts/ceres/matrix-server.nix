@@ -88,6 +88,10 @@ in {
       enable = true;
       dataDir = "${dirs.apps}/mautrix-discord";
       settings = {
+        appservice.database = {
+          type = "sqlite3-fk-wal";
+          uri = "file:${config.services.mautrix-discord.dataDir}/mautrix-discord.db?_txlock=immediate";
+        };
         homeserver = {
           domain = config.services.matrix-synapse.settings.server_name;
           address = "http://127.0.0.1:${toString port}/";
