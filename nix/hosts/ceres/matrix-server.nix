@@ -32,7 +32,7 @@ in {
       environmentFile = config.sops.secrets.ceres-acme-secrets.path;
     };
   };
-  networking.firewall.allowedTCPPorts = [443];
+  networking.firewall.allowedTCPPorts = [443 8448];
   services = {
     nginx = {
       enable = true;
@@ -41,7 +41,28 @@ in {
       recommendedOptimisation = true;
       recommendedTlsSettings = true;
       virtualHosts."jortpavilion.org" = {
-        listenAddresses = ["0.0.0.0" "[::]"];
+        listen = [
+          {
+            address = "0.0.0.0";
+            port = 443;
+            ssl = true;
+          }
+          {
+            address = "[::]";
+            port = 443;
+            ssl = true;
+          }
+          {
+            address = "0.0.0.0";
+            port = 8448;
+            ssl = true;
+          }
+          {
+            address = "[::]";
+            port = 8448;
+            ssl = true;
+          }
+        ];
         forceSSL = true;
         enableACME = true;
         acmeRoot = null; # needed for DNS challenge from ACME module
