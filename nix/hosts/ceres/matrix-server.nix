@@ -7,16 +7,49 @@
   port = builtins.elemAt config.services.matrix-tuwunel.settings.global.port 0;
   MAX = 50000;
 in {
-  sops.secrets.ceres-matrix-registration-token = {
-    sopsFile = inputs.secrets.ceres-matrix-registration-token;
-    mode = "440";
-    group = config.services.matrix-tuwunel.group;
-    format = "binary";
+  sops.secrets = {
+    ceres-acme-secrets = {
+      sopsFile = inputs.secrets.ceres-acme-secrets;
+      mode = "440";
+      group = config.users.users.acme.group;
+      format = "binary";
+    };
+    ceres-matrix-registration-token = {
+      sopsFile = inputs.secrets.ceres-matrix-registration-token;
+      mode = "440";
+      group = config.services.matrix-tuwunel.group;
+      format = "binary";
+    };
   };
   nixpkgs.config.permittedInsecurePackages = [
     "olm-3.2.16"
   ];
+  security.acme = {
+    acceptTerms = true;
+    defaults.email = "skirmish_glove367@simplelogin.com";
+    certs."jortpavilion.org" = {
+      dnsProvider = "cloudflare";
+      environmentFile = config.sops.secrets.ceres-acme-secrets.path;
+    };
+  };
+  networking.firewall.allowedTCPPorts = [443];
   services = {
+    nginx = {
+      enable = true;
+      recommendedProxySettings = true;
+      recommendedBrotliSettings = true;
+      recommendedOptimisation = true;
+      recommendedTlsSettings = true;
+      virtualHosts."jortpavilion.org" = {
+        listenAddresses = ["0.0.0.0" "::"];
+        forceSSL = true;
+        enableACME = true;
+        acmeRoot = null; # needed for DNS challenge from ACME module
+        locations."/" = {
+          proxyPass = "http://localhost:${port}";
+        };
+      };
+    };
     matrix-tuwunel = {
       enable = true;
       settings.global = {
