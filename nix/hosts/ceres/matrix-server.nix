@@ -41,7 +41,7 @@ in {
       recommendedOptimisation = true;
       recommendedTlsSettings = true;
       virtualHosts."jortpavilion.org" = {
-        listenAddresses = ["0.0.0.0" "::"];
+        listenAddresses = ["0.0.0.0" "[::]"];
         forceSSL = true;
         enableACME = true;
         acmeRoot = null; # needed for DNS challenge from ACME module
