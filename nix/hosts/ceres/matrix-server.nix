@@ -43,22 +43,22 @@ in {
       virtualHosts."jortpavilion.org" = {
         listen = [
           {
-            address = "0.0.0.0";
+            addr = "0.0.0.0";
             port = 443;
             ssl = true;
           }
           {
-            address = "[::]";
+            addr = "[::]";
             port = 443;
             ssl = true;
           }
           {
-            address = "0.0.0.0";
+            addr = "0.0.0.0";
             port = 8448;
             ssl = true;
           }
           {
-            address = "[::]";
+            addr = "[::]";
             port = 8448;
             ssl = true;
           }
