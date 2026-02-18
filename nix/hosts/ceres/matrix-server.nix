@@ -1,61 +1,40 @@
 {
   config,
-  pkgs,
+  inputs,
   ...
 }: let
   dirs = config.vars.dataDirs;
-  port = 8008;
+  port = builtins.elemAt config.services.matrix-tuwunel.settings.global.port 0;
   MAX = 50000;
 in {
-  networking.firewall.allowedTCPPorts = [port];
+  sops.secrets.ceres-matrix-registration-token = {
+    sopsFile = inputs.secrets.ceres-matrix-registration-token;
+    mode = "440";
+    group = config.services.matrix-tuwunel.group;
+    format = "binary";
+  };
+  networking.firewall.allowedTCPPorts = config.services.matrix-tuwunel.settings.global.port;
   nixpkgs.config.permittedInsecurePackages = [
     "olm-3.2.16"
   ];
-  users.users.matrix-synapse.extraGroups = [config.users.users.mautrix-discord.group];
   services = {
-    matrix-synapse = {
+    matrix-tuwunel = {
       enable = true;
-      settings = {
-        server_name = "465241395.xyz";
-        dataDir = "${dirs.apps}/matrix-synapse/";
-        listeners = [
-          {
-            bind_addresses = [
-              "0.0.0.0"
-              "::"
-            ];
-            port = port;
-            resources = [
-              {
-                compress = true;
-                names = [
-                  "client"
-                ];
-              }
-              {
-                compress = false;
-                names = [
-                  "federation"
-                ];
-              }
-            ];
-            tls = false;
-            type = "http";
-            x_forwarded = true;
-          }
-        ];
+      settings.global = {
+        address = ["0.0.0.0" "::"];
+        server_name = "jortpavilion.org";
+        database_backup_path = "${dirs.archive}/tuwunel";
+        database_backup_paths_to_keep = 2;
+        ip_lookup_strategy = 4;
+        encryption_enabled_by_default_for_room_type = "all";
+        allow_registration = true;
+        registration_token_file = config.sops.secrets.ceres-matrix-registration-token.path;
       };
     };
     mautrix-discord = {
       enable = true;
       dataDir = "${dirs.apps}/mautrix-discord";
       settings = {
-        appservice = {
-          database = {
-            type = "postgres";
-            uri = "postgres:///mautrix-discord?host=/var/run/postgresql";
-          };
-        };
         homeserver = {
           domain = config.services.matrix-synapse.settings.server_name;
           address = "http://127.0.0.1:${toString port}/";
@@ -77,38 +56,10 @@ in {
           };
           permissions = {
             "*" = "relay";
-            "@hybrideology:matrix.org" = "admin";
+            "@hybrideology:${config.services.matrix-tuwunel.settings.global.server_name}" = "admin";
           };
         };
       };
     };
-    postgresql = {
-      enable = true;
-      ensureDatabases = [
-        "mautrix-discord"
-      ];
-      ensureUsers = [
-        {
-          name = "matrix-synapse";
-        }
-        {
-          name = "mautrix-discord";
-          ensureDBOwnership = true;
-        }
-      ];
-      authentication = ''
-        local all all trust
-      '';
-      dataDir = "${dirs.db}/postgres/${config.services.postgresql.package.psqlSchema}";
-      initialScript = pkgs.writeText "init-sql-script" ''
-        CREATE DATABASE matrix-synapse
-          WITH
-          TEMPLATE template0
-          ENCODING 'UTF8'
-          LOCALE 'C'
-          OWNER 'matrix-synapse';
-      '';
-    };
   };
-  systemd.tmpfiles.rules = ["d ${config.services.postgresql.dataDir} 700 ${config.users.users.postgres.name} ${config.users.users.postgres.group} -"];
 }
