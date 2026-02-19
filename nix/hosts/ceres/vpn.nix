@@ -2,9 +2,7 @@
   inputs,
   config,
   ...
-}: let
-  inherit (config.vars) fqdn;
-in {
+}: {
   sops.secrets.personal_vpn_key = {
     sopsFile = inputs.secrets.ceres;
     mode = "440";
@@ -22,8 +20,8 @@ in {
         bind-interfaces = true;
         listen-address = "10.0.0.1";
         address = [
-          "/${fqdn}/10.0.0.1"
-          "/*.${fqdn}/10.0.0.1"
+          "/$ceres.vpn/10.0.0.1"
+          "/*.$ceres.vpn/10.0.0.1"
         ];
       };
     };

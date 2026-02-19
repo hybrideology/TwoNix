@@ -5,7 +5,6 @@
 }: let
   dirs = config.vars.dataDirs;
   port = builtins.elemAt config.services.matrix-tuwunel.settings.global.port 0;
-  MAX = 50000;
 in {
   sops.secrets = {
     ceres-acme-secrets = {
@@ -32,7 +31,7 @@ in {
       environmentFile = config.sops.secrets.ceres-acme-secrets.path;
     };
   };
-  networking.firewall.allowedTCPPorts = [443 8448];
+  networking.firewall.allowedTCPPorts = [443];
   services = {
     nginx = {
       enable = true;
@@ -50,16 +49,6 @@ in {
           {
             addr = "[::]";
             port = 443;
-            ssl = true;
-          }
-          {
-            addr = "0.0.0.0";
-            port = 8448;
-            ssl = true;
-          }
-          {
-            addr = "[::]";
-            port = 8448;
             ssl = true;
           }
         ];
@@ -82,6 +71,7 @@ in {
         encryption_enabled_by_default_for_room_type = "all";
         allow_registration = true;
         registration_token_file = config.sops.secrets.ceres-matrix-registration-token.path;
+        well_known.serve = "jortpavilion.org:443";
       };
     };
     mautrix-discord = {
@@ -97,13 +87,9 @@ in {
           address = "http://127.0.0.1:${toString port}/";
         };
         bridge = {
+          delivery_receipts = true;
           backfill = {
             forward_limits = {
-              initial = {
-                dm = MAX;
-                channel = MAX;
-                thread = MAX;
-              };
               missed = {
                 dm = -1;
                 channel = -1;
@@ -111,7 +97,14 @@ in {
               };
             };
           };
-          encryption.allow = true;
+          encryption = {
+            allow = true;
+            default = true;
+            appservice = true;
+            msc4190 = true;
+            require = true;
+            allow_key_sharing = true;
+          };
           permissions = {
             "*" = "relay";
             "@hybrideology:${config.services.matrix-tuwunel.settings.global.server_name}" = "admin";

@@ -4,14 +4,12 @@
   ...
 }: let
   dirs = config.vars.dataDirs;
-  inherit (config.vars) fqdn;
 in {
-  assertions = [
-    {
-      assertion = fqdn != "";
-      message = "The FQDN needs to be assigned in order to enable the media server.";
-    }
-  ];
+  sops.secrets.vpn_proxy_conf = {
+    sopsFile = inputs.secrets.ceres-vpn-proxy;
+    mode = "440";
+    format = "binary";
+  };
   imports = [inputs.nixarr.nixosModules.default];
   nixarr = {
     enable = true;
@@ -44,6 +42,11 @@ in {
     transmission = {
       enable = true; # torrent client
       vpn.enable = true;
+      peerPort = 15758;
+    };
+    vpn = {
+      enable = true;
+      wgConf = config.sops.secrets.vpn_proxy_conf.path;
     };
   };
   networking.firewall.allowedTCPPorts = [80 443];
@@ -54,11 +57,11 @@ in {
     recommendedOptimisation = true;
     recommendedTlsSettings = true;
     virtualHosts = {
-      "audiobookshelf.${fqdn}".locations."/".proxyPass = "http://127.0.0.1:${toString config.nixarr.audiobookshelf.port}";
-      "aurobrr.${fqdn}".locations."/".proxyPass = "http://127.0.0.1:${toString config.nixarr.autobrr.settings.port}";
-      "jellyfin.${fqdn}".locations."/".proxyPass = "http://127.0.0.1:8096"; # jellyfin port
-      "jellyseerr.${fqdn}".locations."/".proxyPass = "http://127.0.0.1:5055"; # jellyseerr port
-      "transmission.${fqdn}".locations."/".proxyPass = "http://127.0.0.1:${toString config.nixarr.transmission.uiPort}";
+      "audiobookshelf.ceres.vpn".locations."/".proxyPass = "http://127.0.0.1:${toString config.nixarr.audiobookshelf.port}";
+      "aurobrr.ceres.vpn".locations."/".proxyPass = "http://127.0.0.1:${toString config.nixarr.autobrr.settings.port}";
+      "jellyfin.ceres.vpn".locations."/".proxyPass = "http://127.0.0.1:8096"; # jellyfin port
+      "jellyseerr.ceres.vpn".locations."/".proxyPass = "http://127.0.0.1:5055"; # jellyseerr port
+      "transmission.ceres.vpn".locations."/".proxyPass = "http://127.0.0.1:${toString config.nixarr.transmission.uiPort}";
     };
   };
 }
