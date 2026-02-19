@@ -71,7 +71,7 @@ in {
         encryption_enabled_by_default_for_room_type = "all";
         allow_registration = true;
         registration_token_file = config.sops.secrets.ceres-matrix-registration-token.path;
-        well_known.serve = "jortpavilion.org:443";
+        well_known.server = "jortpavilion.org:443";
       };
     };
     mautrix-discord = {
@@ -103,9 +103,6 @@ in {
           encryption = {
             allow = true;
             default = true;
-            appservice = true;
-            msc4190 = true;
-            require = true;
             allow_key_sharing = true;
           };
           permissions = {
