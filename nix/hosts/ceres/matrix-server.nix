@@ -78,9 +78,12 @@ in {
       enable = true;
       dataDir = "${dirs.apps}/mautrix-discord";
       settings = {
-        appservice.database = {
-          type = "sqlite3-fk-wal";
-          uri = "file:${config.services.mautrix-discord.dataDir}/mautrix-discord.db?_txlock=immediate";
+        appservice = {
+          hostname = "127.0.0.1";
+          database = {
+            type = "sqlite3-fk-wal";
+            uri = "file:${config.services.mautrix-discord.dataDir}/mautrix-discord.db?_txlock=immediate";
+          };
         };
         homeserver = {
           domain = config.services.matrix-tuwunel.settings.global.server_name;
