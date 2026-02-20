@@ -116,8 +116,8 @@ in {
             "*" = "relay";
             "@hybrideology:${config.services.matrix-tuwunel.settings.global.server_name}" = "admin";
           };
+          login_shared_secret_map.${config.services.matrix-tuwunel.settings.global.server_name} = "as_token:$DOUBLE_PUPPET_AS_TOKEN";
         };
-        double_puppet.secrets.${config.services.matrix-tuwunel.settings.global.server_name} = "as_token:$DOUBLE_PUPPET_AS_TOKEN";
       };
     };
   };
