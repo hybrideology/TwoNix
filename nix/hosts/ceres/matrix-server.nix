@@ -103,9 +103,6 @@ in {
           encryption = {
             allow = true;
             default = true;
-            appservice = true;
-            msc4190 = true;
-            allow_key_sharing = true;
             plaintext_mentions = true;
           };
           permissions = {
