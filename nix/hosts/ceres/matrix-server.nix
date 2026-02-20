@@ -56,14 +56,14 @@ in {
         enableACME = true;
         acmeRoot = null; # needed for DNS challenge from ACME module
         locations."/" = {
-          proxyPass = "http://127.0.0.1:${toString port}";
+          proxyPass = "http://[::1]:${toString port}";
         };
       };
     };
     matrix-tuwunel = {
       enable = true;
       settings.global = {
-        address = ["127.0.0.1"];
+        address = ["::1"];
         server_name = "jortpavilion.org";
         database_backup_path = "${dirs.archive}/tuwunel";
         database_backups_to_keep = 2;
@@ -79,7 +79,7 @@ in {
       dataDir = "${dirs.apps}/mautrix-discord";
       settings = {
         appservice = {
-          hostname = "127.0.0.1";
+          hostname = "::1";
           database = {
             type = "sqlite3-fk-wal";
             uri = "file:${config.services.mautrix-discord.dataDir}/mautrix-discord.db?_txlock=immediate";
@@ -87,7 +87,7 @@ in {
         };
         homeserver = {
           domain = config.services.matrix-tuwunel.settings.global.server_name;
-          address = "http://127.0.0.1:${toString port}/";
+          address = "http://[::1]:${toString port}/";
         };
         bridge = {
           delivery_receipts = true;
