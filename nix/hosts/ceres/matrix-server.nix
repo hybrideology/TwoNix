@@ -63,7 +63,7 @@ in {
     matrix-tuwunel = {
       enable = true;
       settings.global = {
-        address = ["::1"];
+        address = ["[::1]"];
         server_name = "jortpavilion.org";
         database_backup_path = "${dirs.archive}/tuwunel";
         database_backups_to_keep = 2;
@@ -79,7 +79,7 @@ in {
       dataDir = "${dirs.apps}/mautrix-discord";
       settings = {
         appservice = {
-          hostname = "::1";
+          hostname = "[::1]";
           database = {
             type = "sqlite3-fk-wal";
             uri = "file:${config.services.mautrix-discord.dataDir}/mautrix-discord.db?_txlock=immediate";
