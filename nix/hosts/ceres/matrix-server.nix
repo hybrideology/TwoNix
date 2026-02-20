@@ -114,6 +114,7 @@ in {
           };
           permissions = {
             "*" = "relay";
+            "${config.services.matrix-tuwunel.settings.globlal.server_name}" = "user";
             "@pqvqn:matrix.org" = "user";
             "@hybrideology:${config.services.matrix-tuwunel.settings.global.server_name}" = "admin";
           };
