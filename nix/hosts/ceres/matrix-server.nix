@@ -56,14 +56,14 @@ in {
         enableACME = true;
         acmeRoot = null; # needed for DNS challenge from ACME module
         locations."/" = {
-          proxyPass = "http://localhost:${toString port}";
+          proxyPass = "http://127.0.0.1:${toString port}";
         };
       };
     };
     matrix-tuwunel = {
       enable = true;
       settings.global = {
-        address = ''["127.0.0.1", "::1"]'';
+        address = "127.0.0.1";
         server_name = "jortpavilion.org";
         database_backup_path = "${dirs.archive}/tuwunel";
         database_backups_to_keep = 2;
