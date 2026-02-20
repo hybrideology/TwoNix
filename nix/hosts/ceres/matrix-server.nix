@@ -63,7 +63,7 @@ in {
     matrix-tuwunel = {
       enable = true;
       settings.global = {
-        address = ["127.0.0.1" "::1"];
+        address = ["127.0.0.1" "[::1]"];
         server_name = "jortpavilion.org";
         database_backup_path = "${dirs.archive}/tuwunel";
         database_backups_to_keep = 2;
@@ -103,7 +103,10 @@ in {
           encryption = {
             allow = true;
             default = true;
+            appservice = true;
+            msc4190 = true;
             allow_key_sharing = true;
+            plaintext_mentions = true;
           };
           permissions = {
             "*" = "relay";
