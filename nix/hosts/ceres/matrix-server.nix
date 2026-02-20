@@ -19,6 +19,12 @@ in {
       group = config.services.matrix-tuwunel.group;
       format = "binary";
     };
+    ceres-mautrix-discord-secrets = {
+      sopsFile = inputs.secrets.ceres-mautrix-discord-secrets;
+      mode = "440";
+      group = config.users.users.mautrix-discord.group;
+      format = "binary";
+    };
   };
   nixpkgs.config.permittedInsecurePackages = [
     "olm-3.2.16"
@@ -77,6 +83,7 @@ in {
     mautrix-discord = {
       enable = true;
       dataDir = "${dirs.apps}/mautrix-discord";
+      environmentFile = config.sops.secrets.ceres-mautrix-discord-secrets.path;
       settings = {
         appservice = {
           hostname = "[::1]";
@@ -110,6 +117,7 @@ in {
             "@hybrideology:${config.services.matrix-tuwunel.settings.global.server_name}" = "admin";
           };
         };
+        double_puppet.secrets.${config.services.matrix-tuwunel.settings.global.server_name} = "as_token:$DOUBLE_PUPPET_AS_TOKEN";
       };
     };
   };
