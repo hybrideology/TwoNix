@@ -114,6 +114,7 @@ in {
           };
           permissions = {
             "*" = "relay";
+            "@pqvqn:matrix.org" = "user";
             "@hybrideology:${config.services.matrix-tuwunel.settings.global.server_name}" = "admin";
           };
           login_shared_secret_map.${config.services.matrix-tuwunel.settings.global.server_name} = "as_token:$DOUBLE_PUPPET_AS_TOKEN";
