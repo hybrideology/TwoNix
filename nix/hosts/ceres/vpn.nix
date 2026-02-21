@@ -20,8 +20,8 @@
         bind-interfaces = true;
         listen-address = "10.0.0.1";
         address = [
-          "/$ceres.vpn/10.0.0.1"
-          "/*.$ceres.vpn/10.0.0.1"
+          "/ceres.internal/10.0.0.1"
+          "/*.ceres.internal/10.0.0.1"
         ];
       };
     };
