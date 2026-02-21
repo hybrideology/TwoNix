@@ -5,12 +5,20 @@
 }: let
   dirs = config.vars.dataDirs;
   port = builtins.elemAt config.services.matrix-tuwunel.settings.global.port 0;
+  domain = "jortpavilion.org";
+  turn-domain = "turn.${domain}";
 in {
   sops.secrets = {
     ceres-acme-secrets = {
       sopsFile = inputs.secrets.ceres-acme-secrets;
       mode = "440";
       group = config.users.users.acme.group;
+      format = "binary";
+    };
+    ceres-coturn-static-secret = {
+      sopsFile = inputs.secrets.ceres-coturn-static-secret;
+      mode = "440";
+      group = config.users.users.turnserver.group;
       format = "binary";
     };
     ceres-matrix-registration-token = {
@@ -32,12 +40,42 @@ in {
   security.acme = {
     acceptTerms = true;
     defaults.email = "skirmish_glove367@simplelogin.com";
-    certs."jortpavilion.org" = {
-      dnsProvider = "cloudflare";
-      environmentFile = config.sops.secrets.ceres-acme-secrets.path;
+    certs = {
+      ${domain} = {
+        dnsProvider = "cloudflare";
+        environmentFile = config.sops.secrets.ceres-acme-secrets.path;
+      };
+      ${turn-domain} = {
+        dnsProvider = "cloudflare";
+        environmentFile = config.sops.secrets.ceres-acme-secrets.path;
+        postRun = "systemctl restart coturn.service";
+        group = config.users.users.turnserver.group;
+      };
     };
   };
-  networking.firewall.allowedTCPPorts = [443];
+  networking.firewall = {
+    allowedTCPPorts = [
+      443
+      config.services.coturn.listening-port
+      config.services.coturn.tls-listening-port
+    ];
+    allowedUDPPorts = [
+      config.services.coturn.listening-port
+      config.services.coturn.tls-listening-port
+    ];
+    allowedTCPPortRanges = [
+      {
+        from = config.services.coturn.min-port;
+        to = config.services.coturn.max-port;
+      }
+    ];
+    allowedUDPPortRanges = [
+      {
+        from = config.services.coturn.min-port;
+        to = config.services.coturn.max-port;
+      }
+    ];
+  };
   services = {
     nginx = {
       enable = true;
@@ -45,7 +83,7 @@ in {
       recommendedBrotliSettings = true;
       recommendedOptimisation = true;
       recommendedTlsSettings = true;
-      virtualHosts."jortpavilion.org" = {
+      virtualHosts.${domain} = {
         listen = [
           {
             addr = "0.0.0.0";
@@ -66,18 +104,34 @@ in {
         };
       };
     };
+    coturn = {
+      enable = true;
+      no-cli = true;
+      use-auth-secret = true;
+      static-auth-secret-file = config.sops.secrets.ceres-coturn-static-secret.path;
+      realm = turn-domain;
+      cert = "${config.security.acme.certs.${turn-domain}.directory}/full.pem";
+      pkey = "${config.security.acme.certs.${turn-domain}.directory}/key.pem";
+    };
     matrix-tuwunel = {
       enable = true;
       settings.global = {
         address = ["::1"];
-        server_name = "jortpavilion.org";
+        server_name = domain;
         database_backup_path = "${dirs.archive}/tuwunel";
         database_backups_to_keep = 2;
         ip_lookup_strategy = 4;
         encryption_enabled_by_default_for_room_type = "all";
         allow_registration = true;
         registration_token_file = config.sops.secrets.ceres-matrix-registration-token.path;
-        well_known.server = "jortpavilion.org:443";
+        turn_secret_file = config.sops.secrets.ceres-coturn-static-secret.path;
+        turn_uris = [
+          "turn:${config.services.coturn.realm}?transport=udp"
+          "turns:${config.services.coturn.realm}?transport=udp"
+          "turn:${config.services.coturn.realm}?transport=tcp"
+          "turns:${config.services.coturn.realm}?transport=tcp"
+        ];
+        well_known.server = "${domain}:443";
       };
     };
     mautrix-discord = {
@@ -93,7 +147,7 @@ in {
           };
         };
         homeserver = {
-          domain = config.services.matrix-tuwunel.settings.global.server_name;
+          domain = domain;
           address = "http://[::1]:${toString port}/";
         };
         bridge = {
@@ -114,11 +168,10 @@ in {
           };
           permissions = {
             "*" = "relay";
-            "${config.services.matrix-tuwunel.settings.global.server_name}" = "user";
-            "@pqvqn:matrix.org" = "user";
-            "@hybrideology:${config.services.matrix-tuwunel.settings.global.server_name}" = "admin";
+            "${domain}" = "user";
+            "@hybrideology:${domain}" = "admin";
           };
-          login_shared_secret_map.${config.services.matrix-tuwunel.settings.global.server_name} = "as_token:$DOUBLE_PUPPET_AS_TOKEN";
+          login_shared_secret_map.${domain} = "as_token:$DOUBLE_PUPPET_AS_TOKEN";
         };
       };
     };
