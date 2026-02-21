@@ -9,7 +9,10 @@
     owner = config.users.users.systemd-network.name;
     inherit (config.users.users.systemd-network) group;
   };
-  networking.useNetworkd = true;
+  networking = {
+    useNetworkd = true;
+    nameservers = ["10.0.0.1"];
+  };
   systemd.network = {
     enable = true;
     networks = {
