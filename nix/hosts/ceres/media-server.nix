@@ -63,8 +63,8 @@ in {
       "jellyseerr.ceres.vpn".locations."/".proxyPass = "http://127.0.0.1:5055"; # jellyseerr port
       "transmission.ceres.vpn".locations = {
         "/".proxyPass = "http://127.0.0.1:${toString config.nixarr.transmission.uiPort}";
-        "/transmission/web/" = {
-          proxyPass = "http:127.0.0.1:${toString config.nixarr.transmission.uiPort}/transmission/web/";
+        "/transmission/web" = {
+          proxyPass = "http://127.0.0.1:${toString config.nixarr.transmission.uiPort}/transmission/web";
           proxyWebsockets = true;
         };
       };
