@@ -43,8 +43,7 @@ in {
       enable = true; # torrent client
       vpn.enable = true;
       peerPort = 15758;
-      flood.enable = true;
-      openFirewall = true;
+      openFirewall = true; # can't get reverse proxy to work
     };
     vpn = {
       enable = true;
@@ -63,14 +62,6 @@ in {
       "aurobrr.ceres.vpn".locations."/".proxyPass = "http://127.0.0.1:${toString config.nixarr.autobrr.settings.port}";
       "jellyfin.ceres.vpn".locations."/".proxyPass = "http://127.0.0.1:8096"; # jellyfin port
       "jellyseerr.ceres.vpn".locations."/".proxyPass = "http://127.0.0.1:5055"; # jellyseerr port
-      "transmission.ceres.vpn".locations."/" = {
-        proxyPass = "http://127.0.0.1:${toString config.nixarr.transmission.uiPort}";
-        extraConfig = ''
-          proxy_pass_header   Access-Control-Expose-Headers;
-          proxy_pass_header   X-Transmission-Session-Id;
-          proxy_pass_header   X-Transmission-Rpc-Version;
-        '';
-      };
     };
   };
 }
