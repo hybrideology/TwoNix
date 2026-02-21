@@ -66,7 +66,9 @@ in {
       "transmission.ceres.vpn".locations."/" = {
         proxyPass = "http://127.0.0.1:${toString config.nixarr.transmission.uiPort}";
         extraConfig = ''
+          proxy_pass_header   Access-Control-Expose-Headers;
           proxy_pass_header   X-Transmission-Session-Id;
+          proxy_pass_header   X-Transmission-Rpc-Version;
         '';
       };
     };
