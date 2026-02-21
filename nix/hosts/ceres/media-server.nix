@@ -43,6 +43,7 @@ in {
       enable = true; # torrent client
       vpn.enable = true;
       peerPort = 15758;
+      openFirewall = true;
     };
     vpn = {
       enable = true;
