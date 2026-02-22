@@ -34,6 +34,7 @@ in {
       format = "binary";
     };
   };
+  users.users.tuwunel.extraGroups = [config.users.users.turnserver.group]; # allows tuwunel to read secret
   nixpkgs.config.permittedInsecurePackages = [
     "olm-3.2.16"
   ];
