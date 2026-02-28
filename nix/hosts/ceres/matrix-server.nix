@@ -7,6 +7,7 @@
   port = builtins.elemAt config.services.matrix-tuwunel.settings.global.port 0;
   domain = "jortpavilion.org";
   turn-domain = "turn.${domain}";
+  # mrtc-domain = "matrix-rtc.${domain}";
 in {
   sops.secrets = {
     ceres-acme-secrets = {
@@ -15,17 +16,15 @@ in {
       group = config.users.users.acme.group;
       format = "binary";
     };
-    ceres-coturn-static-secret = {
-      sopsFile = inputs.secrets.ceres-coturn-static-secret;
+    coturn-static-secret = {
+      sopsFile = inputs.secrets.ceres;
       mode = "440";
       group = config.users.users.turnserver.group;
-      format = "binary";
     };
-    ceres-matrix-registration-token = {
-      sopsFile = inputs.secrets.ceres-matrix-registration-token;
+    matrix-registration-token = {
+      sopsFile = inputs.secrets.ceres;
       mode = "440";
       group = config.services.matrix-tuwunel.group;
-      format = "binary";
     };
     ceres-mautrix-discord-secrets = {
       sopsFile = inputs.secrets.ceres-mautrix-discord-secrets;
@@ -33,6 +32,12 @@ in {
       group = config.users.users.mautrix-discord.group;
       format = "binary";
     };
+    # ceres-matrix-rtc-keys = {
+    #   sopsFile = inputs.secrets.ceres-matrix-rtc-keys;
+    #   mode = "440";
+    #   group = config.users.users.mautrix-discord.group;
+    #   format = "binary";
+    # };
   };
   users.users.tuwunel.extraGroups = [config.users.users.turnserver.group]; # allows tuwunel to read secret
   nixpkgs.config.permittedInsecurePackages = [
@@ -52,6 +57,11 @@ in {
         postRun = "systemctl restart coturn.service";
         group = config.users.users.turnserver.group;
       };
+      # ${mrtc-domain} = {
+      #   dnsProvider = "cloudflare";
+      #   environmentFile = config.sops.secrets.ceres-acme-secrets.path;
+      #   postRun = "systemctl restart livekit.service";
+      # };
     };
   };
   networking.firewall = {
@@ -101,7 +111,7 @@ in {
         enableACME = true;
         acmeRoot = null; # needed for DNS challenge from ACME module
         locations."/" = {
-          proxyPass = "http://[::1]:${toString port}";
+          proxyPass = "http://127.0.0.1:${toString port}";
         };
       };
     };
@@ -117,12 +127,12 @@ in {
     matrix-tuwunel = {
       enable = true;
       settings.global = {
-        address = ["::1"];
+        address = ["127.0.0.1"];
         server_name = domain;
         database_backup_path = "${dirs.archive}/tuwunel";
         database_backups_to_keep = 2;
         ip_lookup_strategy = 4;
-        encryption_enabled_by_default_for_room_type = "all";
+        encryption_enabled_by_default_for_room_type = "invite";
         allow_registration = true;
         registration_token_file = config.sops.secrets.ceres-matrix-registration-token.path;
         turn_secret_file = config.sops.secrets.ceres-coturn-static-secret.path;
@@ -141,7 +151,7 @@ in {
       environmentFile = config.sops.secrets.ceres-mautrix-discord-secrets.path;
       settings = {
         appservice = {
-          hostname = "[::1]";
+          hostname = "127.0.0.1";
           database = {
             type = "sqlite3-fk-wal";
             uri = "file:${config.services.mautrix-discord.dataDir}/mautrix-discord.db?_txlock=immediate";
@@ -149,7 +159,7 @@ in {
         };
         homeserver = {
           domain = domain;
-          address = "http://[::1]:${toString port}/";
+          address = "http://127.0.0.1:${toString port}/";
         };
         bridge = {
           delivery_receipts = true;
