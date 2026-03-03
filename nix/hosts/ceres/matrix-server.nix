@@ -16,12 +16,12 @@ in {
       group = config.users.users.acme.group;
       format = "binary";
     };
-    coturn-static-secret = {
+    coturn_static_secret = {
       sopsFile = inputs.secrets.ceres;
       mode = "440";
       group = config.users.users.turnserver.group;
     };
-    matrix-registration-token = {
+    matrix_registration_token = {
       sopsFile = inputs.secrets.ceres;
       mode = "440";
       group = config.services.matrix-tuwunel.group;
@@ -119,7 +119,7 @@ in {
       enable = true;
       no-cli = true;
       use-auth-secret = true;
-      static-auth-secret-file = config.sops.secrets.ceres-coturn-static-secret.path;
+      static-auth-secret-file = config.sops.secrets.coturn_static_secret.path;
       realm = turn-domain;
       cert = "${config.security.acme.certs.${turn-domain}.directory}/full.pem";
       pkey = "${config.security.acme.certs.${turn-domain}.directory}/key.pem";
@@ -134,8 +134,8 @@ in {
         ip_lookup_strategy = 4;
         encryption_enabled_by_default_for_room_type = "invite";
         allow_registration = true;
-        registration_token_file = config.sops.secrets.ceres-matrix-registration-token.path;
-        turn_secret_file = config.sops.secrets.ceres-coturn-static-secret.path;
+        registration_token_file = config.sops.secrets.matrix_registration_token.path;
+        turn_secret_file = config.sops.secrets.coturn_static_secret.path;
         turn_uris = [
           "turn:${config.services.coturn.realm}?transport=udp"
           "turns:${config.services.coturn.realm}?transport=udp"
