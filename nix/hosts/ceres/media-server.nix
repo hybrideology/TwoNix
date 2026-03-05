@@ -58,10 +58,10 @@ in {
     recommendedOptimisation = true;
     recommendedTlsSettings = true;
     virtualHosts = {
-      "audiobookshelf.ceres.vpn".locations."/".proxyPass = "http://[::1]:${toString config.nixarr.audiobookshelf.port}";
-      "aurobrr.ceres.vpn".locations."/".proxyPass = "http://[::1]:${toString config.nixarr.autobrr.settings.port}";
-      "jellyfin.ceres.vpn".locations."/".proxyPass = "http://[::1]:8096"; # jellyfin port
-      "jellyseerr.ceres.vpn".locations."/".proxyPass = "http://[::1]:5055"; # jellyseerr port
+      "audiobookshelf.ceres.vpn".locations."/".proxyPass = "http://127.0.0.1:${toString config.nixarr.audiobookshelf.port}";
+      "aurobrr.ceres.vpn".locations."/".proxyPass = "http://127.0.0.1:${toString config.nixarr.autobrr.settings.port}";
+      "jellyfin.ceres.vpn".locations."/".proxyPass = "http://127.0.0.1:8096"; # jellyfin port
+      "jellyseerr.ceres.vpn".locations."/".proxyPass = "http://127.0.0.1:5055"; # jellyseerr port
     };
   };
 }
