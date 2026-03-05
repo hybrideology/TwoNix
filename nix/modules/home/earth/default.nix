@@ -19,7 +19,6 @@ _: {
     ../nh.nix
     ../nixos-anywhere.nix
     ../rnote.nix
-    ../satty.nix
     ../ssh.nix
     ../starship.nix
     ../tor-browser.nix
