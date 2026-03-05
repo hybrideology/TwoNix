@@ -13,23 +13,23 @@ in {
     ceres-acme-secrets = {
       sopsFile = inputs.secrets.ceres-acme-secrets;
       mode = "440";
-      group = config.users.users.acme.group;
+      inherit (config.users.users.acme) group;
       format = "binary";
     };
     coturn_static_secret = {
       sopsFile = inputs.secrets.ceres;
       mode = "440";
-      group = config.users.users.turnserver.group;
+      inherit (config.users.users.turnserver) group;
     };
     matrix_registration_token = {
       sopsFile = inputs.secrets.ceres;
       mode = "440";
-      group = config.services.matrix-tuwunel.group;
+      inherit (config.services.matrix-tuwunel) group;
     };
     ceres-mautrix-discord-secrets = {
       sopsFile = inputs.secrets.ceres-mautrix-discord-secrets;
       mode = "440";
-      group = config.users.users.mautrix-discord.group;
+      inherit (config.users.users.mautrix-discord) group;
       format = "binary";
     };
     # ceres-matrix-rtc-keys = {
@@ -55,7 +55,7 @@ in {
         dnsProvider = "cloudflare";
         environmentFile = config.sops.secrets.ceres-acme-secrets.path;
         postRun = "systemctl restart coturn.service";
-        group = config.users.users.turnserver.group;
+        inherit (config.users.users.turnserver) group;
       };
       # ${mrtc-domain} = {
       #   dnsProvider = "cloudflare";
@@ -158,7 +158,7 @@ in {
           };
         };
         homeserver = {
-          domain = domain;
+          inherit domain;
           address = "http://127.0.0.1:${toString port}/";
         };
         bridge = {

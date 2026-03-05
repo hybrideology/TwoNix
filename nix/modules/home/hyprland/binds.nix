@@ -1,6 +1,5 @@
 {
   lib,
-  pkgs,
   config,
   ...
 }: {
@@ -12,12 +11,10 @@
       "$mainMod, escape, exit,"
       "$mainMod, u, exec, loginctl lock-session"
       "$mainMod, f, fullscreen, 0"
-      "$mainMod, space, togglefloating"
-      "$mainMod, s, swapsplit,"
-      "$mainMod shift, s, togglesplit,"
-      "$mainMod $shiftMod, P, exec, uwsm app -- hyprpicker -ar"
-      (''$mainMod, P, exec, uwsm app -- hyprshot -m region -z''
-        + lib.optionalString (lib.elem pkgs.satty config.home.packages) " --raw | satty -f -")
+      "$mainMod, s, togglefloating"
+      "$mainMod alt, P, exec, uwsm app -- hyprpicker -ar"
+      "$mainMod, P, exec, uwsm app -- ${lib.getExe config.programs.hyprshot.package} -m region -z --raw | satty -f -"
+      "$mainMod, D, exec, uwsm app -- ${lib.getExe config.programs.fuzzel.package}"
 
       "$mainMod, left, workspace, r-1"
       "$mainMod, right, workspace, r+1"

@@ -3,10 +3,8 @@ _: {
     ./stylix
     ../hyprland
     ../required
-    ../waybar
     ../btop.nix
     ../element-desktop.nix
-    ../fuzzel.nix
     ../gimp.nix
     ../godot.nix
     ../helix.nix
