@@ -111,7 +111,7 @@ in {
         enableACME = true;
         acmeRoot = null; # needed for DNS challenge from ACME module
         locations."/" = {
-          proxyPass = "http://localhost:${toString port}";
+          proxyPass = "http://[::1]:${toString port}";
         };
       };
     };
@@ -127,7 +127,7 @@ in {
     matrix-tuwunel = {
       enable = true;
       settings.global = {
-        address = ["127.0.0.1" "::1"];
+        address = ["::1"];
         server_name = domain;
         database_backup_path = "${dirs.archive}/tuwunel";
         database_backups_to_keep = 2;
@@ -151,7 +151,7 @@ in {
       environmentFile = config.sops.secrets.ceres-mautrix-discord-secrets.path;
       settings = {
         appservice = {
-          hostname = "localhost";
+          hostname = "[::1]";
           database = {
             type = "sqlite3-fk-wal";
             uri = "file:${config.services.mautrix-discord.dataDir}/mautrix-discord.db?_txlock=immediate";
@@ -159,7 +159,7 @@ in {
         };
         homeserver = {
           inherit domain;
-          address = "http://localhost:${toString port}/";
+          address = "http://[::1]:${toString port}/";
         };
         bridge = {
           delivery_receipts = true;
