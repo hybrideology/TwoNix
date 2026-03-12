@@ -74,6 +74,13 @@
               "10.0.0.4/32"
             ];
           }
+          # betelgeuse
+          {
+            PublicKey = "aVeaKlXy5YAootyBmWr0SnZVShrWFcDjQaNKQV//JCI=";
+            AllowedIPs = [
+              "10.0.0.5/32"
+            ];
+          }
         ];
       };
     };
