@@ -1,4 +1,4 @@
-_: {
+{pkgs, ...}: {
   vars.unfreePkgs = [
     "steam"
     "steam-original"
@@ -11,4 +11,5 @@ _: {
     dedicatedServer.openFirewall = true;
     localNetworkGameTransfers.openFirewall = true;
   };
+  environment.systemPackages = [pkgs.gamescope];
 }
