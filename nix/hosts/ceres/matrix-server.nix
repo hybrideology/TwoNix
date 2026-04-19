@@ -45,7 +45,7 @@ in {
   ];
   security.acme = {
     acceptTerms = true;
-    defaults.email = "skirmish_glove367@simplelogin.com";
+    defaults.email = "dc11eea7-ff49-42b0-b924-53f8d589931d@anonaddy.me";
     certs = {
       ${domain} = {
         dnsProvider = "cloudflare";
