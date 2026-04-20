@@ -1,19 +1,20 @@
 {
   description = "v2 NixOS config";
 
-  # Add all your dependencies here
+  # inputs
   inputs = {
-    blueprint.url = "github:numtide/blueprint";
-    blueprint.inputs.nixpkgs.follows = "nixpkgs";
-    blueprint.inputs.systems.follows = "systems";
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
+    flake-parts.url = "github:hercules-ci/flake-parts";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     impermanence.url = "github:nix-community/impermanence";
     impermanence.inputs.nixpkgs.follows = "nixpkgs";
     impermanence.inputs.home-manager.follows = "home-manager";
-    nixpkgs.url = "github:NixOS/nixpkgs?ref=nixos-unstable-small";
+    import-tree.url = "github:vic/import-tree";
+    nixos-hardware.url = "github:NixOS/nixos-hardware";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-small.url = "github:NixOS/nixpkgs/nixos-unstable-small";
     nixarr.url = "github:nix-media-server/nixarr";
     nixarr.inputs.nixpkgs.follows = "nixpkgs";
     secrets.url = "git+ssh://git@github.com/hybrideology/sops-secrets.git";
@@ -22,15 +23,14 @@
     stylix.url = "github:danth/stylix";
     stylix.inputs.nixpkgs.follows = "nixpkgs";
     stylix.inputs.systems.follows = "systems";
-    systems.url = "github:nix-systems/default";
+    systems.url = "github:nix-systems/default-linux";
     treefmt-nix.url = "github:numtide/treefmt-nix";
     treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  # Load the blueprint
+  # outputs
   outputs = inputs:
-    inputs.blueprint {
-      inherit inputs;
-      prefix = "nix/";
+    inputs.flake-parts.lib.mkFlake {inherit inputs;} {
+      imports = [(inputs.import-tree ./nix)];
     };
 }

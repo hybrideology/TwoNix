@@ -1,0 +1,32 @@
+_: {
+  imports = [
+    ./stylix
+    ../hyprland
+    ../required
+    ../btop.nix
+    ../element-desktop.nix
+    ../gimp.nix
+    ../godot.nix
+    ../helix.nix
+    ../homeDirs.nix
+    ../jujutsu.nix
+    ../kitty.nix
+    ../libresprite.nix
+    ../librewolf.nix
+    ../lutris.nix
+    ../mako.nix
+    ../mpv.nix
+    ../nh.nix
+    ../nixos-anywhere.nix
+    ../rnote.nix
+    ../ssh.nix
+    ../starship.nix
+    ../tor-browser.nix
+    ../unar.nix
+    ../vesktop.nix
+    ../wireguard-tools.nix
+    ../wl-clip-persist.nix
+    ../yazi.nix
+    ../zsh.nix
+  ];
+}
