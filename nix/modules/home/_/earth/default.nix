@@ -13,7 +13,7 @@ _: {
     ../kitty.nix
     ../libresprite.nix
     ../librewolf.nix
-    ../lutris.nix
+
     ../mako.nix
     ../mpv.nix
     ../nh.nix
