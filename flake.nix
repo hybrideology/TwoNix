@@ -22,7 +22,6 @@
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
     stylix.url = "github:danth/stylix";
     stylix.inputs.nixpkgs.follows = "nixpkgs";
-    stylix.inputs.systems.follows = "systems";
     systems.url = "github:nix-systems/default-linux";
     treefmt-nix.url = "github:numtide/treefmt-nix";
     treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
