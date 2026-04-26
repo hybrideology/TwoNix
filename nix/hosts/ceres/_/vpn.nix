@@ -1,7 +1,4 @@
-{
-  config,
-  ...
-}: {
+{config, ...}: {
   sops.secrets.personal_vpn_key = {
     mode = "440";
     owner = config.users.users.systemd-network.name;

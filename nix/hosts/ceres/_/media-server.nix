@@ -1,7 +1,4 @@
-{
-  config,
-  ...
-}: let
+{config, ...}: let
   dirs = config.vars.dataDirs;
 in {
   sops.secrets.vpn_proxy_conf = {

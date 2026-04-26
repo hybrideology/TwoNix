@@ -1,7 +1,7 @@
 {inputs, ...}: {
   flake.homeModules.earth = {
     imports = [
-      inputs.stylix.homeModules.stylix
+      inputs.noctalia-shell.homeModules.default
       ../_/earth
     ];
   };

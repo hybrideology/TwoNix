@@ -1,7 +1,4 @@
-{
-  config,
-  ...
-}: let
+{config, ...}: let
   dirs = config.vars.dataDirs;
   port = builtins.elemAt config.services.matrix-tuwunel.settings.global.port 0;
   domain = "jortpavilion.org";

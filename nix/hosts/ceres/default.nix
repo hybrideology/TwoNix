@@ -19,8 +19,10 @@
           ceres-mautrix-discord-secrets.sopsFile = inputs.secrets.ceres-mautrix-discord-secrets;
         };
       }
-      {home-manager.users.will.imports = [config.flake.homeModules.desolate];
-       home-manager.users.will.home.stateVersion = "25.11";}
+      {
+        home-manager.users.will.imports = [config.flake.homeModules.desolate];
+        home-manager.users.will.home.stateVersion = "25.11";
+      }
       ./_/configuration.nix
     ];
   };

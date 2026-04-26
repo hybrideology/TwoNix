@@ -1,7 +1,4 @@
-{
-  config,
-  ...
-}: {
+{config, ...}: {
   users.groups.ddns-updater-secrets = {};
   sops.secrets.ceres-ddns-updater = {
     path = "/etc/ddns-updater/config.json";

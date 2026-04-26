@@ -1,6 +1,6 @@
 _: {
   imports = [
-    ./stylix
+    ./files.nix
     ../hyprland
     ../required
     ../btop.nix
@@ -13,11 +13,10 @@ _: {
     ../kitty.nix
     ../libresprite.nix
     ../librewolf.nix
-
-    ../mako.nix
     ../mpv.nix
     ../nh.nix
     ../nixos-anywhere.nix
+    ./noctalia.nix
     ../rnote.nix
     ../ssh.nix
     ../starship.nix

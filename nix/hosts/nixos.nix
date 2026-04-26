@@ -26,13 +26,15 @@
   };
 
   config.flake = {
-    nixosConfigurations = lib.mapAttrs (
-      _: cfg:
-        inputs.${cfg.nixpkgsInput}.lib.nixosSystem {
-          inherit (cfg) system;
-          modules = [cfg.module];
-        }
-    ) config.configurations.nixos;
+    nixosConfigurations =
+      lib.mapAttrs (
+        _: cfg:
+          inputs.${cfg.nixpkgsInput}.lib.nixosSystem {
+            inherit (cfg) system;
+            modules = [cfg.module];
+          }
+      )
+      config.configurations.nixos;
 
     checks = lib.mkMerge (
       lib.mapAttrsToList (
@@ -41,7 +43,8 @@
             "configurations/nixos/${name}" = nixos.config.system.build.toplevel;
           };
         }
-      ) config.flake.nixosConfigurations
+      )
+      config.flake.nixosConfigurations
     );
   };
 }

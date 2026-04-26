@@ -1,7 +1,4 @@
-{
-  config,
-  ...
-}: let
+{config, ...}: let
   pDir = config.vars.persistence.dir;
   plaDir = config.vars.persistence.laDir;
   keyDir = "/keys";

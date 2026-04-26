@@ -51,6 +51,5 @@ _: {
       };
     };
   };
-  stylix.targets.librewolf.profileNames = ["default"];
   vars.persistence.dirs = [".librewolf"];
 }
