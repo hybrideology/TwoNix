@@ -1,21 +1,23 @@
 {
   lib,
   config,
+  pkgs,
   ...
 }: {
+  home.packages = [
+    pkgs.brightnessctl
+    pkgs.playerctl
+  ];
   wayland.windowManager.hyprland.settings = {
     "$mainMod" = "super";
 
     bind = [
       "$mainMod, c, killactive,"
       "$mainMod, escape, exit,"
-      "$mainMod, u, exec, loginctl lock-session"
       "$mainMod, f, fullscreen, 0"
       "$mainMod, s, togglefloating"
       "$mainMod alt, P, exec, uwsm app -- hyprpicker -ar"
       "$mainMod, P, exec, uwsm app -- ${lib.getExe config.programs.hyprshot.package} -m region -z --raw | satty -f -"
-      "$mainMod, D, exec, uwsm app -- ${lib.getExe config.programs.fuzzel.package}"
-
       "$mainMod, left, workspace, r-1"
       "$mainMod, right, workspace, r+1"
       "$mainMod, down, togglespecialworkspace, drawer"
@@ -57,10 +59,13 @@
     bindel = [
       ", XF86AudioRaiseVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"
       ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
+      ", XF86MonBrightnessUp, exec, brightnessctl set 5%+"
+      ", XF86MonBrightnessDown, exec, brightnessctl set 5%-"
     ];
 
     bindl = [
       ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+      ", XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
       ", XF86AudioPlay, exec, playerctl play-pause"
       ", XF86AudioPrev, exec, playerctl previous"
       ", XF86AudioNext, exec, playerctl next"

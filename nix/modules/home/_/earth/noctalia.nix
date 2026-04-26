@@ -4,13 +4,25 @@
   pkgs,
   ...
 }: {
+  vars.persistence.dirs = [
+    ".config/noctalia"
+    ".local/share/noctalia"
+  ];
+
   programs.noctalia-shell = {
     enable = true;
-    settings = lib.mkDefault (builtins.fromJSON (builtins.readFile ./noctalia-settings.json));
+    settings = lib.mkDefault ./noctalia-settings.json;
   };
-  wayland.windowManager.hyprland.settings.exec-once = [
-    "uwsm app -- ${lib.getExe config.programs.noctalia-shell.package}"
-  ];
+
+  wayland.windowManager.hyprland.settings = {
+    exec-once = [
+      "uwsm app -- ${lib.getExe config.programs.noctalia-shell.package}"
+    ];
+    bind = [
+      "$mainMod, D, exec, qs -c noctalia-shell ipc call launcher toggle"
+      "$mainMod, u, exec, qs -c noctalia-shell ipc call lockScreen lock"
+    ];
+  };
 
   home = {
     pointerCursor = {

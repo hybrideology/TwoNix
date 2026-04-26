@@ -3,10 +3,7 @@
   pkgs,
   ...
 }: {
-  home.packages = [
-    pkgs.nil
-    pkgs.nixd
-  ];
+  home.packages = [pkgs.nixd];
   programs.helix = {
     enable = true;
     defaultEditor = true;

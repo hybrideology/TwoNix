@@ -8,6 +8,11 @@ _: {
       "Pictures"
       "Videos"
     ];
-    dirs = ["git"];
+    dirs = [
+      ".config/dconf"
+      ".local/state/wireplumber"
+      "git"
+    ];
+    files = [".config/mimeapps.list"];
   };
 }

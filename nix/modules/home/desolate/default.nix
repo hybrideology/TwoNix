@@ -1,3 +1,3 @@
 _: {
-  flake.homeModules.desolate = import ../_/desolate;
+  flake.homeModules.desolate = {imports = [../_/desolate];};
 }

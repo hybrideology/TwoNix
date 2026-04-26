@@ -4,6 +4,8 @@ _: {
       enable = true;
       withUWSM = true;
     };
-    bash.interactiveShellInit = "uwsm start default";
+    bash.loginShellInit = ''
+      [ "$(tty)" = "/dev/tty1" ] && exec uwsm start default
+    '';
   };
 }

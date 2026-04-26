@@ -5,7 +5,7 @@ _: {
       BlockAboutConfig = true;
       BlockAboutProfiles = true;
       DisableAppUpdate = true;
-      DisableSetDesktopBackround = true;
+      DisableSetDesktopBackground = true;
       DisableSystemAddonUpdate = true;
       ExtensionSettings = {
         "{446900e4-71c2-419f-a6a7-df9c091e268b}" = {
