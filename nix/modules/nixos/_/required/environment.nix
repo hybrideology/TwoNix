@@ -1,5 +1,4 @@
-{inputs, ...}: {
-  imports = [inputs.impermanence.nixosModules.impermanence];
+_: {
   environment.defaultPackages = [];
   security.sudo = {
     wheelNeedsPassword = true;

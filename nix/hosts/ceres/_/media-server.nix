@@ -1,17 +1,14 @@
 {
   config,
-  inputs,
   ...
 }: let
   dirs = config.vars.dataDirs;
 in {
   sops.secrets.vpn_proxy_conf = {
-    sopsFile = inputs.secrets.ceres-vpn-proxy;
     mode = "440";
     format = "binary";
     owner = "root";
   };
-  imports = [inputs.nixarr.nixosModules.default];
   nixarr = {
     enable = true;
     stateDir = dirs.apps;

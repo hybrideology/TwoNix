@@ -1,10 +1,8 @@
 {
-  inputs,
   config,
   ...
 }: {
   sops.secrets.personal_vpn_key = {
-    sopsFile = inputs.secrets.andromeda;
     mode = "440";
     owner = config.users.users.systemd-network.name;
     inherit (config.users.users.systemd-network) group;

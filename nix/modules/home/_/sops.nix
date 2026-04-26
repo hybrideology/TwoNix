@@ -1,9 +1,4 @@
-{
-  inputs,
-  pkgs,
-  ...
-}: {
-  imports = [inputs.sops-nix.homeManagerModules.sops];
+{pkgs, ...}: {
   home.packages = [pkgs.sops];
   vars.persistence.dirs = [
     {

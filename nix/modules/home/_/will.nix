@@ -1,15 +1,10 @@
-{
-  inputs,
-  config,
-  ...
-}: {
+{config, ...}: {
   imports = [./sops.nix];
   home = {
     username = "will";
     homeDirectory = "/home/will";
   };
   sops = {
-    defaultSopsFile = inputs.secrets.will;
     age.keyFile = "${config.xdg.configHome}/sops/age/keys.txt";
     secrets."ssh_key".path = "${config.home.homeDirectory}/.ssh/${config.home.username}";
   };

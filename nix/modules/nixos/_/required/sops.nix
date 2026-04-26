@@ -1,12 +1,10 @@
 {
-  inputs,
   config,
   lib,
   ...
 }: let
   cfg = config.modules.sops;
 in {
-  imports = [inputs.sops-nix.nixosModules.sops];
   options.modules.sops = {
     dir = lib.mkOption {
       default = "/var/lib/sops";
@@ -19,7 +17,6 @@ in {
   };
   config = {
     sops = {
-      defaultSopsFile = inputs.secrets.secrets;
       age.keyFile = "${config.vars.persistence.dir}${cfg.dir}${cfg.keyFile}";
       age.sshKeyPaths = []; # don't import any ssh keys
     };

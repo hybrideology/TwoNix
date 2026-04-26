@@ -1,11 +1,4 @@
-{
-  inputs,
-  pkgs,
-  ...
-}: {
-  imports = [
-    inputs.stylix.homeModules.stylix
-  ];
+{pkgs, ...}: {
   stylix = {
     enable = true;
     image = ./earth.jpg;

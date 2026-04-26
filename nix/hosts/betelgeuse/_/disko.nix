@@ -1,12 +1,10 @@
 {
-  inputs,
   config,
   ...
 }: let
   pdir = config.vars.persistence.dir;
   pladir = config.vars.persistence.laDir;
 in {
-  imports = [inputs.disko.nixosModules.disko];
   vars.persistence.enable = true;
 
   disko.devices = {

@@ -1,5 +1,4 @@
 {
-  inputs,
   config,
   ...
 }: let
@@ -7,7 +6,6 @@
   plaDir = config.vars.persistence.laDir;
   keyDir = "/keys";
 in {
-  imports = [inputs.disko.nixosModules.disko];
   vars.persistence.enable = true;
 
   disko.devices = {

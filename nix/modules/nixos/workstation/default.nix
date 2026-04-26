@@ -1,15 +1,7 @@
-_: {
-  flake.modules.nixos.workstation = _: {
+{config, ...}: {
+  flake.modules.nixos.workstation = {
     imports = [
-      ../_/required
-      ../_/auto-upgrade.nix
-      ../_/clean-store.nix
-      ../_/fail2ban.nix
-      ../_/home-manager.nix
-      ../_/openssh.nix
-      ../_/persistence.nix
-      ../_/snowflake.nix
-      ../_/systemd-boot.nix
+      config.flake.modules.nixos.base
       ../_/bluetooth.nix
       ../_/hyprland.nix
       ../_/pipewire.nix

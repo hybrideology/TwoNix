@@ -3,17 +3,18 @@
   config,
   ...
 }: {
-  flake.nixosConfigurations.andromeda = inputs.nixpkgs.lib.nixosSystem {
-    specialArgs = {
-      inherit inputs;
-    };
-    modules = [
+  flake.modules.nixos.andromeda = {
+    imports = [
+      inputs.nixos-hardware.nixosModules.common-cpu-amd-pstate
       config.flake.modules.nixos.workstation
-      {
-        home-manager.extraSpecialArgs = {inherit inputs;};
-        home-manager.users.will = import ./_/users/will.nix;
-      }
+      config.flake.modules.nixos.will
+      config.flake.modules.nixos.nvidia
+      {sops.secrets.personal_vpn_key.sopsFile = inputs.secrets.andromeda;}
+      {home-manager.users.will.imports = [config.flake.homeModules.earth];
+       home-manager.users.will.home.stateVersion = "25.11";}
       ./_/configuration.nix
     ];
   };
+
+  configurations.nixos.andromeda.module = config.flake.modules.nixos.andromeda;
 }

@@ -1,6 +1,5 @@
 {
   config,
-  inputs,
   ...
 }: let
   dirs = config.vars.dataDirs;
@@ -11,23 +10,19 @@
 in {
   sops.secrets = {
     ceres-acme-secrets = {
-      sopsFile = inputs.secrets.ceres-acme-secrets;
       mode = "440";
       inherit (config.users.users.acme) group;
       format = "binary";
     };
     coturn_static_secret = {
-      sopsFile = inputs.secrets.ceres;
       mode = "440";
       inherit (config.users.users.turnserver) group;
     };
     matrix_registration_token = {
-      sopsFile = inputs.secrets.ceres;
       mode = "440";
       inherit (config.services.matrix-tuwunel) group;
     };
     ceres-mautrix-discord-secrets = {
-      sopsFile = inputs.secrets.ceres-mautrix-discord-secrets;
       mode = "440";
       inherit (config.users.users.mautrix-discord) group;
       format = "binary";

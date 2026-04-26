@@ -1,5 +1,4 @@
 {
-  inputs,
   config,
   lib,
   ...
@@ -13,7 +12,6 @@
   keyDir = "/keys";
   keyUUID = "6A71-D31C";
 in {
-  imports = [inputs.disko.nixosModules.disko];
   vars.persistence.enable = true;
 
   disko.devices = {

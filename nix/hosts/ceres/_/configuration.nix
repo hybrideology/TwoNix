@@ -5,7 +5,6 @@
     ./hardware.nix
     ./matrix-server.nix
     ./media-server.nix
-    ./users.nix
     ./vars.nix
     ./vpn.nix
   ];

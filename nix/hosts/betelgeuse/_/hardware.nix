@@ -1,8 +1,4 @@
-{inputs, ...}: {
-  imports = [
-    inputs.nixos-hardware.nixosModules.common-gpu-intel
-    inputs.self.modules.nixos.nvidia
-  ];
+_: {
   services.xserver.videoDrivers = [
     "modesetting"
   ];
