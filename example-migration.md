@@ -9,7 +9,7 @@
 nixos-anywhere
   -f .#<hostname>
   --target-host root@<host-ip>
-  --generate-hardware-config nixos-facter ./nix/hosts/<hostname>/facter.json
+  --generate-hardware-config nixos-facter ./nix/<hostname>/_/facter.json
   --extra-files $temp
   --disk-encryption-keys /mnt/usb/key /mnt/usb/key
   --chown /nix/persist/home/will 1000:100
