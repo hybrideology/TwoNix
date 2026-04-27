@@ -1,7 +1,12 @@
-{config, ...}: let
+{
+  inputs,
+  config,
+  ...
+}: let
   dirs = config.vars.dataDirs;
 in {
   sops.secrets.vpn_proxy_conf = {
+    sopsFile = inputs.secrets.ceres-vpn-proxy;
     mode = "440";
     format = "binary";
     owner = "root";

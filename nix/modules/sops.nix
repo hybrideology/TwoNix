@@ -12,10 +12,12 @@
       dir = lib.mkOption {
         default = "/var/lib/sops";
         type = lib.types.str;
+        description = "Directory where sops persists runtime secret state.";
       };
       keyFile = lib.mkOption {
         default = "/age/keys.txt";
         type = lib.types.str;
+        description = "Path to the age key file, relative to vars.sops.dir.";
       };
     };
 
@@ -26,7 +28,7 @@
         age.sshKeyPaths = []; # don't import any ssh keys
       };
       users.mutableUsers = false; # sops manages passwords
-      environment.persistence.${config.vars.persistence.dir}.directories = [config.vars.sops.dir];
+      environment.persistence.${config.vars.persistence.dir}.directories = [cfg.dir];
     };
   };
 }

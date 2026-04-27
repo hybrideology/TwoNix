@@ -4,37 +4,32 @@ _: {
     lib,
     ...
   }: {
-    options.vars.wireguard = {
-      clientIp = lib.mkOption {
-        type = lib.types.nullOr lib.types.str;
-        default = null;
-        description = "WireGuard client IP address (e.g. 10.0.0.2)";
-      };
-      serverPublicKey = lib.mkOption {
-        type = lib.types.nullOr lib.types.str;
-        default = null;
-        description = "WireGuard server public key.";
-      };
-      endpoint = lib.mkOption {
-        type = lib.types.nullOr lib.types.str;
-        default = null;
-        description = "WireGuard server endpoint (e.g. host:51820).";
-      };
+    options.vars.wireguard = lib.mkOption {
+      default = null;
+      description = "WireGuard client configuration. Set to null to disable.";
+      type = lib.types.nullOr (lib.types.submodule {
+        options = {
+          clientIp = lib.mkOption {
+            type = lib.types.str;
+            description = "WireGuard client IP address (e.g. 10.0.0.2)";
+          };
+          serverPublicKey = lib.mkOption {
+            type = lib.types.str;
+            description = "WireGuard server public key.";
+          };
+          endpoint = lib.mkOption {
+            type = lib.types.str;
+            description = "WireGuard server endpoint (e.g. host:51820).";
+          };
+        };
+      });
     };
 
     config = {
       assertions = [
         {
-          assertion = config.vars.wireguard.clientIp != null;
-          message = "wireguard-client requires vars.wireguard.clientIp to be set.";
-        }
-        {
-          assertion = config.vars.wireguard.serverPublicKey != null;
-          message = "wireguard-client requires vars.wireguard.serverPublicKey to be set.";
-        }
-        {
-          assertion = config.vars.wireguard.endpoint != null;
-          message = "wireguard-client requires vars.wireguard.endpoint to be set.";
+          assertion = config.vars.wireguard != null;
+          message = "wireguard-client requires vars.wireguard to be set.";
         }
       ];
       sops.secrets.personal_vpn_key = {

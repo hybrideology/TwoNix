@@ -1,6 +1,11 @@
-{config, ...}: {
+{
+  inputs,
+  config,
+  ...
+}: {
   users.groups.ddns-updater-secrets = {};
   sops.secrets.ceres-ddns-updater = {
+    sopsFile = inputs.secrets.ceres-ddns-updater;
     path = "/etc/ddns-updater/config.json";
     mode = "440";
     group = config.users.groups.ddns-updater-secrets.name;

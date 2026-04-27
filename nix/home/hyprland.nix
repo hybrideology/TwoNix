@@ -20,10 +20,12 @@ _: {
       monitors = lib.mkOption {
         default = [];
         type = lib.types.listOf lib.types.str;
+        description = "Host-specific Hyprland monitor rules appended to the default catch-all rule.";
       };
       workspaces = lib.mkOption {
         default = [];
         type = lib.types.listOf lib.types.str;
+        description = "Host-specific Hyprland workspace assignment rules.";
       };
     };
 

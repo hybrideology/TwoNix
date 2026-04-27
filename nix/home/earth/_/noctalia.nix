@@ -4,11 +4,9 @@
   pkgs,
   ...
 }: {
-  vars.persistence.dirs = [
-    ".config/noctalia"
-    ".local/share/noctalia"
+  vars.persistence.files = [
+    ".cache/noctalia/wallpapers.json"
   ];
-
   programs.noctalia-shell = {
     enable = true;
     settings = lib.mkDefault ./noctalia-settings.json;
