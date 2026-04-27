@@ -4,10 +4,22 @@ _: {
     lib,
     ...
   }: {
-    options.vars.wireguard.clientIp = lib.mkOption {
-      type = lib.types.nullOr lib.types.str;
-      default = null;
-      description = "WireGuard client IP address (e.g. 10.0.0.2)";
+    options.vars.wireguard = {
+      clientIp = lib.mkOption {
+        type = lib.types.nullOr lib.types.str;
+        default = null;
+        description = "WireGuard client IP address (e.g. 10.0.0.2)";
+      };
+      serverPublicKey = lib.mkOption {
+        type = lib.types.nullOr lib.types.str;
+        default = null;
+        description = "WireGuard server public key.";
+      };
+      endpoint = lib.mkOption {
+        type = lib.types.nullOr lib.types.str;
+        default = null;
+        description = "WireGuard server endpoint (e.g. host:51820).";
+      };
     };
 
     config = {
@@ -15,6 +27,14 @@ _: {
         {
           assertion = config.vars.wireguard.clientIp != null;
           message = "wireguard-client requires vars.wireguard.clientIp to be set.";
+        }
+        {
+          assertion = config.vars.wireguard.serverPublicKey != null;
+          message = "wireguard-client requires vars.wireguard.serverPublicKey to be set.";
+        }
+        {
+          assertion = config.vars.wireguard.endpoint != null;
+          message = "wireguard-client requires vars.wireguard.endpoint to be set.";
         }
       ];
       sops.secrets.personal_vpn_key = {
@@ -41,9 +61,9 @@ _: {
           };
           wireguardPeers = [
             {
-              PublicKey = "QWwLEg0SjMm0ZNyb8iPa9V/29/VnHLKt9ZpVUaiE7j0=";
+              PublicKey = config.vars.wireguard.serverPublicKey;
               AllowedIPs = ["10.0.0.0/24"];
-              Endpoint = "465241395.xyz:51820";
+              Endpoint = config.vars.wireguard.endpoint;
             }
           ];
         };

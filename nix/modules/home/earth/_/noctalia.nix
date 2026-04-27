@@ -15,12 +15,13 @@
   };
 
   wayland.windowManager.hyprland.settings = {
+    "$noctaliaIpc" = "${lib.getExe config.programs.noctalia-shell.package} ipc call";
     exec-once = [
       "uwsm app -- ${lib.getExe config.programs.noctalia-shell.package}"
     ];
     bind = [
-      "$mainMod, D, exec, qs -c noctalia-shell ipc call launcher toggle"
-      "$mainMod, u, exec, qs -c noctalia-shell ipc call lockScreen lock"
+      "$mainMod, D, exec, $noctaliaIpc launcher toggle"
+      "$mainMod, u, exec, $noctaliaIpc lockScreen lock"
     ];
   };
 

@@ -9,7 +9,6 @@
       config.flake.modules.nixos.groups
       config.flake.modules.nixos.nix
       config.flake.modules.nixos.nixpkgs
-      config.flake.modules.nixos.sops-defaults
       config.flake.modules.nixos.vars
       config.flake.modules.nixos.auto-upgrade
       config.flake.modules.nixos.clean-store

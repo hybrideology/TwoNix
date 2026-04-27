@@ -34,5 +34,6 @@
       config.flake.homeModules.yazi
       config.flake.homeModules.zsh
     ];
+    programs.kitty.settings.shell = "zsh";
   };
 }

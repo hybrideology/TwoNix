@@ -1,0 +1,26 @@
+Directions for improvement
+==========================
+
+1. Add Secure Boot with lanzaboote on the workstation machines.
+   - Biggest remaining workstation security improvement.
+
+2. Add a push-based deployment workflow for ceres.
+   - Evaluate colmena or deploy-rs so server changes can be applied in a controlled way instead of relying only on pull-based upgrades.
+
+3. Add NixOS VM tests.
+   - Current checks prove evaluation and builds; VM tests would prove service behavior.
+
+4. Add ZFS maintenance automation.
+   - Enable regular scrub scheduling and consider snapshot automation, especially on ceres.
+
+5. Add CI for flake validation.
+   - Run nix flake check in GitHub Actions so regressions are caught before they land on machines.
+
+Worth considering, but lower priority
+====================================
+
+6. Add systemd initrd on andromeda and betelgeuse.
+   - Ceres already uses it; extending it to the workstations would make boot handling more consistent.
+
+7. Add basic observability on ceres.
+   - Consider node and ZFS exporters, or another lightweight monitoring approach, for the more complex service host.

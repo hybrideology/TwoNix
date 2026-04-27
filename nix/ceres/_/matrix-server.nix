@@ -190,7 +190,7 @@ in {
           encryption = {
             allow = true;
             default = true;
-            plaintext_mentions = true;
+            plaintext_mentions = false;
           };
           permissions = {
             "*" = "relay";

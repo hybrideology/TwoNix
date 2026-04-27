@@ -11,7 +11,6 @@ _: {
         [[ "$TERM" == "xterm-kitty" ]] && alias ssh="TERM=xterm-256color ssh"
       '';
     };
-    programs.kitty.settings.shell = "zsh";
     vars.persistence.files = [".zsh_history"];
   };
 }
