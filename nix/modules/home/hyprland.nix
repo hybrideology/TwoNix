@@ -4,7 +4,18 @@ _: {
     config,
     pkgs,
     ...
-  }: {
+  }: let
+    mkDirectionalBinds = mods: commands: [
+      "${mods}, left, ${commands.left}"
+      "${mods}, h, ${commands.left}"
+      "${mods}, down, ${commands.down}"
+      "${mods}, j, ${commands.down}"
+      "${mods}, up, ${commands.up}"
+      "${mods}, k, ${commands.up}"
+      "${mods}, right, ${commands.right}"
+      "${mods}, l, ${commands.right}"
+    ];
+  in {
     options.vars.hyprland = {
       monitors = lib.mkOption {
         default = [];
@@ -22,65 +33,60 @@ _: {
         systemd.enable = false; # disable systemd integration to use UWSM
         settings = {
           "$mainMod" = "super";
+          "$screenPicker" = "uwsm app -- ${lib.getExe pkgs.hyprpicker} -ar";
+          "$regionShot" = "uwsm app -- ${lib.getExe config.programs.hyprshot.package} -m region -z --raw | ${lib.getExe pkgs.satty} -f -";
+          "$volumeUp" = "${lib.getExe' pkgs.wireplumber "wpctl"} set-volume @DEFAULT_AUDIO_SINK@ 5%+";
+          "$volumeDown" = "${lib.getExe' pkgs.wireplumber "wpctl"} set-volume @DEFAULT_AUDIO_SINK@ 5%-";
+          "$volumeMute" = "${lib.getExe' pkgs.wireplumber "wpctl"} set-mute @DEFAULT_AUDIO_SINK@ toggle";
+          "$micMute" = "${lib.getExe' pkgs.wireplumber "wpctl"} set-mute @DEFAULT_AUDIO_SOURCE@ toggle";
+          "$brightnessUp" = "${lib.getExe pkgs.brightnessctl} set 5%+";
+          "$brightnessDown" = "${lib.getExe pkgs.brightnessctl} set 5%-";
+          "$playerPlayPause" = "${lib.getExe pkgs.playerctl} play-pause";
+          "$playerPrev" = "${lib.getExe pkgs.playerctl} previous";
+          "$playerNext" = "${lib.getExe pkgs.playerctl} next";
 
-          bind = [
-            "$mainMod, c, killactive,"
-            "$mainMod, escape, exit,"
-            "$mainMod, f, fullscreen, 0"
-            "$mainMod, s, togglefloating"
-            "$mainMod alt, P, exec, uwsm app -- hyprpicker -ar"
-            "$mainMod, P, exec, uwsm app -- ${lib.getExe config.programs.hyprshot.package} -m region -z --raw | satty -f -"
-            "$mainMod, left, workspace, r-1"
-            "$mainMod, right, workspace, r+1"
-            "$mainMod, down, togglespecialworkspace, drawer"
-            "$mainMod, up, togglespecialworkspace, drawer"
-            "$mainMod shift, left, movetoworkspace, r-1"
-            "$mainMod shift, right, movetoworkspace, r+1"
-            "$mainMod shift, down, movetoworkspace, r+0"
-            "$mainMod shift, up, movetoworkspace, special:drawer"
-            "$mainMod alt, left, movefocus, l"
-            "$mainMod alt, right, movefocus, r"
-            "$mainMod alt, down, movefocus, d"
-            "$mainMod alt, up, movefocus, u"
-            "$mainMod shift alt, left, movewindow, l"
-            "$mainMod shift alt, right, movewindow, r"
-            "$mainMod shift alt, down, movewindow, d"
-            "$mainMod shift alt, up, movewindow, u"
-
-            "$mainMod, h, workspace, r-1"
-            "$mainMod, l, workspace, r+1"
-            "$mainMod, j, togglespecialworkspace, drawer"
-            "$mainMod, k, togglespecialworkspace, drawer"
-            "$mainMod shift, h, movetoworkspace, r-1"
-            "$mainMod shift, l, movetoworkspace, r+1"
-            "$mainMod shift, j, movetoworkspace, r+0"
-            "$mainMod shift, k, movetoworkspace, special:drawer"
-            "$mainMod alt, h, movefocus, l"
-            "$mainMod alt, l, movefocus, r"
-            "$mainMod alt, j, movefocus, d"
-            "$mainMod alt, k, movefocus, u"
-            "$mainMod shift alt, h, movewindow, l"
-            "$mainMod shift alt, l, movewindow, r"
-            "$mainMod shift alt, j, movewindow, d"
-            "$mainMod shift alt, k, movewindow, u"
-
-            "$mainMod, m, focusmonitor, +1"
-            "$mainMod shift, m, movewindow, mon:+1"
-          ];
+          bind =
+            [
+              "$mainMod, c, killactive,"
+              "$mainMod, escape, exit,"
+              "$mainMod, f, layoutmsg, fit"
+              "$mainMod shift, f, fullscreen, 0"
+              "$mainMod, s, togglefloating"
+              "$mainMod shift, P, exec, $screenPicker"
+              "$mainMod, P, exec, $regionShot"
+            ]
+            ++ (mkDirectionalBinds "$mainMod" {
+              left = "movefocus, l";
+              down = "movefocus, d";
+              up = "movefocus, u";
+              right = "movefocus, r";
+            })
+            ++ (mkDirectionalBinds "$mainMod shift" {
+              left = "movewindow, l";
+              down = "movewindow, d";
+              up = "movewindow, u";
+              right = "movewindow, r";
+            })
+            ++ [
+              "$mainMod ctrl, left, layoutmsg, colresize -0.1"
+              "$mainMod ctrl, h, layoutmsg, colresize -0.1"
+              "$mainMod ctrl, right, layoutmsg, colresize +0.1"
+              "$mainMod ctrl, l, layoutmsg, colresize +0.1"
+            ];
 
           bindel = [
-            ", XF86AudioRaiseVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"
-            ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
-            ", XF86MonBrightnessUp, exec, brightnessctl set 5%+"
-            ", XF86MonBrightnessDown, exec, brightnessctl set 5%-"
+            ", XF86AudioRaiseVolume, exec, $volumeUp"
+            ", XF86AudioLowerVolume, exec, $volumeDown"
+            ", XF86MonBrightnessUp, exec, $brightnessUp"
+            ", XF86MonBrightnessDown, exec, $brightnessDown"
           ];
 
           bindl = [
-            ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
-            ", XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
-            ", XF86AudioPlay, exec, playerctl play-pause"
-            ", XF86AudioPrev, exec, playerctl previous"
-            ", XF86AudioNext, exec, playerctl next"
+            ", XF86AudioMute, exec, $volumeMute"
+            ", XF86AudioMicMute, exec, $micMute"
+            ", XF86AudioPlay, exec, $playerPlayPause"
+            ", XF86AudioPrev, exec, $playerPrev"
+            ", XF86AudioNext, exec, $playerNext"
           ];
 
           bindm = [
@@ -101,6 +107,7 @@ _: {
             border_size = "2";
             gaps_in = "5";
             gaps_out = "5";
+            layout = "scrolling";
             snap.enabled = true;
           };
 
@@ -139,6 +146,7 @@ _: {
         pkgs.brightnessctl
         pkgs.playerctl
         pkgs.hyprpicker
+        pkgs.wireplumber
         pkgs.wl-clipboard
         pkgs.satty
       ];
