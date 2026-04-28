@@ -14,6 +14,7 @@ _: {
           directories =
             [
               "/var/lib/systemd"
+              "/var/lib/lastlog"
               "/var/lib/nixos"
               "/var/log"
               {
@@ -21,6 +22,7 @@ _: {
                 mode = "700";
               }
             ]
+            ++ ["/var/lib/logrotate.status"]
             ++ lib.optional config.networking.dhcpcd.enable "/var/lib/dhcpcd"
             ++ lib.optional config.security.sudo.enable "/var/db/sudo"
             ++ lib.optional config.security.acme.acceptTerms "/var/lib/acme";
