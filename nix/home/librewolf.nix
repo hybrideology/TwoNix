@@ -18,7 +18,6 @@ _: {
         SearchEngines.Default = "DuckDuckGo Lite";
       };
       profiles.default = {
-        isDefault = true;
         bookmarks = {
           force = true;
           settings = [

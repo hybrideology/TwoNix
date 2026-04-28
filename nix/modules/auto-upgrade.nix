@@ -5,7 +5,6 @@ _: {
       flake = "github:hybrideology/TwoNix";
       dates = "04:00";
       randomizedDelaySec = "45min";
-      persistent = true;
       allowReboot = true;
       rebootWindow = {
         lower = "02:00";

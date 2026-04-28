@@ -250,7 +250,6 @@ in {
       kernelModules = ["usb_storage" "usbcore" "uas"];
       supportedFilesystems.vfat = true;
       systemd = {
-        enable = true;
         mounts = let
           importServices = lib.map (pool: "zfs-import-${pool}.service") (lib.attrNames config.disko.devices.zpool);
         in [
