@@ -21,17 +21,16 @@ _: {
             type = lib.types.str;
             description = "WireGuard server endpoint (e.g. host:51820).";
           };
+          dnsIp = lib.mkOption {
+            default = "10.0.0.1";
+            type = lib.types.str;
+            description = "DNS server IP to use on the VPN interface.";
+          };
         };
       });
     };
 
-    config = {
-      assertions = [
-        {
-          assertion = config.vars.wireguard != null;
-          message = "wireguard-client requires vars.wireguard to be set.";
-        }
-      ];
+    config = lib.mkIf (config.vars.wireguard != null) {
       sops.secrets.personal_vpn_key = {
         mode = "440";
         owner = config.users.users.systemd-network.name;
@@ -43,7 +42,7 @@ _: {
         networks."50-wg0" = {
           matchConfig.Name = "wg0";
           address = ["${config.vars.wireguard.clientIp}/24"];
-          dns = ["10.0.0.1"];
+          dns = [config.vars.wireguard.dnsIp];
         };
         netdevs."50-wg0" = {
           netdevConfig = {

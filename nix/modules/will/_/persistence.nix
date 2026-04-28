@@ -12,12 +12,6 @@
 in {
   environment.persistence = lib.mkMerge [
     {
-      ${cfg.laDir}.users.${username} = {
-        directories = lib.optionals config.programs.steam.enable [
-          ".local/share/Steam"
-          ".steam"
-        ];
-      };
       ${cfg.dir}.users.${username} = {
         files = lib.optional config.programs.bash.enable ".bash_history";
         directories =
@@ -25,14 +19,24 @@ in {
           ++ lib.optional (config.services.pipewire.enable && config.services.pipewire.pulse.enable) ".config/pulse";
       };
     }
+    {
+      ${cfg.laDir}.users.${username} = {
+        directories = lib.optionals config.programs.steam.enable [
+          ".local/share/Steam"
+          ".steam"
+        ];
+      };
+    }
+    (lib.mkIf hasHM {
+      ${cfg.dir}.users.${username} = {
+        inherit (hmCfg) files;
+        directories = hmCfg.dirs;
+      };
+    })
     (lib.mkIf hasHM {
       ${cfg.laDir}.users.${username} = {
         files = hmCfg.laFiles;
         directories = hmCfg.laDirs;
-      };
-      ${cfg.dir}.users.${username} = {
-        inherit (hmCfg) files;
-        directories = hmCfg.dirs;
       };
     })
   ];

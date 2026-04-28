@@ -16,8 +16,5 @@ _: {
         };
       extraConfig = "include ~/.config/kitty/themes/noctalia.conf";
     };
-    wayland.windowManager.hyprland.settings.bind = [
-      "$mainMod, Q, exec, uwsm app -- ${lib.getExe config.programs.kitty.package}"
-    ];
   };
 }

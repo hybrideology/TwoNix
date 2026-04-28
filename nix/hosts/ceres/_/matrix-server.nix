@@ -6,7 +6,7 @@
   dirs = config.vars.dataDirs;
   port = builtins.elemAt config.services.matrix-tuwunel.settings.global.port 0;
   domain = "jortpavilion.org";
-  turn-domain = "turn.${domain}";
+  turnDomain = "turn.${domain}";
   # mrtc-domain = "matrix-rtc.${domain}";
 in {
   sops.secrets = {
@@ -51,7 +51,7 @@ in {
         dnsProvider = "cloudflare";
         environmentFile = config.sops.secrets.ceres-acme-secrets.path;
       };
-      ${turn-domain} = {
+      ${turnDomain} = {
         dnsProvider = "cloudflare";
         environmentFile = config.sops.secrets.ceres-acme-secrets.path;
         postRun = "systemctl restart coturn.service";
@@ -116,9 +116,9 @@ in {
       no-cli = true;
       use-auth-secret = true;
       static-auth-secret-file = config.sops.secrets.coturn_static_secret.path;
-      realm = turn-domain;
-      cert = "${config.security.acme.certs.${turn-domain}.directory}/full.pem";
-      pkey = "${config.security.acme.certs.${turn-domain}.directory}/key.pem";
+      realm = turnDomain;
+      cert = "${config.security.acme.certs.${turnDomain}.directory}/full.pem";
+      pkey = "${config.security.acme.certs.${turnDomain}.directory}/key.pem";
       extraConfig = ''
         no-multicast-peers
         no-loopback-peers

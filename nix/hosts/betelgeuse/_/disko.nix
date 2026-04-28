@@ -1,8 +1,8 @@
 {config, ...}: let
   pDir = config.vars.persistence.dir;
-  plaDir = config.vars.persistence.laDir;
 in {
   vars.persistence.enable = true;
+  vars.persistence.laDir = config.vars.persistence.dir;
 
   disko.devices = {
     nodev = {
@@ -63,18 +63,16 @@ in {
             type = "zfs_fs";
             mountpoint = pDir;
           };
-          persist-la = {
-            type = "zfs_fs";
-            mountpoint = plaDir;
-          };
         };
       };
     };
   };
-  fileSystems = {
-    ${pDir}.neededForBoot = true;
-    ${plaDir}.neededForBoot = true;
-  };
-  vars.persistence.dirs = ["/tmp"]; # low memory
+  fileSystems.${pDir}.neededForBoot = true;
+  vars.persistence.dirs = [
+    {
+      directory = "/tmp";
+      mode = "1777";
+    }
+  ]; # low memory
   boot.tmp.cleanOnBoot = true;
 }

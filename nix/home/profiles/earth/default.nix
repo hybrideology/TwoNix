@@ -12,7 +12,7 @@
       config.flake.homeModules.element-desktop
       config.flake.homeModules.gimp
       config.flake.homeModules.godot
-      config.flake.homeModules.homeDirs
+      config.flake.homeModules.home-dirs
       config.flake.homeModules.hyprland
       config.flake.homeModules.kitty
       config.flake.homeModules.libresprite

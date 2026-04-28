@@ -74,7 +74,9 @@ _: {
               "$mainMod ctrl, h, layoutmsg, colresize -0.1"
               "$mainMod ctrl, right, layoutmsg, colresize +0.1"
               "$mainMod ctrl, l, layoutmsg, colresize +0.1"
-            ];
+            ]
+            ++ lib.optional config.programs.kitty.enable
+            "$mainMod, Q, exec, uwsm app -- ${lib.getExe config.programs.kitty.package}";
 
           bindel = [
             ", XF86AudioRaiseVolume, exec, $volumeUp"

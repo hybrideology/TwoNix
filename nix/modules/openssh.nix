@@ -6,10 +6,17 @@ _: {
   }: let
     cfg = config.vars.openssh;
   in {
-    options.vars.openssh.keyDir = lib.mkOption {
-      default = "/etc/ssh/ssh_host_keys";
-      type = lib.types.str;
-      description = "Directory where SSH host keys are stored and persisted.";
+    options.vars.openssh = {
+      keyDir = lib.mkOption {
+        default = "/etc/ssh/ssh_host_keys";
+        type = lib.types.str;
+        description = "Directory where SSH host keys are stored and persisted.";
+      };
+      allowedGroups = lib.mkOption {
+        default = ["wheel"];
+        type = lib.types.listOf lib.types.str;
+        description = "Groups permitted to connect via SSH.";
+      };
     };
     config = {
       services.openssh = {
@@ -18,6 +25,7 @@ _: {
           PermitRootLogin = "no";
           PasswordAuthentication = false;
           KbdInteractiveAuthentication = false;
+          AllowGroups = cfg.allowedGroups;
         };
         hostKeys = [
           {

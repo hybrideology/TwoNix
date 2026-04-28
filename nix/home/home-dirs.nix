@@ -1,5 +1,5 @@
 _: {
-  flake.homeModules.homeDirs = _: {
+  flake.homeModules.home-dirs = _: {
     vars.persistence = {
       laDirs = [
         "Documents"

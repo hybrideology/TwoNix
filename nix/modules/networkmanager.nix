@@ -6,7 +6,10 @@ _: {
     };
 
     vars.persistence.dirs = [
-      "/etc/NetworkManager/system-connections"
+      {
+        directory = "/etc/NetworkManager/system-connections";
+        mode = "0700";
+      }
       "/var/lib/NetworkManager"
     ];
   };

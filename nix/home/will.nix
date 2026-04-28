@@ -1,5 +1,9 @@
 flakeArgs @ {inputs, ...}: {
-  flake.homeModules.will = {config, ...}: {
+  flake.homeModules.will = {config, ...}: let
+    primaryEmail = "a7bcf569-bbfe-46d1-ac8b-4e8c9bc380ef@anonaddy.me";
+    githubEmail = "30223844+hybrideology@users.noreply.github.com";
+    userName = "hybrideology";
+  in {
     imports = [
       inputs.sops-nix.homeManagerModules.sops
       flakeArgs.config.flake.homeModules.sops
@@ -16,25 +20,25 @@ flakeArgs @ {inputs, ...}: {
       ssh.matchBlocks."*".identityFile = config.sops.secrets."ssh_key".path;
       git = {
         settings.user = {
-          email = "a7bcf569-bbfe-46d1-ac8b-4e8c9bc380ef@anonaddy.me";
-          name = "hybrideology";
+          email = primaryEmail;
+          name = userName;
         };
         includes = [
           {
             condition = "gitdir:~/git/github";
-            contents.user.email = "30223844+hybrideology@users.noreply.github.com";
+            contents.user.email = githubEmail;
           }
         ];
       };
       jujutsu.settings = {
         user = {
-          email = "a7bcf569-bbfe-46d1-ac8b-4e8c9bc380ef@anonaddy.me";
-          name = "hybrideology";
+          email = primaryEmail;
+          name = userName;
         };
         "--scope" = [
           {
             "--when".repositories = ["~/git/github"];
-            user.email = "30223844+hybrideology@users.noreply.github.com";
+            user.email = githubEmail;
           }
         ];
       };

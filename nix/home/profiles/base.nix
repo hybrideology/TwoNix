@@ -1,7 +1,7 @@
 {config, ...}: {
   flake.homeModules.base = {
     imports = [
-      config.flake.homeModules.vars
+      config.flake.homeModules.persistence
       config.flake.homeModules.btop
       config.flake.homeModules.helix
       config.flake.homeModules.jujutsu

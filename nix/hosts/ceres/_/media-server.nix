@@ -50,14 +50,14 @@ in {
       wgConf = config.sops.secrets.vpn_proxy_conf.path;
     };
   };
-  networking.firewall.allowedTCPPorts = [80 443];
+  networking.firewall.allowedTCPPorts = [443];
   services.nginx = {
     enable = true;
     virtualHosts = {
-      "audiobookshelf.ceres.vpn".locations."/".proxyPass = "http://127.0.0.1:${toString config.nixarr.audiobookshelf.port}";
-      "aurobrr.ceres.vpn".locations."/".proxyPass = "http://127.0.0.1:${toString config.nixarr.autobrr.settings.port}";
-      "jellyfin.ceres.vpn".locations."/".proxyPass = "http://127.0.0.1:8096"; # jellyfin port
-      "jellyseerr.ceres.vpn".locations."/".proxyPass = "http://127.0.0.1:5055"; # jellyseerr port
+      "audiobookshelf.${config.vars.vpn.domain}".locations."/".proxyPass = "http://127.0.0.1:${toString config.nixarr.audiobookshelf.port}";
+      "autobrr.${config.vars.vpn.domain}".locations."/".proxyPass = "http://127.0.0.1:${toString config.nixarr.autobrr.settings.port}";
+      "jellyfin.${config.vars.vpn.domain}".locations."/".proxyPass = "http://127.0.0.1:8096"; # jellyfin port
+      "jellyseerr.${config.vars.vpn.domain}".locations."/".proxyPass = "http://127.0.0.1:5055"; # jellyseerr port
     };
   };
 }

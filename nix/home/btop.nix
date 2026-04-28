@@ -12,7 +12,7 @@ _: {
         disks_filter =
           # exclude persistence bind mounts
           "exclude= "
-          + lib.concatStringsSep " " (lib.flatten (lib.mapAttrsToList (_: loc: (lib.map (e: e.dirPath) loc.directories)) osConfig.environment.persistence));
+          + lib.concatStringsSep " " (lib.flatten (lib.mapAttrsToList (store: loc: (lib.map (e: "${store}${e.directory}") loc.directories)) osConfig.environment.persistence));
       };
     };
   };
