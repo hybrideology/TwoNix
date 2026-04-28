@@ -47,11 +47,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1777349711,
-        "narHash": "sha256-PGKgo2dO6fK603QGI+DWXdKmS09pbJjjTxwRHdhkGZA=",
+        "lastModified": 1777383340,
+        "narHash": "sha256-hr0r50h+w3RktVoH39i/xDiJ96r59tH85KoFjkJpw9k=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "c1140540536d483e2730320100f6835d62c94fdf",
+        "rev": "dd6a8772d4faa9627fd342342c77b0afca59eba3",
         "type": "github"
       },
       "original": {
@@ -231,11 +231,11 @@
     },
     "secrets": {
       "locked": {
-        "lastModified": 1773303686,
-        "narHash": "sha256-5op4Uxv4+xVwCEJyi6EyOcS0egSox/pT/mcwC/MAHwU=",
+        "lastModified": 1777383211,
+        "narHash": "sha256-av76W1EWN+1yKBZYdCGwDd7xOiq9JneLu31udJvgaOI=",
         "ref": "refs/heads/main",
-        "rev": "497786308ead6d037523662a266a749dcc250c8d",
-        "revCount": 35,
+        "rev": "21b5789c9b012a19308f09c795fae1cc02ebea2b",
+        "revCount": 36,
         "type": "git",
         "url": "ssh://git@github.com/hybrideology/sops-secrets.git"
       },

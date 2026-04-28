@@ -76,4 +76,5 @@ in {
     ${plaDir}.neededForBoot = true;
   };
   environment.persistence.${pDir}.directories = ["/tmp"]; # low memory
+  boot.tmp.cleanOnBoot = true;
 }

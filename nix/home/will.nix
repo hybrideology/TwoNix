@@ -6,7 +6,6 @@ flakeArgs @ {inputs, ...}: {
     ];
     sops = {
       defaultSopsFile = inputs.secrets.will;
-      age.keyFile = "${config.xdg.configHome}/sops/age/keys.txt";
       secrets."ssh_key".path = "${config.home.homeDirectory}/.ssh/${config.home.username}";
     };
     home = {
@@ -17,7 +16,7 @@ flakeArgs @ {inputs, ...}: {
       ssh.matchBlocks."*".identityFile = config.sops.secrets."ssh_key".path;
       git = {
         settings.user = {
-          email = "git.panic703@simplelogin.com";
+          email = "a7bcf569-bbfe-46d1-ac8b-4e8c9bc380ef@anonaddy.me";
           name = "hybrideology";
         };
         includes = [
@@ -29,7 +28,7 @@ flakeArgs @ {inputs, ...}: {
       };
       jujutsu.settings = {
         user = {
-          email = "git.panic703@simplelogin.com";
+          email = "a7bcf569-bbfe-46d1-ac8b-4e8c9bc380ef@anonaddy.me";
           name = "hybrideology";
         };
         "--scope" = [
