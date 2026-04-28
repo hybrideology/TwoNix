@@ -1,11 +1,11 @@
 _: {
-  flake.modules.nixos.networkmanager = {config, ...}: {
+  flake.modules.nixos.networkmanager = _: {
     networking.networkmanager = {
       enable = true;
       unmanaged = ["wg0"];
     };
 
-    environment.persistence.${config.vars.persistence.dir}.directories = [
+    vars.persistence.dirs = [
       "/etc/NetworkManager/system-connections"
       "/var/lib/NetworkManager"
     ];

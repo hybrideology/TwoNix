@@ -1,7 +1,7 @@
 _: {
-  flake.modules.nixos.fail2ban = {config, ...}: {
+  flake.modules.nixos.fail2ban = _: {
     services.fail2ban.enable = true;
-    environment.persistence.${config.vars.persistence.dir}.directories = [
+    vars.persistence.dirs = [
       {
         directory = "/var/lib/fail2ban";
         mode = "0700";

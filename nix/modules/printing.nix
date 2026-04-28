@@ -1,5 +1,5 @@
 _: {
-  flake.modules.nixos.printing = {config, ...}: {
+  flake.modules.nixos.printing = _: {
     services = {
       avahi = {
         enable = true;
@@ -10,6 +10,6 @@ _: {
         cups-pdf.enable = true;
       };
     };
-    environment.persistence.${config.vars.persistence.dir}.directories = ["/var/lib/cups"];
+    vars.persistence.dirs = ["/var/lib/cups"];
   };
 }

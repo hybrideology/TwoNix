@@ -1,11 +1,11 @@
 _: {
-  flake.modules.nixos.i2pd = {config, ...}: {
+  flake.modules.nixos.i2pd = _: {
     services.i2pd = {
       enable = true;
       enableIPv6 = true;
       yggdrasil.enable = true;
       proto.sam.enable = true;
     };
-    environment.persistence.${config.vars.persistence.dir}.directories = ["/var/lib/i2pd/"];
+    vars.persistence.dirs = ["/var/lib/i2pd/"];
   };
 }

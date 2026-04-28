@@ -31,7 +31,7 @@ _: {
           }
         ];
       };
-      environment.persistence.${config.vars.persistence.dir}.directories = [
+      vars.persistence.dirs = [
         {
           directory = cfg.keyDir;
           mode = "0700";

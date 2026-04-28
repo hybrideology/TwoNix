@@ -1,6 +1,6 @@
 _: {
-  flake.modules.nixos.bluetooth = {config, ...}: {
+  flake.modules.nixos.bluetooth = _: {
     hardware.bluetooth.enable = true;
-    environment.persistence.${config.vars.persistence.dir}.directories = ["/var/lib/bluetooth"];
+    vars.persistence.dirs = ["/var/lib/bluetooth"];
   };
 }

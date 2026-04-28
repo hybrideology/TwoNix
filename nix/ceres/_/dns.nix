@@ -1,5 +1,5 @@
 {config, ...}: {
-  environment.persistence.${config.vars.persistence.dir}.directories = ["/var/lib/dnsmasq"];
+  vars.persistence.dirs = ["/var/lib/dnsmasq"];
   services.dnsmasq = {
     enable = true;
     resolveLocalQueries = false;

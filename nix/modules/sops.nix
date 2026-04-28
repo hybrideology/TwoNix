@@ -28,7 +28,7 @@
         age.sshKeyPaths = []; # don't import any ssh keys
       };
       users.mutableUsers = false; # sops manages passwords
-      environment.persistence.${config.vars.persistence.dir}.directories = [cfg.dir];
+      vars.persistence.dirs = [cfg.dir];
     };
   };
 }

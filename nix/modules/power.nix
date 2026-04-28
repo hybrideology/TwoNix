@@ -1,10 +1,10 @@
 _: {
-  flake.modules.nixos.power = {config, ...}: {
+  flake.modules.nixos.power = _: {
     services = {
       power-profiles-daemon.enable = true;
       upower.enable = true;
     };
-    environment.persistence.${config.vars.persistence.dir}.directories = [
+    vars.persistence.dirs = [
       "/var/lib/power-profiles-daemon"
       "/var/lib/upower"
     ];
