@@ -22,14 +22,15 @@ _: {
                 mode = "700";
               }
             ]
-            ++ ["/var/lib/logrotate.status"]
             ++ lib.optional config.networking.dhcpcd.enable "/var/lib/dhcpcd"
             ++ lib.optional config.security.sudo.enable "/var/db/sudo"
             ++ lib.optional config.security.acme.acceptTerms "/var/lib/acme";
-          files = [
-            "/etc/adjtime"
-            "/etc/machine-id" # nixos expects this
-          ];
+          files =
+            [
+              "/etc/adjtime"
+              "/etc/machine-id" # nixos expects this
+            ]
+            ++ lib.optional config.services.logrotate.enable "/var/lib/logrotate.status";
         };
         ${cfg.laDir} = {
           inherit (cfg) enable;
