@@ -7,8 +7,6 @@
     imports = [
       config.flake.homeModules.base
       inputs.noctalia-shell.homeModules.default
-      ./_/files.nix
-      ./_/noctalia.nix
       config.flake.homeModules.element-desktop
       config.flake.homeModules.gimp
       config.flake.homeModules.godot
