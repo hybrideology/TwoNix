@@ -1,5 +1,5 @@
 _: {
-  flake.modules.nixos.nixpkgs = {
+  flake.nixosModules.nixpkgs = {
     config,
     lib,
     ...

@@ -14,7 +14,6 @@ _: {
         ".local/state/wireplumber"
         "git"
       ];
-      files = [".config/mimeapps.list"];
     };
   };
 }

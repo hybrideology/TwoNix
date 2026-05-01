@@ -1,5 +1,9 @@
 _: {
-  flake.homeModules.zsh = _: {
+  flake.homeModules.zsh = {
+    lib,
+    config,
+    ...
+  }: {
     programs.zsh = {
       enable = true;
       autosuggestion.enable = true;
@@ -12,5 +16,6 @@ _: {
       '';
     };
     vars.persistence.files = [".zsh_history"];
+    programs.kitty.settings.shell = "${lib.getExe config.programs.zsh.package}";
   };
 }

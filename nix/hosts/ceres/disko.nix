@@ -1,5 +1,5 @@
 _: {
-  flake.modules.nixos.ceres = {
+  flake.nixosModules.ceres = {
     config,
     lib,
     ...

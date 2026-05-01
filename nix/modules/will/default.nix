@@ -1,5 +1,5 @@
-{inputs, ...}: {
-  flake.modules.nixos.will = {config, ...}: {
+{self, ...}: {
+  flake.nixosModules.will = {config, ...}: {
     sops.secrets."will_password".neededForUsers = true;
     users.users.will = {
       uid = 1000; # required for migration script
@@ -9,6 +9,6 @@
       openssh.authorizedKeys.keyFiles = [./will.pub];
       description = "Will";
     };
-    home-manager.users.will.imports = [inputs.self.homeModules.will];
+    home-manager.users.will.imports = [self.homeModules.will];
   };
 }

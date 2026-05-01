@@ -1,9 +1,5 @@
-_: {
-  flake.modules.nixos.ceres = {
-    inputs,
-    config,
-    ...
-  }: let
+{inputs, ...}: {
+  flake.nixosModules.ceres = {config, ...}: let
     dirs = config.vars.dataDirs;
   in {
     sops.secrets.vpn_proxy_conf = {

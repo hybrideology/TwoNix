@@ -1,5 +1,5 @@
 _: {
-  flake.modules.nixos.ceres = {config, ...}: {
+  flake.nixosModules.ceres = {config, ...}: {
     vars.persistence.dirs = ["/var/lib/dnsmasq"];
     services.dnsmasq = {
       enable = true;

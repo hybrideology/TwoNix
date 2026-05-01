@@ -1,5 +1,5 @@
 _: {
-  flake.modules.nixos.snowflake = _: {
+  flake.nixosModules.snowflake = _: {
     services.snowflake-proxy.enable = true;
   };
 }

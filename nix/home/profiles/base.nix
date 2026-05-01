@@ -1,18 +1,19 @@
-{config, ...}: {
+{self, ...}: {
   flake.homeModules.base = {
     imports = [
-      config.flake.homeModules.persistence
-      config.flake.homeModules.btop
-      config.flake.homeModules.helix
-      config.flake.homeModules.jujutsu
-      config.flake.homeModules.nh
-      config.flake.homeModules.nixos-anywhere
-      config.flake.homeModules.ssh
-      config.flake.homeModules.starship
-      config.flake.homeModules.unar
-      config.flake.homeModules.wireguard-tools
-      config.flake.homeModules.yazi
-      config.flake.homeModules.zsh
+      self.homeModules.persistence
+      self.homeModules.btop
+      self.homeModules.helix
+      self.homeModules.jujutsu
+      self.homeModules.nh
+      self.homeModules.nixos-anywhere
+      self.homeModules.sops
+      self.homeModules.ssh
+      self.homeModules.starship
+      self.homeModules.unar
+      self.homeModules.wireguard-tools
+      self.homeModules.yazi
+      self.homeModules.zsh
     ];
   };
 }

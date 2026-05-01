@@ -1,5 +1,5 @@
 _: {
-  flake.modules.nixos.betelgeuse = {config, ...}: let
+  flake.nixosModules.betelgeuse = {config, ...}: let
     pDir = config.vars.persistence.dir;
   in {
     vars.persistence.enable = true;

@@ -1,5 +1,5 @@
 _: {
-  flake.modules.nixos.auto-upgrade = _: {
+  flake.nixosModules.auto-upgrade = _: {
     system.autoUpgrade = {
       enable = true;
       flake = "github:hybrideology/TwoNix";

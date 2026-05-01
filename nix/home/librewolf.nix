@@ -38,10 +38,6 @@ _: {
                   name = "search";
                   url = "https://search.nixos.org/packages";
                 }
-                {
-                  name = "home-manager search";
-                  url = "https://home-manager-options.extranix.com/";
-                }
               ];
             }
           ];

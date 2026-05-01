@@ -1,5 +1,5 @@
 _: {
-  flake.modules.nixos.andromeda = {config, ...}: let
+  flake.nixosModules.andromeda = {config, ...}: let
     pDir = config.vars.persistence.dir;
     plaDir = config.vars.persistence.laDir;
     keyDir = "/keys";

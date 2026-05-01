@@ -1,5 +1,6 @@
 {inputs, ...}: {
-  flake.modules.nixos.nixarr = _: {
+  flake.nixosModules.nixarr = {config, ...}: {
     imports = [inputs.nixarr.nixosModules.default];
+    nixarr.vpn.accessibleFrom = [config.vars.vpn.subnet];
   };
 }

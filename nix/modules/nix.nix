@@ -1,5 +1,5 @@
 _: {
-  flake.modules.nixos.nix = _: {
+  flake.nixosModules.nix = _: {
     nix = {
       channel.enable = false;
       settings = {

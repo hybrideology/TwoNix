@@ -1,5 +1,5 @@
 _: {
-  flake.modules.nixos.data-dirs = {lib, ...}: {
+  flake.nixosModules.data-dirs = {lib, ...}: {
     options.vars.dataDirs = {
       media = lib.mkOption {
         default = "/srv/media";

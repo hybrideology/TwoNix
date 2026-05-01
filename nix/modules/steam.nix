@@ -1,5 +1,5 @@
 _: {
-  flake.modules.nixos.steam = {pkgs, ...}: {
+  flake.nixosModules.steam = {pkgs, ...}: {
     vars.unfreePkgs = [
       "steam"
       "steam-original"

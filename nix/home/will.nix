@@ -1,13 +1,9 @@
-flakeArgs @ {inputs, ...}: {
+{inputs, ...}: {
   flake.homeModules.will = {config, ...}: let
     primaryEmail = "a7bcf569-bbfe-46d1-ac8b-4e8c9bc380ef@anonaddy.me";
     githubEmail = "30223844+hybrideology@users.noreply.github.com";
     userName = "hybrideology";
   in {
-    imports = [
-      inputs.sops-nix.homeManagerModules.sops
-      flakeArgs.config.flake.homeModules.sops
-    ];
     sops = {
       defaultSopsFile = inputs.secrets.will;
       secrets."ssh_key".path = "${config.home.homeDirectory}/.ssh/${config.home.username}";

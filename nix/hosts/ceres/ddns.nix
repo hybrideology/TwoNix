@@ -1,9 +1,5 @@
-_: {
-  flake.modules.nixos.ceres = {
-    inputs,
-    config,
-    ...
-  }: {
+{inputs, ...}: {
+  flake.nixosModules.ceres = {config, ...}: {
     users.groups.ddns-updater-secrets = {};
     sops.secrets.ceres-ddns-updater = {
       sopsFile = inputs.secrets.ceres-ddns-updater;

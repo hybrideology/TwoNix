@@ -1,5 +1,5 @@
 _: {
-  flake.modules.nixos.fail2ban = _: {
+  flake.nixosModules.fail2ban = _: {
     services.fail2ban.enable = true;
     vars.persistence.dirs = [
       {

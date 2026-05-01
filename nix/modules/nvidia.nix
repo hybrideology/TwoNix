@@ -1,5 +1,5 @@
 _: {
-  flake.modules.nixos.nvidia = {config, ...}: {
+  flake.nixosModules.nvidia = {config, ...}: {
     vars.unfreePkgs = [
       "nvidia-x11"
       "nvidia-persistenced"

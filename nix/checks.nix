@@ -1,9 +1,9 @@
 {
   lib,
-  config,
+  self,
   ...
 }: {
-  config.flake.checks = lib.mkMerge (
+  flake.checks = lib.mkMerge (
     lib.mapAttrsToList (
       name: nixos: {
         ${nixos.config.nixpkgs.hostPlatform.system} = {
@@ -11,6 +11,6 @@
         };
       }
     )
-    config.flake.nixosConfigurations
+    self.nixosConfigurations
   );
 }

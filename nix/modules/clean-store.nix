@@ -1,5 +1,5 @@
 _: {
-  flake.modules.nixos.clean-store = _: {
+  flake.nixosModules.clean-store = _: {
     nix = {
       gc = {
         automatic = true;

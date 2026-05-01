@@ -1,5 +1,5 @@
 _: {
-  flake.modules.nixos.persistence = {
+  flake.nixosModules.persistence = {
     config,
     lib,
     ...

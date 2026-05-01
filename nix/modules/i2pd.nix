@@ -1,5 +1,5 @@
 _: {
-  flake.modules.nixos.i2pd = _: {
+  flake.nixosModules.i2pd = _: {
     services.i2pd = {
       enable = true;
       enableIPv6 = true;

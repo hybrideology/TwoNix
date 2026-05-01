@@ -1,5 +1,5 @@
 _: {
-  flake.modules.nixos.networkmanager = _: {
+  flake.nixosModules.networkmanager = _: {
     networking.networkmanager = {
       enable = true;
       unmanaged = ["wg0"];

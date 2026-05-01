@@ -1,5 +1,5 @@
 _: {
-  flake.modules.nixos.pipewire = _: {
+  flake.nixosModules.pipewire = _: {
     security.rtkit.enable = true; # latency reduction
     services = {
       pipewire = {

@@ -1,5 +1,5 @@
 _: {
-  flake.modules.nixos.openssh = {
+  flake.nixosModules.openssh = {
     config,
     lib,
     ...

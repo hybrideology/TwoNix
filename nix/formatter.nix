@@ -1,10 +1,10 @@
-{inputs, ...}: {
+{
+  inputs,
+  self,
+  ...
+}: {
   imports = [inputs.treefmt-nix.flakeModule];
-  perSystem = {
-    pkgs,
-    config,
-    ...
-  }: {
+  perSystem = {pkgs, ...}: {
     treefmt = {
       projectRootFile = "flake.nix";
 
@@ -40,12 +40,8 @@
       pkgs.runCommandLocal "deadnix" {
         nativeBuildInputs = [pkgs.deadnix];
       } ''
-        deadnix --fail ${inputs.self}/nix
+        deadnix --fail ${self}/nix
         touch $out
       '';
-
-    devShells.default = pkgs.mkShell {
-      packages = [config.treefmt.build.wrapper pkgs.deadnix];
-    };
   };
 }

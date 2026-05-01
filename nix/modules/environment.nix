@@ -1,5 +1,5 @@
 _: {
-  flake.modules.nixos.environment = _: {
+  flake.nixosModules.environment = _: {
     environment.defaultPackages = [];
     security.sudo.execWheelOnly = true;
   };

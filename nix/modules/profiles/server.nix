@@ -1,8 +1,8 @@
-{config, ...}: {
-  flake.modules.nixos.server = {
+{self, ...}: {
+  flake.nixosModules.server = {
     imports = [
-      config.flake.modules.nixos.base
-      config.flake.modules.nixos.data-dirs
+      self.nixosModules.base
+      self.nixosModules.data-dirs
     ];
   };
 }

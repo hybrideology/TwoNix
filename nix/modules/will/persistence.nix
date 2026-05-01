@@ -1,5 +1,5 @@
 _: {
-  flake.modules.nixos.will = {
+  flake.nixosModules.will = {
     config,
     lib,
     ...
@@ -9,7 +9,7 @@ _: {
     hasHM =
       lib.hasAttr "home-manager" config
       && lib.hasAttr username config.home-manager.users;
-    hmCfg = config.home-manager.users.will.vars.persistence;
+    hmCfg = config.home-manager.users.${username}.vars.persistence;
   in {
     environment.persistence = lib.mkMerge [
       {

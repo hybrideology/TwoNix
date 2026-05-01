@@ -3,7 +3,7 @@
   lib,
   ...
 }: {
-  flake.modules.nixos.sops = {config, ...}: let
+  flake.nixosModules.sops = {config, ...}: let
     cfg = config.vars.sops;
   in {
     imports = [inputs.sops-nix.nixosModules.sops];

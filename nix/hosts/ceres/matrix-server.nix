@@ -1,9 +1,5 @@
-_: {
-  flake.modules.nixos.ceres = {
-    inputs,
-    config,
-    ...
-  }: let
+{inputs, ...}: {
+  flake.nixosModules.ceres = {config, ...}: let
     dirs = config.vars.dataDirs;
     port = builtins.elemAt config.services.matrix-tuwunel.settings.global.port 0;
     domain = "jortpavilion.org";
@@ -91,6 +87,11 @@ _: {
     services = {
       nginx = {
         enable = true;
+        recommendedProxySettings = true;
+        recommendedBrotliSettings = true;
+        recommendedOptimisation = true;
+        recommendedTlsSettings = true;
+        defaultListenAddresses = [config.vars.vpn.serverIp];
         virtualHosts.${domain} = {
           listen = [
             {

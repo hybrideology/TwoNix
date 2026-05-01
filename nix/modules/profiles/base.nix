@@ -1,21 +1,21 @@
-{config, ...}: {
-  flake.modules.nixos.base = {
+{self, ...}: {
+  flake.nixosModules.base = {
     imports = [
-      config.flake.modules.nixos.home-manager
-      config.flake.modules.nixos.sops
-      config.flake.modules.nixos.impermanence
-      config.flake.modules.nixos.disko
-      config.flake.modules.nixos.environment
-      config.flake.modules.nixos.groups
-      config.flake.modules.nixos.nix
-      config.flake.modules.nixos.nixpkgs
-      config.flake.modules.nixos.auto-upgrade
-      config.flake.modules.nixos.clean-store
-      config.flake.modules.nixos.fail2ban
-      config.flake.modules.nixos.openssh
-      config.flake.modules.nixos.persistence
-      config.flake.modules.nixos.snowflake
-      config.flake.modules.nixos.systemd-boot
+      self.nixosModules.home-manager
+      self.nixosModules.sops
+      self.nixosModules.impermanence
+      self.nixosModules.disko
+      self.nixosModules.environment
+      self.nixosModules.groups
+      self.nixosModules.nix
+      self.nixosModules.nixpkgs
+      self.nixosModules.auto-upgrade
+      self.nixosModules.clean-store
+      self.nixosModules.fail2ban
+      self.nixosModules.openssh
+      self.nixosModules.persistence
+      self.nixosModules.snowflake
+      self.nixosModules.systemd-boot
     ];
   };
 }
