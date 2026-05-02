@@ -14,6 +14,7 @@
       self.homeModules.noctalia
       self.homeModules.rnote
       self.homeModules.tor-browser
+      self.homeModules.udiskie
       self.homeModules.vesktop
       self.homeModules.wl-clip-persist
     ];

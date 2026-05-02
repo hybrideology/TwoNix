@@ -1,6 +1,7 @@
 {self, ...}: {
   flake.nixosModules.workstation = {
     imports = [
+      self.nixosModules.auto-mount
       self.nixosModules.base
       self.nixosModules.bluetooth
       self.nixosModules.hyprland
