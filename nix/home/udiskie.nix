@@ -1,5 +1,5 @@
 _: {
-  flake.homeModules.tor-browser = _: {
+  flake.homeModules.udiskie = _: {
     services.udiskie.enable = true;
   };
 }
