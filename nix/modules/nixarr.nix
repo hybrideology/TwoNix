@@ -1,5 +1,5 @@
 {inputs, ...}: {
-  flake.nixosModules.nixarr = {config, ...}: {
+  flake.nixosModules.nixarr = _: {
     imports = [inputs.nixarr.nixosModules.default];
   };
 }

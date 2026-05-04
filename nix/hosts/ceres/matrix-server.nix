@@ -61,6 +61,7 @@
         # };
       };
     };
+    vars.persistence.dirs = ["/var/lib/acme"];
     networking.firewall = {
       allowedTCPPorts = [
         443

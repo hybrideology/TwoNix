@@ -1,5 +1,5 @@
 _: {
-  flake.nixosModules.networkmanager = {config, ...}: {
+  flake.nixosModules.networkmanager = _: {
     networking.networkmanager.enable = true;
 
     vars.persistence.dirs = [

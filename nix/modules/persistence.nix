@@ -79,7 +79,6 @@ _: {
               ]
               ++ lib.optional config.networking.dhcpcd.enable "/var/lib/dhcpcd"
               ++ lib.optional config.security.sudo.enable "/var/db/sudo"
-              ++ lib.optional config.security.acme.acceptTerms "/var/lib/acme"
               ++ cfg.dirs
               ++ lib.optionals (cfg.laDir == cfg.dir) cfg.laDirs;
             files =
@@ -87,7 +86,6 @@ _: {
                 "/etc/adjtime"
                 "/etc/machine-id" # nixos expects this
               ]
-              ++ lib.optional config.services.logrotate.enable "/var/lib/logrotate.status"
               ++ cfg.files
               ++ lib.optionals (cfg.laDir == cfg.dir) cfg.laFiles;
           };
