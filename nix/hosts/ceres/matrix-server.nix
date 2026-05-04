@@ -91,7 +91,7 @@
         recommendedBrotliSettings = true;
         recommendedOptimisation = true;
         recommendedTlsSettings = true;
-        defaultListenAddresses = [config.vars.vpn.serverIp];
+        defaultListenAddresses = [config.vars.wireguard_server.serverIp];
         virtualHosts.${domain} = {
           listen = [
             {
@@ -125,6 +125,8 @@
           no-multicast-peers
           no-loopback-peers
           no-tcp-relay
+          user-quota=12
+          total-quota=240
           stale-nonce=600
           denied-peer-ip=0.0.0.0-0.255.255.255
           denied-peer-ip=10.0.0.0-10.255.255.255

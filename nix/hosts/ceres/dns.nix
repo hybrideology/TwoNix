@@ -6,14 +6,14 @@ _: {
       resolveLocalQueries = false;
       settings = {
         bind-interfaces = true;
-        listen-address = config.vars.vpn.serverIp;
+        listen-address = config.vars.wireguard_server.serverIp;
         address = [
-          "/${config.vars.vpn.domain}/${config.vars.vpn.serverIp}"
-          "/*.${config.vars.vpn.domain}/${config.vars.vpn.serverIp}"
+          "/${config.vars.wireguard_server.domain}/${config.vars.wireguard_server.serverIp}"
+          "/*.${config.vars.wireguard_server.domain}/${config.vars.wireguard_server.serverIp}"
         ];
       };
     };
-    networking.firewall = {
+    networking.firewall.interfaces.${config.vars.wireguard_server.interfaceName} = {
       allowedUDPPorts = [53];
       allowedTCPPorts = [53];
     };

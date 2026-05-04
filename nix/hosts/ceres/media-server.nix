@@ -40,7 +40,7 @@
         enable = true; # torrent client
         vpn.enable = true;
         peerPort = 15758;
-        openFirewall = true; # can't get reverse proxy to work
+        openFirewall = true; # also opens RPC, but it remains bound to the VPN-only address
       };
       vpn = {
         enable = true;
@@ -51,10 +51,10 @@
     services.nginx = {
       enable = true;
       virtualHosts = {
-        "audiobookshelf.${config.vars.vpn.domain}".locations."/".proxyPass = "http://127.0.0.1:${toString config.nixarr.audiobookshelf.port}";
-        "autobrr.${config.vars.vpn.domain}".locations."/".proxyPass = "http://127.0.0.1:${toString config.nixarr.autobrr.settings.port}";
-        "jellyfin.${config.vars.vpn.domain}".locations."/".proxyPass = "http://127.0.0.1:8096"; # jellyfin port
-        "jellyseerr.${config.vars.vpn.domain}".locations."/".proxyPass = "http://127.0.0.1:5055"; # jellyseerr port
+        "audiobookshelf.${config.vars.wireguard_server.domain}".locations."/".proxyPass = "http://127.0.0.1:${toString config.nixarr.audiobookshelf.port}";
+        "autobrr.${config.vars.wireguard_server.domain}".locations."/".proxyPass = "http://127.0.0.1:${toString config.nixarr.autobrr.settings.port}";
+        "jellyfin.${config.vars.wireguard_server.domain}".locations."/".proxyPass = "http://127.0.0.1:8096"; # jellyfin port
+        "jellyseerr.${config.vars.wireguard_server.domain}".locations."/".proxyPass = "http://127.0.0.1:5055"; # jellyseerr port
       };
     };
   };

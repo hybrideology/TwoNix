@@ -1,9 +1,6 @@
 _: {
-  flake.nixosModules.networkmanager = _: {
-    networking.networkmanager = {
-      enable = true;
-      unmanaged = ["wg0"];
-    };
+  flake.nixosModules.networkmanager = {config, ...}: {
+    networking.networkmanager.enable = true;
 
     vars.persistence.dirs = [
       {

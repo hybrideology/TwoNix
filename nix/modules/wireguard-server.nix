@@ -4,7 +4,12 @@ _: {
     lib,
     ...
   }: {
-    options.vars.vpn = {
+    options.vars.wireguard_server = {
+      interfaceName = lib.mkOption {
+        default = "personal-vpn";
+        type = lib.types.str;
+        description = "WireGuard interface name for the personal VPN.";
+      };
       serverIp = lib.mkOption {
         default = "10.0.0.1";
         type = lib.types.str;
@@ -27,7 +32,8 @@ _: {
     };
 
     config = {
-      vars.vpn.domain = lib.mkDefault "${config.networking.hostName}.vpn";
+      vars.wireguard_server.domain = lib.mkDefault "${config.networking.hostName}.vpn";
+      vars.openssh.firewallInterfaces = lib.mkDefault [config.vars.wireguard_server.interfaceName];
       sops.secrets.personal_vpn_key = {
         mode = "440";
         owner = config.users.users.systemd-network.name;
@@ -39,21 +45,21 @@ _: {
       };
       systemd.network = {
         enable = true;
-        networks."60-wg1" = {
-          matchConfig.Name = "wg1";
-          address = ["${config.vars.vpn.serverIp}/24"];
+        networks."60-${config.vars.wireguard_server.interfaceName}" = {
+          matchConfig.Name = config.vars.wireguard_server.interfaceName;
+          address = ["${config.vars.wireguard_server.serverIp}/24"];
         };
-        netdevs."60-wg1" = {
+        netdevs."60-${config.vars.wireguard_server.interfaceName}" = {
           netdevConfig = {
             Kind = "wireguard";
-            Name = "wg1";
+            Name = config.vars.wireguard_server.interfaceName;
           };
           wireguardConfig = {
             ListenPort = 51820;
             PrivateKeyFile = config.sops.secrets.personal_vpn_key.path;
             RouteTable = "main";
           };
-          wireguardPeers = config.vars.vpn.peers;
+          wireguardPeers = config.vars.wireguard_server.peers;
         };
       };
     };

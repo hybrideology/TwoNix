@@ -18,7 +18,7 @@
     time.timeZone = "America/Chicago";
     networking.hostName = "ceres";
     networking.hostId = "e0fdcfa7"; # random, required by zfs
-    system.stateVersion = "25.11";
+    system.stateVersion = "26.11";
 
     # Hardware
     imports = [inputs.nixos-hardware.nixosModules.common-cpu-amd-pstate];
@@ -27,12 +27,12 @@
     # Users
     home-manager.users.will = {
       imports = [self.homeModules.base];
-      home.stateVersion = "25.11";
+      home.stateVersion = "26.05";
     };
 
     # VPN
     sops.secrets.personal_vpn_key.sopsFile = inputs.secrets.ceres;
-    vars.vpn.peers = [
+    vars.wireguard_server.peers = [
       # andromeda
       {
         PublicKey = "7ZLGJ8bowq9sDPkNYBXFfQKEoVbFdMAkqW7xQqYwJXM=";

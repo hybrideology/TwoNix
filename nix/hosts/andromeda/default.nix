@@ -40,7 +40,7 @@
     # Users
     home-manager.users.will = {
       imports = [self.homeModules.earth];
-      home.stateVersion = "25.11";
+      home.stateVersion = "26.05";
       vars.hyprland = {
         monitors = [
           "DP-4, 2560x1440@180, 0x0, 1, bitdepth, 10"
@@ -57,8 +57,8 @@
 
     # VPN
     sops.secrets.personal_vpn_key.sopsFile = inputs.secrets.andromeda;
-    system.stateVersion = "25.11";
-    vars.wireguard = {
+    system.stateVersion = "26.11";
+    vars.wireguard_client = {
       clientIp = "10.0.0.2";
       serverPublicKey = "QWwLEg0SjMm0ZNyb8iPa9V/29/VnHLKt9ZpVUaiE7j0=";
       endpoint = "465241395.xyz:51820";

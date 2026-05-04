@@ -17,10 +17,16 @@ _: {
         type = lib.types.listOf lib.types.str;
         description = "Groups permitted to connect via SSH.";
       };
+      firewallInterfaces = lib.mkOption {
+        default = [];
+        type = lib.types.listOf lib.types.str;
+        description = "Interfaces on which SSH should be reachable when not globally opened.";
+      };
     };
     config = {
       services.openssh = {
         enable = true;
+        openFirewall = false;
         settings = {
           PermitRootLogin = "no";
           PasswordAuthentication = false;
@@ -45,6 +51,9 @@ _: {
           mode = "0700";
         }
       ];
+      networking.firewall.interfaces = lib.genAttrs cfg.firewallInterfaces (_: {
+        allowedTCPPorts = config.services.openssh.ports;
+      });
     };
   };
 }
