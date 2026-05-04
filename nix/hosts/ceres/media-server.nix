@@ -44,6 +44,7 @@
       };
       vpn = {
         enable = true;
+        accessibleFrom = [config.vars.wireguard_server.subnet];
         wgConf = config.sops.secrets.vpn_proxy_conf.path;
       };
     };
