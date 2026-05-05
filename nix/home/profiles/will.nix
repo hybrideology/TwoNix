@@ -5,12 +5,12 @@
     userName = "hybrideology";
   in {
     sops = {
-      defaultSopsFile = inputs.secrets.will;
+      defaultSopsFile = inputs.secrets.${config.home.username};
       secrets."ssh_key".path = "${config.home.homeDirectory}/.ssh/${config.home.username}";
     };
     home = {
       username = "will";
-      homeDirectory = "/home/will";
+      homeDirectory = "/home/${config.home.username}";
     };
     programs = {
       ssh.matchBlocks."*".identityFile = config.sops.secrets."ssh_key".path;
