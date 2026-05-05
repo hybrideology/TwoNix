@@ -43,6 +43,10 @@ _: {
         type = lib.types.listOf fileEntry;
         description = desc;
       };
+    hmUsers =
+      if lib.hasAttr "home-manager" config
+      then config.home-manager.users
+      else {};
   in {
     options.vars.persistence = {
       enable = lib.mkEnableOption "impermanence";
@@ -60,43 +64,44 @@ _: {
       files = fileOpt "Files to persist across reboots (primary store).";
       laDirs = dirOpt "Directories to persist across reboots (low-availability, HDD-backed store).";
       laFiles = fileOpt "Files to persist across reboots (low-availability, HDD-backed store).";
+      homeDirs = dirOpt "Directories to persist across reboots for each home-manager user (primary store).";
+      homeFiles = fileOpt "Files to persist across reboots for each home-manager user (primary store).";
+      homeLaDirs = dirOpt "Directories to persist across reboots for each home-manager user (low-availability store).";
+      homeLaFiles = fileOpt "Files to persist across reboots for each home-manager user (low-availability store).";
     };
     config = lib.mkIf cfg.enable {
-      environment.persistence =
-        {
-          ${cfg.dir} = {
-            hideMounts = true;
-            directories =
-              [
-                "/var/lib/systemd"
-                "/var/lib/lastlog"
-                "/var/lib/nixos"
-                "/var/log"
-                {
-                  directory = "/var/lib/private";
-                  mode = "700";
-                }
-              ]
-              ++ lib.optional config.networking.dhcpcd.enable "/var/lib/dhcpcd"
-              ++ lib.optional config.security.sudo.enable "/var/db/sudo"
-              ++ cfg.dirs
-              ++ lib.optionals (cfg.laDir == cfg.dir) cfg.laDirs;
-            files =
-              [
-                "/etc/adjtime"
-                "/etc/machine-id" # nixos expects this
-              ]
-              ++ cfg.files
-              ++ lib.optionals (cfg.laDir == cfg.dir) cfg.laFiles;
-          };
-        }
-        // lib.optionalAttrs (cfg.laDir != cfg.dir) {
+      environment.persistence = lib.mkMerge (
+        [
+          {
+            ${cfg.dir} = {
+              hideMounts = true;
+              directories = cfg.dirs ++ lib.optionals (cfg.laDir == cfg.dir) cfg.laDirs;
+              files = cfg.files ++ lib.optionals (cfg.laDir == cfg.dir) cfg.laFiles;
+            };
+          }
+        ]
+        ++ lib.optional (cfg.laDir != cfg.dir) {
           ${cfg.laDir} = {
             hideMounts = true;
             directories = cfg.laDirs;
             files = cfg.laFiles;
           };
-        };
+        }
+        ++ lib.mapAttrsToList (username: hmUserCfg: {
+          ${cfg.dir}.users.${username} = {
+            files = cfg.homeFiles ++ hmUserCfg.vars.persistence.files;
+            directories = cfg.homeDirs ++ hmUserCfg.vars.persistence.dirs;
+          };
+        })
+        hmUsers
+        ++ lib.mapAttrsToList (username: hmUserCfg: {
+          ${cfg.laDir}.users.${username} = {
+            files = cfg.homeLaFiles ++ hmUserCfg.vars.persistence.laFiles;
+            directories = cfg.homeLaDirs ++ hmUserCfg.vars.persistence.laDirs;
+          };
+        })
+        hmUsers
+      );
     };
   };
 }

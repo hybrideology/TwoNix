@@ -9,5 +9,6 @@ _: {
         [ "$(tty)" = "/dev/tty1" ] && exec uwsm start default
       '';
     };
+    vars.persistence.homeDirs = [".config/uwsm"];
   };
 }

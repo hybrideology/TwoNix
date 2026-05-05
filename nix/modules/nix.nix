@@ -15,5 +15,6 @@ _: {
         ];
       };
     };
+    vars.persistence.dirs = ["/var/lib/nixos"];
   };
 }

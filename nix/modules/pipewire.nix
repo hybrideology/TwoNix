@@ -9,5 +9,6 @@ _: {
         jack.enable = true;
       };
     };
+    vars.persistence.homeDirs = [".config/pulse"];
   };
 }

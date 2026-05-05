@@ -13,5 +13,9 @@ _: {
       localNetworkGameTransfers.openFirewall = true;
     };
     environment.systemPackages = [pkgs.gamescope];
+    vars.persistence.homeLaDirs = [
+      ".local/share/Steam"
+      ".steam"
+    ];
   };
 }
