@@ -11,6 +11,7 @@
     home = {
       username = "will";
       homeDirectory = "/home/${config.home.username}";
+      file.".face".source = ./face.png;
     };
     programs = {
       ssh.matchBlocks."*".identityFile = config.sops.secrets."ssh_key".path;

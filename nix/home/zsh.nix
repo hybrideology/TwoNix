@@ -17,5 +17,6 @@ _: {
     };
     vars.persistence.files = [".zsh_history"];
     programs.kitty.settings.shell = "${lib.getExe config.programs.zsh.package}";
+    programs.yazi.enableZshIntegration = true;
   };
 }

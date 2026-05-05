@@ -12,5 +12,5 @@ nixos-anywhere
   --generate-hardware-config nixos-facter ./nix/<hostname>/_/facter.json
   --extra-files $temp
   --disk-encryption-keys /mnt/usb/key /mnt/usb/key
-  --chown /nix/persist/home/will 1000:100
+  --chown /nix/persist/home/<username> 1000:100
 ```

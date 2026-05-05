@@ -30,10 +30,7 @@
         noto-fonts
         nerd-fonts.symbols-only
       ];
-      file = {
-        ".face".source = ./face.png;
-        "Pictures/Wallpapers/earth.jpg".source = ./wallpapers/earth.jpg;
-      };
+      file."Pictures/Wallpapers/earth.jpg".source = ./wallpapers/earth.jpg;
     };
     fonts.fontconfig.enable = true;
     gtk = {
