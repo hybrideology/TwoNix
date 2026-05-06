@@ -4,18 +4,12 @@
     lib,
     ...
   }: {
-    options.vars.noctalia-settings = lib.mkOption {
-      type = lib.types.path;
-    };
     imports = [inputs.noctalia-shell.homeModules.default];
     config = {
       vars.persistence.files = [
         ".cache/noctalia/wallpapers.json"
       ];
-      programs.noctalia-shell = {
-        enable = true;
-        settings = config.vars.noctalia-settings;
-      };
+      programs.noctalia-shell.enable = true;
 
       wayland.windowManager.hyprland.settings = {
         "$noctaliaIpc" = "${lib.getExe config.programs.noctalia-shell.package} ipc call";

@@ -18,7 +18,7 @@
       self.homeModules.vesktop
       self.homeModules.wl-clip-persist
     ];
-    vars.noctalia-settings = ./noctalia-settings.json;
+    programs.noctalia-shell.settings = ./noctalia-settings.json;
     home = {
       pointerCursor = {
         package = pkgs.phinger-cursors;
