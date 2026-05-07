@@ -13,6 +13,7 @@
       self.homeModules.mpv
       self.homeModules.noctalia
       self.homeModules.rnote
+      self.homeModules.signal
       self.homeModules.tor-browser
       self.homeModules.udiskie
       self.homeModules.vesktop
