@@ -12,6 +12,7 @@
       self.homeModules.librewolf
       self.homeModules.mpv
       self.homeModules.noctalia
+      self.homeModules.remmina
       self.homeModules.rnote
       self.homeModules.signal
       self.homeModules.tor-browser
