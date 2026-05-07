@@ -26,8 +26,10 @@
 
     # Users
     home-manager.users.will = {
-      imports = [self.homeModules.base];
-      home.packages = [pkgs.signal-cli];
+      imports = [
+        self.homeModules.base
+        self.homeModules.signal-cli
+      ];
       home.stateVersion = "26.05";
     };
 
