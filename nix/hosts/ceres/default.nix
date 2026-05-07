@@ -13,7 +13,7 @@
       self.nixosModules.nixarr
     ];
   };
-  flake.nixosModules.ceres = _: {
+  flake.nixosModules.ceres = {pkgs, ...}: {
     nixpkgs.hostPlatform = "x86_64-linux";
     time.timeZone = "America/Chicago";
     networking.hostName = "ceres";
@@ -27,6 +27,7 @@
     # Users
     home-manager.users.will = {
       imports = [self.homeModules.base];
+      home.packages = [pkgs.signal-cli];
       home.stateVersion = "26.05";
     };
 
