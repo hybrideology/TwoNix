@@ -11,7 +11,7 @@ _: {
     dbDir = config.vars.dataDirs.db;
     appsDir = config.vars.dataDirs.apps;
     keyDir = "/keys";
-    keyUUID = "6A71-D31C";
+    keyUUID = "521A-0202";
   in {
     vars.persistence.enable = true;
 
