@@ -1,8 +1,13 @@
 _: {
-  flake.nixosModules.andromeda = {config, ...}: let
+  flake.nixosModules.andromeda = {
+    config,
+    lib,
+    ...
+  }: let
     pDir = config.vars.persistence.dir;
     plaDir = config.vars.persistence.laDir;
     keyDir = "/keys";
+    keyUUID = "AF7B-D7D2";
   in {
     vars.persistence.enable = true;
 
@@ -68,8 +73,8 @@ _: {
             atime = "off";
             compression = "zstd";
             encryption = "on";
-            keyformat = "passphrase";
-            keylocation = "prompt";
+            keyformat = "raw";
+            keylocation = "file://${keyDir}/fast";
             mountpoint = "none";
           };
           datasets = {
@@ -94,8 +99,8 @@ _: {
             atime = "off";
             compression = "zstd";
             encryption = "on";
-            keyformat = "passphrase";
-            keylocation = "prompt";
+            keyformat = "raw";
+            keylocation = "file://${keyDir}/tank";
             mountpoint = "none";
           };
           datasets = {
@@ -104,6 +109,28 @@ _: {
               mountpoint = plaDir;
             };
           };
+        };
+      };
+    };
+    boot = {
+      initrd = {
+        kernelModules = ["usb_storage" "usbcore" "uas"];
+        supportedFilesystems.vfat = true;
+        systemd = {
+          mounts = let
+            importServices = lib.map (pool: "zfs-import-${pool}.service") (lib.attrNames config.disko.devices.zpool);
+          in [
+            {
+              where = keyDir;
+              what = "UUID=${keyUUID}";
+              after = ["systemd-udev-settle.service"];
+              wants = ["systemd-udev-settle.service"];
+              before = importServices;
+              requiredBy = importServices;
+              options = "ro";
+              type = "vfat";
+            }
+          ];
         };
       };
     };
