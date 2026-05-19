@@ -1,31 +1,7 @@
 _: {
   flake.homeModules.persistence = {lib, ...}: let
-    dirEntry = lib.types.either lib.types.str (lib.types.submodule {
-      options = {
-        directory = lib.mkOption {type = lib.types.str;};
-        mode = lib.mkOption {
-          type = lib.types.str;
-          default = "0755";
-        };
-        user = lib.mkOption {
-          type = lib.types.str;
-          default = "root";
-        };
-        group = lib.mkOption {
-          type = lib.types.str;
-          default = "root";
-        };
-      };
-    });
-    fileEntry = lib.types.either lib.types.str (lib.types.submodule {
-      options = {
-        file = lib.mkOption {type = lib.types.str;};
-        parentDirectory = lib.mkOption {
-          type = lib.types.attrs;
-          default = {};
-        };
-      };
-    });
+    dirEntry = lib.types.either lib.types.str (lib.types.attrs);
+    fileEntry = lib.types.either lib.types.str (lib.types.attrs);
   in {
     options.vars.persistence = {
       dirs = lib.mkOption {
