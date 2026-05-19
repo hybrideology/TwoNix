@@ -28,12 +28,12 @@
         enable = true; # serve movies, shows, music
         openFirewall = false;
       };
-      jellyseerr = {
-        enable = true; # requests
-        openFirewall = false;
-      };
       komga = {
         enable = true; # comics, ebooks
+        openFirewall = false;
+      };
+      seerr = {
+        enable = true; # requests
         openFirewall = false;
       };
       transmission = {
