@@ -13,7 +13,7 @@
       self.nixosModules.nixarr
     ];
   };
-  flake.nixosModules.ceres = {pkgs, ...}: {
+  flake.nixosModules.ceres = {...}: {
     nixpkgs.hostPlatform = "x86_64-linux";
     time.timeZone = "America/Chicago";
     networking.hostName = "ceres";

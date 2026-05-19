@@ -1,7 +1,7 @@
 _: {
   flake.homeModules.persistence = {lib, ...}: let
-    dirEntry = lib.types.either lib.types.str (lib.types.attrs);
-    fileEntry = lib.types.either lib.types.str (lib.types.attrs);
+    dirEntry = lib.types.either lib.types.str lib.types.attrs;
+    fileEntry = lib.types.either lib.types.str lib.types.attrs;
   in {
     options.vars.persistence = {
       dirs = lib.mkOption {

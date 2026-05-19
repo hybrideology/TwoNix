@@ -5,8 +5,8 @@ _: {
     ...
   }: let
     cfg = config.vars.persistence;
-    dirEntry = lib.types.either lib.types.str (lib.types.attrs);
-    fileEntry = lib.types.either lib.types.str (lib.types.attrs);
+    dirEntry = lib.types.either lib.types.str lib.types.attrs;
+    fileEntry = lib.types.either lib.types.str lib.types.attrs;
     dirOpt = desc:
       lib.mkOption {
         default = [];
