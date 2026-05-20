@@ -31,6 +31,7 @@ _: {
 
     config = {
       wayland.windowManager.hyprland = {
+        configType = "hyprlang";
         enable = true;
         systemd.enable = false; # disable systemd integration to use UWSM
         settings = {
