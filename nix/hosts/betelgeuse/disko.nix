@@ -1,6 +1,12 @@
 _: {
-  flake.nixosModules.betelgeuse = {config, ...}: let
+  flake.nixosModules.betelgeuse = {
+    config,
+    lib,
+    ...
+  }: let
     pDir = config.vars.persistence.dir;
+    keyDir = "/keys";
+    keyUUID = "3B99-042E";
   in {
     vars.persistence.enable = true;
     vars.persistence.laDir = config.vars.persistence.dir;
@@ -51,8 +57,8 @@ _: {
             atime = "off";
             compression = "lz4";
             encryption = "on";
-            keyformat = "passphrase";
-            keylocation = "prompt";
+            keyformat = "raw";
+            keylocation = "file://${keyDir}/fast";
             mountpoint = "none";
           };
           datasets = {
@@ -65,6 +71,28 @@ _: {
               mountpoint = pDir;
             };
           };
+        };
+      };
+    };
+    boot = {
+      initrd = {
+        kernelModules = ["usb_storage" "usbcore" "uas"];
+        supportedFilesystems.vfat = true;
+        systemd = {
+          mounts = let
+            importServices = lib.map (pool: "zfs-import-${pool}.service") (lib.attrNames config.disko.devices.zpool);
+          in [
+            {
+              where = keyDir;
+              what = "UUID=${keyUUID}";
+              after = ["systemd-udev-settle.service"];
+              wants = ["systemd-udev-settle.service"];
+              before = importServices;
+              requiredBy = importServices;
+              options = "ro";
+              type = "vfat";
+            }
+          ];
         };
       };
     };
