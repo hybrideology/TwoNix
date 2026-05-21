@@ -16,10 +16,6 @@
         enable = true; # serve audiobooks, podcasts
         openFirewall = false;
       };
-      autobrr = {
-        enable = true; # auto download manager
-        openFirewall = false;
-      };
       bazarr = {
         enable = true; # subtitles
         openFirewall = false;
