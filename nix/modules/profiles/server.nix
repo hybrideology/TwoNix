@@ -3,7 +3,6 @@
     imports = [
       self.nixosModules.base
       self.nixosModules.data-dirs
-      self.nixosModules.dhcpcd
     ];
   };
 }
