@@ -14,7 +14,7 @@
       file.".face".source = ./face.png;
     };
     programs = {
-      ssh.matchBlocks."*".identityFile = config.sops.secrets."ssh_key".path;
+      ssh.settings."*".identityFile = config.sops.secrets."ssh_key".path;
       git = {
         settings.user = {
           email = primaryEmail;
