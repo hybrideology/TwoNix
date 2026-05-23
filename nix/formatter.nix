@@ -1,10 +1,6 @@
-{
-  inputs,
-  self,
-  ...
-}: {
+{inputs, ...}: {
   imports = [inputs.treefmt-nix.flakeModule];
-  perSystem = {pkgs, ...}: {
+  perSystem = _: {
     treefmt = {
       projectRootFile = "flake.nix";
 
@@ -12,6 +8,7 @@
         alejandra.enable = true;
         prettier.enable = true;
         statix.enable = true;
+        deadnix.enable = true;
       };
 
       settings = {
@@ -22,9 +19,8 @@
 
         formatter = {
           statix.priority = 1;
-
-          alejandra.priority = 2;
-
+          deadnix.priority = 2;
+          alejandra.priority = 3;
           prettier = {
             options = [
               "--tab-width"
@@ -35,13 +31,5 @@
         };
       };
     };
-
-    checks.deadnix =
-      pkgs.runCommandLocal "deadnix" {
-        nativeBuildInputs = [pkgs.deadnix];
-      } ''
-        deadnix --fail ${self}/nix
-        touch $out
-      '';
   };
 }
