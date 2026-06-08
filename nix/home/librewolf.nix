@@ -40,6 +40,16 @@ _: {
                 }
               ];
             }
+            {
+              name = "Informational pages";
+              toolbar = true;
+              bookmarks = [
+                {
+                  name = "MKE Meetups";
+                  url = "https://mkemeetups.substack.com/";
+                }
+              ];
+            }
           ];
         };
         settings = {
