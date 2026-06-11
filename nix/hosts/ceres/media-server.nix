@@ -2,6 +2,7 @@
   flake.nixosModules.ceres = {config, ...}: let
     dirs = config.vars.dataDirs;
   in {
+    imports = [inputs.nixarr.nixosModules.default];
     sops.secrets.vpn_proxy_conf = {
       sopsFile = inputs.secrets.ceres-vpn-proxy;
       mode = "440";

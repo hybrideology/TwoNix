@@ -10,7 +10,6 @@
       self.nixosModules.wireguard-server
       self.nixosModules.i2pd
       self.nixosModules.will
-      self.nixosModules.nixarr
     ];
   };
   flake.nixosModules.ceres = {...}: {
