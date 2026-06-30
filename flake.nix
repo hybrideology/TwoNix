@@ -17,8 +17,6 @@
     nixos-hardware.inputs.nixpkgs.follows = "nixpkgs";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-small.url = "github:NixOS/nixpkgs/nixos-unstable-small";
-    nixarr.url = "github:nix-media-server/nixarr";
-    nixarr.inputs.nixpkgs.follows = "nixpkgs";
     secrets.url = "git+ssh://git@github.com/hybrideology/sops-secrets.git";
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";

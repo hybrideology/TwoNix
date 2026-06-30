@@ -6,10 +6,6 @@ _: {
   }: let
     pDir = config.vars.persistence.dir;
     plaDir = config.vars.persistence.laDir;
-    mediaDir = config.vars.dataDirs.media;
-    archiveDir = config.vars.dataDirs.archive;
-    dbDir = config.vars.dataDirs.db;
-    appsDir = config.vars.dataDirs.apps;
     keyDir = "/keys";
     keyUUID = "521A-0202";
   in {
@@ -182,14 +178,6 @@ _: {
               type = "zfs_fs";
               mountpoint = plaDir;
             };
-            media = {
-              type = "zfs_fs";
-              mountpoint = mediaDir;
-            };
-            archive = {
-              type = "zfs_fs";
-              mountpoint = archiveDir;
-            };
           };
         };
         fast = {
@@ -231,15 +219,6 @@ _: {
             persist = {
               type = "zfs_fs";
               mountpoint = pDir;
-            };
-            db = {
-              type = "zfs_fs";
-              mountpoint = dbDir;
-              options.recordsize = "16K";
-            };
-            apps = {
-              type = "zfs_fs";
-              mountpoint = appsDir;
             };
           };
         };
