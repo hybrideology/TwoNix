@@ -7,6 +7,7 @@
       self.homeModules.jujutsu
       self.homeModules.nh
       self.homeModules.nixos-anywhere
+      self.homeModules.rsync
       self.homeModules.sops
       self.homeModules.ssh
       self.homeModules.starship
