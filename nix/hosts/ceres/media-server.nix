@@ -1,8 +1,9 @@
 {inputs, ...}: {
   flake.nixosModules.ceres = {config, ...}: let
     mediaDir = "/srv/media";
-    transmissionAddress = "192.168.15.1";
+    torrentNamespace = "torrent";
   in {
+    imports = [inputs.vpn-confinement.nixosModules.default];
     sops.secrets.vpn_proxy_conf = {
       sopsFile = inputs.secrets.ceres-vpn-proxy;
       mode = "440";
@@ -21,41 +22,38 @@
       radarr.enable = true;
       sonarr.enable = true;
       prowlarr.enable = true;
-    };
-    containers.transmission = {
-      autoStart = true;
-      privateNetwork = true;
-      enableTun = true;
-      ephemeral = true;
-      hostAddress = transmissionAddress;
-      bindMounts = {
-        ${config.sops.secrets.vpn_proxy_conf.path}.hostPath = config.sops.secrets.vpn_proxy_conf.path;
-        ${config.containers.transmission.config.services.transmission.settings.download-dir} = {
-          hostPath = config.containers.transmission.config.services.transmission.settings.download-dir;
-          isReadOnly = false;
+      transmission = {
+        enable = true;
+        settings = {
+          peer-port = 15758;
+          rpc-bind-address = config.vpnNamespaces.${torrentNamespace}.namespaceAddress;
         };
       };
-      forwardPorts = [
+    };
+    systemd.services.transmission.vpnConfinement = {
+      enable = true;
+      vpnNamespace = torrentNamespace;
+    };
+    vpnNamespaces.${torrentNamespace} = {
+      enable = true;
+      wireguardConfigFile = config.sops.secrets.vpn_proxy_conf.path;
+      accessibleFrom = [
+        "127.0.0.0/8"
+        "::1/128"
+      ];
+      portMappings = [
         {
-          containerPort = config.containers.transmission.config.services.transmission.settings.rpc-port;
-          hostPort = config.containers.transmission.config.services.transmission.settings.rpc-port;
+          from = config.services.transmission.settings.rpc-port;
+          to = config.services.transmission.settings.rpc-port;
           protocol = "tcp";
         }
       ];
-      config = _: {
-        networking = {
-          wg-quick.interfaces.wg0.configFile = config.sops.secrets.vpn_proxy_conf.path;
-        };
-        services.transmission = {
-          enable = true;
-          settings = {
-            rpc-bind-address = "0.0.0.0";
-            peer-port = 15758;
-            incomplete-dir-enabled = false;
-          };
-        };
-        system.stateVersion = config.system.stateVersion;
-      };
+      openVPNPorts = [
+        {
+          port = config.services.transmission.settings.peer-port;
+          protocol = "both";
+        }
+      ];
     };
     vars.persistence.dirs = [
       config.services.lidarr.dataDir
@@ -65,7 +63,6 @@
     ];
     vars.persistence.laDirs = [
       mediaDir
-      config.containers.transmission.config.services.transmission.settings.download-dir
     ];
     networking.firewall.interfaces.${config.vars.wireguard_server.interfaceName}.allowedTCPPorts = [80];
     services.nginx = {
@@ -95,7 +92,10 @@
           # forceSSL = true;
         };
         "transmission.${config.vars.wireguard_server.domain}" = {
-          locations."/".proxyPass = "http://${transmissionAddress}:${toString config.containers.transmission.config.services.transmission.settings.rpc-port}"; #uses vpn address
+          locations."/" = {
+            proxyPass = "http://${config.vpnNamespaces.${torrentNamespace}.bridgeAddress}:${toString config.services.transmission.settings.rpc-port}"; #uses vpn address
+            proxyWebsockets = true;
+          };
           # enableACME = true;
           # forceSSL = true;
         };
