@@ -27,6 +27,8 @@
         settings = {
           peer-port = 15758;
           rpc-bind-address = config.vpnNamespaces.${torrentNamespace}.namespaceAddress;
+          rpc-whitelist-enable = true;
+          rpc-whitelist = config.vpnNamespaces.${torrentNamespace}.bridgeAddress;
         };
       };
     };
