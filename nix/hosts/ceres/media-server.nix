@@ -40,7 +40,6 @@
       accessibleFrom = [
         "127.0.0.0/8"
         "::1/128"
-        "192.168.1.0/24"
       ];
       portMappings = [
         {
@@ -94,7 +93,7 @@
         };
         "transmission.${config.vars.wireguard_server.domain}" = {
           locations."/" = {
-            proxyPass = "http://${config.vpnNamespaces.${torrentNamespace}.bridgeAddress}:${toString config.services.transmission.settings.rpc-port}"; #uses vpn address
+            proxyPass = "http://${config.vpnNamespaces.${torrentNamespace}.namespaceAddress}:${toString config.services.transmission.settings.rpc-port}"; #uses vpn address
             proxyWebsockets = true;
           };
           # enableACME = true;
