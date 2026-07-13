@@ -27,8 +27,9 @@
         settings = {
           peer-port = 15758;
           rpc-bind-address = config.vpnNamespaces.${torrentNamespace}.namespaceAddress;
-          rpc-whitelist-enable = true;
-          rpc-whitelist = config.vpnNamespaces.${torrentNamespace}.bridgeAddress;
+          rpc-whitelist-enabled = true;
+          rpc-host-whitelist-enabled = false;
+          rpc-whitelist = "127.0.0.1,${config.vpnNamespaces.${torrentNamespace}.bridgeAddress}";
         };
       };
     };
@@ -95,14 +96,14 @@
           # enableACME = true;
           # forceSSL = true;
         };
-        # "transmission.${config.vars.wireguard_server.domain}" = {
-        #   locations."/" = {
-        #     proxyPass = "http://${config.vpnNamespaces.${torrentNamespace}.bridgeAddress}:${toString config.services.transmission.settings.rpc-port}"; #uses vpn address
-        #     proxyWebsockets = true;
-        #   };
-        #   # enableACME = true;
-        #   # forceSSL = true;
-        # };
+        "transmission.${config.vars.wireguard_server.domain}" = {
+          locations."/" = {
+            proxyPass = "http://${config.vpnNamespaces.${torrentNamespace}.namespaceAddress}:${toString config.services.transmission.settings.rpc-port}"; #uses vpn address
+            proxyWebsockets = true;
+          };
+          # enableACME = true;
+          # forceSSL = true;
+        };
       };
     };
   };
