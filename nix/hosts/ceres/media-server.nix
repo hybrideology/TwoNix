@@ -38,8 +38,8 @@
       enable = true;
       wireguardConfigFile = config.sops.secrets.vpn_proxy_conf.path;
       accessibleFrom = [
-        "127.0.0.0/8"
-        "::1/128"
+        "0.0.0.0/0"
+        "::/0"
       ];
       portMappings = [
         {
