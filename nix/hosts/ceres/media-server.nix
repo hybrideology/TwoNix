@@ -16,7 +16,14 @@
         isSystemUser = true;
         group = mediaUser;
       };
-      groups.${mediaUser} = {};
+      groups.${mediaUser} = {
+        members = [
+          config.services.lidarr.user
+          config.services.radarr.user
+          config.services.sonarr.user
+          config.services.prowlarr.user
+        ];
+      };
     };
     services = {
       lidarr.enable = true;
