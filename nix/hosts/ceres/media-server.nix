@@ -21,6 +21,7 @@
           config.services.lidarr.user
           config.services.radarr.user
           config.services.sonarr.user
+          config.services.jellyfin.user
         ];
       };
     };
@@ -39,6 +40,7 @@
           rpc-whitelist = config.vpnNamespaces.${torrentNamespace}.bridgeAddress;
         };
       };
+      jellyfin.enable = true;
     };
     systemd.services.transmission.vpnConfinement = {
       enable = true;
@@ -69,6 +71,10 @@
       config.services.lidarr.dataDir
       config.services.radarr.dataDir
       config.services.sonarr.dataDir
+      config.services.jellyfin.cacheDir
+      config.services.jellyfin.configDir
+      config.services.jellyfin.dataDir
+      config.services.jellyfin.logDir
       # do not mount prowlarr, it auto mounts under systemd private
     ];
     vars.persistence.laDirs = [
@@ -110,6 +116,11 @@
         };
         "prowlarr.${config.vars.wireguard_server.domain}" = {
           locations."/".proxyPass = "http://localhost:${toString config.services.prowlarr.settings.server.port}";
+          # enableACME = true;
+          # forceSSL = true;
+        };
+        "jellyfin.${config.vars.wireguard_server.domain}" = {
+          locations."/".proxyPass = "http://localhost:8096";
           # enableACME = true;
           # forceSSL = true;
         };
