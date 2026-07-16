@@ -66,10 +66,19 @@
       # do not mount prowlarr, it auto mounts under systemd private
     ];
     vars.persistence.laDirs = [
-      mediaDir
+      {
+        directory = mediaDir;
+        user = config.users.users.${mediaUser}.name;
+        group = config.users.users.${mediaUser}.group;
+      }
       config.services.transmission.home
       config.services.transmission.settings.download-dir
       config.services.transmission.settings.incomplete-dir
+    ];
+    systemd.tmpfiles.rules = [
+      "d ${mediaDir}/music 0770 ${config.users.users.${mediaUser}.name} ${config.users.users.${mediaUser}.group} -"
+      "d ${mediaDir}/shows 0770 ${config.users.users.${mediaUser}.name} ${config.users.users.${mediaUser}.group} -"
+      "d ${mediaDir}/movies 0770 ${config.users.users.${mediaUser}.name} ${config.users.users.${mediaUser}.group} -"
     ];
     networking.firewall.interfaces.${config.vars.wireguard_server.interfaceName}.allowedTCPPorts = [80];
     services.nginx = {
