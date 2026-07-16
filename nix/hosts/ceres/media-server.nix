@@ -128,9 +128,9 @@
       }
     ];
     systemd.tmpfiles.rules = [
-      "d ${mediaDir}/music 0770 ${config.users.users.${mediaUser}.name} ${config.users.users.${mediaUser}.group} -"
-      "d ${mediaDir}/shows 0770 ${config.users.users.${mediaUser}.name} ${config.users.users.${mediaUser}.group} -"
-      "d ${mediaDir}/movies 0770 ${config.users.users.${mediaUser}.name} ${config.users.users.${mediaUser}.group} -"
+      "d ${mediaDir}/music 0775 ${config.users.users.${mediaUser}.name} ${config.users.users.${mediaUser}.group} -"
+      "d ${mediaDir}/shows 0775 ${config.users.users.${mediaUser}.name} ${config.users.users.${mediaUser}.group} -"
+      "d ${mediaDir}/movies 0775 ${config.users.users.${mediaUser}.name} ${config.users.users.${mediaUser}.group} -"
     ];
     networking.firewall.interfaces.${config.vars.wireguard_server.interfaceName}.allowedTCPPorts = [80];
     services.nginx = {
