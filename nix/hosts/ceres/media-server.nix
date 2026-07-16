@@ -16,14 +16,17 @@
         isSystemUser = true;
         group = mediaUser;
       };
-      groups.${mediaUser} = {
-        members = [
-          config.services.lidarr.user
-          config.services.radarr.user
-          config.services.sonarr.user
-          config.services.jellyfin.user
-        ];
-      };
+      groups.${mediaUser}.members = [
+        config.services.lidarr.user
+        config.services.radarr.user
+        config.services.sonarr.user
+        config.services.jellyfin.user
+      ];
+      groups.${config.services.transmission.group}.members = [
+        config.services.lidarr.user
+        config.services.radarr.user
+        config.services.sonarr.user
+      ];
     };
     services = {
       lidarr.enable = true;
