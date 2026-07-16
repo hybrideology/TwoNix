@@ -67,6 +67,7 @@
     ];
     vars.persistence.laDirs = [
       mediaDir
+      config.services.transmission.dataDir
     ];
     networking.firewall.interfaces.${config.vars.wireguard_server.interfaceName}.allowedTCPPorts = [80];
     services.nginx = {
