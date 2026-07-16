@@ -1,6 +1,7 @@
 {inputs, ...}: {
   flake.nixosModules.ceres = {config, ...}: let
     mediaDir = "/srv/media";
+    mediaUser = "media";
     torrentNamespace = "torrent";
   in {
     imports = [inputs.vpn-confinement.nixosModules.default];
@@ -11,11 +12,11 @@
       owner = "root";
     };
     users = {
-      users.media = {
+      users.${mediaUser} = {
         isSystemUser = true;
-        group = config.users.groups.media.name;
+        group = mediaUser;
       };
-      groups.media = {};
+      groups.${mediaUser} = {};
     };
     services = {
       lidarr.enable = true;
@@ -27,9 +28,9 @@
         settings = {
           peer-port = 15758;
           rpc-bind-address = config.vpnNamespaces.${torrentNamespace}.namespaceAddress;
-          rpc-whitelist-enabled = true;
           rpc-host-whitelist-enabled = false;
-          rpc-whitelist = "127.0.0.1,${config.vpnNamespaces.${torrentNamespace}.bridgeAddress}";
+          rpc-whitelist-enabled = true;
+          rpc-whitelist = config.vpnNamespaces.${torrentNamespace}.bridgeAddress;
         };
       };
     };
@@ -41,8 +42,6 @@
       enable = true;
       wireguardConfigFile = config.sops.secrets.vpn_proxy_conf.path;
       accessibleFrom = [
-        "192.168.1.0/24"
-        "10.0.0.0/24"
         "127.0.0.0/8"
         "::1/128"
       ];
