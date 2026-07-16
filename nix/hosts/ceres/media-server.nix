@@ -21,7 +21,6 @@
           config.services.lidarr.user
           config.services.radarr.user
           config.services.sonarr.user
-          config.services.prowlarr.user
         ];
       };
     };
