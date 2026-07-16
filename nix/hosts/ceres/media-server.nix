@@ -68,13 +68,41 @@
       ];
     };
     vars.persistence.dirs = [
-      config.services.lidarr.dataDir
-      config.services.radarr.dataDir
-      config.services.sonarr.dataDir
-      config.services.jellyfin.cacheDir
-      config.services.jellyfin.configDir
-      config.services.jellyfin.dataDir
-      config.services.jellyfin.logDir
+      {
+        directory = config.services.lidarr.dataDir;
+        user = config.services.lidarr.user;
+        group = config.services.lidarr.group;
+      }
+      {
+        directory = config.services.radarr.dataDir;
+        user = config.services.radarr.user;
+        group = config.services.radarr.group;
+      }
+      {
+        directory = config.services.sonarr.dataDir;
+        user = config.services.sonarr.user;
+        group = config.services.sonarr.group;
+      }
+      {
+        directory = config.services.jellyfin.cacheDir;
+        user = config.services.jellyfin.user;
+        group = config.services.jellyfin.group;
+      }
+      {
+        directory = config.services.jellyfin.configDir;
+        user = config.services.jellyfin.user;
+        group = config.services.jellyfin.group;
+      }
+      {
+        directory = config.services.jellyfin.dataDir;
+        user = config.services.jellyfin.user;
+        group = config.services.jellyfin.group;
+      }
+      {
+        directory = config.services.jellyfin.logDir;
+        user = config.services.jellyfin.user;
+        group = config.services.jellyfin.group;
+      }
       # do not mount prowlarr, it auto mounts under systemd private
     ];
     vars.persistence.laDirs = [
@@ -83,9 +111,21 @@
         user = config.users.users.${mediaUser}.name;
         group = config.users.users.${mediaUser}.group;
       }
-      config.services.transmission.home
-      config.services.transmission.settings.download-dir
-      config.services.transmission.settings.incomplete-dir
+      {
+        directory = config.services.transmission.home;
+        user = config.services.transmission.user;
+        group = config.services.transmission.group;
+      }
+      {
+        directory = config.services.transmission.settings.download-dir;
+        user = config.services.transmission.user;
+        group = config.services.transmission.group;
+      }
+      {
+        directory = config.services.transmission.settings.incomplete-dir;
+        user = config.services.transmission.user;
+        group = config.services.transmission.group;
+      }
     ];
     systemd.tmpfiles.rules = [
       "d ${mediaDir}/music 0770 ${config.users.users.${mediaUser}.name} ${config.users.users.${mediaUser}.group} -"
