@@ -67,7 +67,9 @@
     ];
     vars.persistence.laDirs = [
       mediaDir
+      config.services.transmission.home
       config.services.transmission.settings.download-dir
+      config.services.transmission.settings.incomplete-dir
     ];
     networking.firewall.interfaces.${config.vars.wireguard_server.interfaceName}.allowedTCPPorts = [80];
     services.nginx = {
