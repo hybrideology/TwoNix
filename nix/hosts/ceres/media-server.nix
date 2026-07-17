@@ -32,6 +32,7 @@
       lidarr.enable = true;
       radarr.enable = true;
       sonarr.enable = true;
+      flaresolverr.enable = true;
       prowlarr.enable = true;
       transmission = {
         enable = true;
