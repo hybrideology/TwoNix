@@ -34,6 +34,7 @@
       sonarr.enable = true;
       flaresolverr.enable = true;
       prowlarr.enable = true;
+      jackett.enable = true;
       transmission = {
         enable = true;
         settings = {
@@ -86,6 +87,11 @@
         directory = config.services.sonarr.dataDir;
         user = config.services.sonarr.user;
         group = config.services.sonarr.group;
+      }
+      {
+        directory = config.services.jackett.dataDir;
+        user = config.services.jackett.user;
+        group = config.services.jackett.group;
       }
       {
         directory = config.services.jellyfin.cacheDir;
@@ -160,6 +166,11 @@
         };
         "prowlarr.${config.vars.wireguard_server.domain}" = {
           locations."/".proxyPass = "http://localhost:${toString config.services.prowlarr.settings.server.port}";
+          # enableACME = true;
+          # forceSSL = true;
+        };
+        "jackett.${config.vars.wireguard_server.domain}" = {
+          locations."/".proxyPass = "http://localhost:${toString config.services.jackett.port}";
           # enableACME = true;
           # forceSSL = true;
         };
