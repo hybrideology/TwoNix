@@ -32,6 +32,7 @@
       lidarr.enable = true;
       radarr.enable = true;
       sonarr.enable = true;
+      bazarr.enable = true;
       flaresolverr.enable = true;
       prowlarr.enable = true;
       jackett.enable = true;
@@ -88,6 +89,11 @@
         directory = config.services.sonarr.dataDir;
         user = config.services.sonarr.user;
         group = config.services.sonarr.group;
+      }
+      {
+        directory = config.services.bazarr.dataDir;
+        user = config.services.bazarr.user;
+        group = config.services.bazarr.group;
       }
       {
         directory = config.services.jackett.dataDir;
@@ -168,6 +174,11 @@
         };
         "prowlarr.${config.vars.wireguard_server.domain}" = {
           locations."/".proxyPass = "http://localhost:${toString config.services.prowlarr.settings.server.port}";
+          # enableACME = true;
+          # forceSSL = true;
+        };
+        "bazarr.${config.vars.wireguard_server.domain}" = {
+          locations."/".proxyPass = "http://localhost:${toString config.services.bazarr.listenPort}";
           # enableACME = true;
           # forceSSL = true;
         };
