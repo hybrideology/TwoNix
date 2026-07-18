@@ -20,13 +20,21 @@
         config.services.lidarr.user
         config.services.radarr.user
         config.services.sonarr.user
-        config.services.bazarr.user
         config.services.jellyfin.user
       ];
       groups.${config.services.transmission.group}.members = [
         config.services.lidarr.user
         config.services.radarr.user
         config.services.sonarr.user
+      ];
+      groups.${config.services.sonarr.group}.members = [
+        config.services.bazarr.user
+      ];
+      groups.${config.services.radarr.group}.members = [
+        config.services.bazarr.user
+      ];
+      groups.${config.services.lidarr.group}.members = [
+        config.services.bazarr.user
       ];
     };
     services = {
