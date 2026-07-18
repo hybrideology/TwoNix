@@ -20,6 +20,7 @@
         config.services.lidarr.user
         config.services.radarr.user
         config.services.sonarr.user
+        config.services.bazarr.user
         config.services.jellyfin.user
       ];
       groups.${config.services.transmission.group}.members = [
