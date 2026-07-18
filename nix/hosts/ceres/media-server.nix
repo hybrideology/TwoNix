@@ -46,6 +46,7 @@
         };
       };
       jellyfin.enable = true;
+      seerr.enable = true;
     };
     systemd.services.transmission.vpnConfinement = {
       enable = true;
@@ -113,6 +114,7 @@
         user = config.services.jellyfin.user;
         group = config.services.jellyfin.group;
       }
+      config.services.seerr.configDir
       # do not mount prowlarr, it auto mounts under systemd private
     ];
     vars.persistence.laDirs = [
@@ -179,6 +181,11 @@
             proxyPass = "http://localhost:8096";
             proxyWebsockets = true;
           };
+          # enableACME = true;
+          # forceSSL = true;
+        };
+        "seerr.${config.vars.wireguard_server.domain}" = {
+          locations."/".proxyPass = "http://localhost:${toString config.services.seerr.port}";
           # enableACME = true;
           # forceSSL = true;
         };
