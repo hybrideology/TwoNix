@@ -45,10 +45,20 @@
         PublicKey = "Bu8uY1wrJVfWEOf7kGuyBYfVA5d1H91FZmEF8gvlCxY=";
         AllowedIPs = ["10.0.0.3/32"];
       }
+      # rr desktop
+      {
+        PublicKey = "NaTVs1SRJydEc26nJrnHNt2SgT7U9y5qGwUbj+eeaCE=";
+        AllowedIPs = ["10.0.0.4/32"];
+      }
       # betelgeuse
       {
         PublicKey = "aVeaKlXy5YAootyBmWr0SnZVShrWFcDjQaNKQV//JCI=";
         AllowedIPs = ["10.0.0.5/32"];
+      }
+      # tp desktop
+      {
+        PublicKey = "aJNiOUMakABDExfDvysoX9j9nD/9Nzym0QrOrC9mrhE=";
+        AllowedIPs = ["10.0.0.6/32"];
       }
     ];
   };
