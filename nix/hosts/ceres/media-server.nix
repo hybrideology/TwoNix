@@ -175,7 +175,10 @@
           # forceSSL = true;
         };
         "jellyfin.${config.vars.wireguard_server.domain}" = {
-          locations."/".proxyPass = "http://localhost:8096";
+          locations."/" = {
+            proxyPass = "http://localhost:8096";
+            proxyWebsockets = true;
+          };
           # enableACME = true;
           # forceSSL = true;
         };
