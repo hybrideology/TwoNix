@@ -114,8 +114,8 @@
         user = config.services.jellyfin.user;
         group = config.services.jellyfin.group;
       }
-      config.services.seerr.configDir
       # do not mount prowlarr, it auto mounts under systemd private
+      # do not mount seerr, it auto mounts under systemd private
     ];
     vars.persistence.laDirs = [
       {
