@@ -1,8 +1,11 @@
 {inputs, ...}: {
   flake.nixosModules.ceres = {config, ...}: let
-    mediaDir = "/srv/media";
+    srvDir = "/srv";
+    mediaDir = "${srvDir}/media";
     mediaUser = "media";
+    torrentDir = "${srvDir}/torrent";
     torrentNamespace = "torrent";
+    torrentPeerPort = 15758;
   in {
     imports = [inputs.vpn-confinement.nixosModules.default];
     sops.secrets.vpn_proxy_conf = {
@@ -46,9 +49,11 @@
       prowlarr.enable = true;
       jackett.enable = true;
       transmission = {
-        enable = true;
+        enable = false;
         settings = {
-          peer-port = 15758;
+          peer-port = torrentPeerPort;
+          download-dir = torrentDir;
+          incomplete-dir-enabled = false;
           rpc-bind-address = config.vpnNamespaces.${torrentNamespace}.namespaceAddress;
           rpc-host-whitelist-enabled = false;
           rpc-whitelist-enabled = true;
@@ -133,28 +138,16 @@
       # do not mount seerr, it auto mounts under systemd private
     ];
     vars.persistence.laDirs = [
-      {
-        directory = mediaDir;
-        user = config.users.users.${mediaUser}.name;
-        group = config.users.users.${mediaUser}.group;
-      }
+      srvDir
       {
         directory = config.services.transmission.home;
         user = config.services.transmission.user;
         group = config.services.transmission.group;
       }
-      {
-        directory = config.services.transmission.settings.download-dir;
-        user = config.services.transmission.user;
-        group = config.services.transmission.group;
-      }
-      {
-        directory = config.services.transmission.settings.incomplete-dir;
-        user = config.services.transmission.user;
-        group = config.services.transmission.group;
-      }
     ];
     systemd.tmpfiles.rules = [
+      "d ${torrentDir} 0755 ${config.services.transmission.user} ${config.services.transmission.group} -"
+      "d ${mediaDir} 0755 ${config.users.users.${mediaUser}.name} ${config.users.users.${mediaUser}.group} -"
       "d ${mediaDir}/music 0775 ${config.users.users.${mediaUser}.name} ${config.users.users.${mediaUser}.group} -"
       "d ${mediaDir}/shows 0775 ${config.users.users.${mediaUser}.name} ${config.users.users.${mediaUser}.group} -"
       "d ${mediaDir}/movies 0775 ${config.users.users.${mediaUser}.name} ${config.users.users.${mediaUser}.group} -"
