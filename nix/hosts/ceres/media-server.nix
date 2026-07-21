@@ -49,7 +49,7 @@
       prowlarr.enable = true;
       jackett.enable = true;
       transmission = {
-        enable = false;
+        enable = true;
         settings = {
           peer-port = torrentPeerPort;
           download-dir = torrentDir;
