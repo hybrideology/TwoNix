@@ -6,6 +6,10 @@
     torrentDir = "${srvDir}/torrent";
     torrentNamespace = "torrent";
     torrentPeerPort = 15758;
+    moviesDir = "${mediaDir}/movies";
+    showsDir = "${mediaDir}/shows";
+    musicDir = "${mediaDir}/music";
+    podcastsDir = "${mediaDir}/podcasts";
   in {
     imports = [inputs.vpn-confinement.nixosModules.default];
     sops.secrets.vpn_proxy_conf = {
@@ -23,6 +27,7 @@
         config.services.lidarr.user
         config.services.radarr.user
         config.services.sonarr.user
+        config.services.podgrab.user
         config.services.jellyfin.user
       ];
       groups.${config.services.transmission.group}.members = [
@@ -41,13 +46,27 @@
       ];
     };
     services = {
+      # step-ca = {
+      #   enable = true;
+      #   address = "127.0.0.1";
+      #   port = 9531;
+      #   # needs settings
+      # };
+      # Download Managers
       lidarr.enable = true;
       radarr.enable = true;
       sonarr.enable = true;
       bazarr.enable = true;
+      podgrab = {
+        enable = true;
+        dataDirectory = podcastsDir;
+        port = 4242;
+      };
+      # Index Tools
       flaresolverr.enable = true;
       prowlarr.enable = true;
       jackett.enable = true;
+      #Download Clients
       transmission = {
         enable = true;
         settings = {
@@ -60,8 +79,10 @@
           rpc-whitelist = config.vpnNamespaces.${torrentNamespace}.bridgeAddress;
         };
       };
+      # Servers
       jellyfin.enable = true;
       seerr.enable = true;
+      audiobookshelf.enable = true;
     };
     systemd.services.transmission.vpnConfinement = {
       enable = true;
@@ -139,6 +160,16 @@
         user = config.services.jellyfin.user;
         group = config.services.jellyfin.group;
       }
+      {
+        directory = "/var/lib/podgrab"; #podgrab module hard-codes this
+        user = config.services.podgrab.user;
+        group = config.services.podgrab.group;
+      }
+      {
+        directory = "/var/lib/${config.services.audiobookshelf.dataDir}"; #podgrab module hard-codes this
+        user = config.services.podgrab.user;
+        group = config.services.podgrab.group;
+      }
       # do not mount prowlarr, it auto mounts under systemd private
       # do not mount seerr, it auto mounts under systemd private
     ];
@@ -148,12 +179,13 @@
     systemd.tmpfiles.rules = [
       "d ${torrentDir} 0755 ${config.services.transmission.user} ${config.services.transmission.group} -"
       "d ${mediaDir} 0755 ${config.users.users.${mediaUser}.name} ${config.users.users.${mediaUser}.group} -"
-      "d ${mediaDir}/music 0775 ${config.users.users.${mediaUser}.name} ${config.users.users.${mediaUser}.group} -"
-      "d ${mediaDir}/shows 0775 ${config.users.users.${mediaUser}.name} ${config.users.users.${mediaUser}.group} -"
-      "d ${mediaDir}/movies 0775 ${config.users.users.${mediaUser}.name} ${config.users.users.${mediaUser}.group} -"
+      "d ${musicDir} 0775 ${config.users.users.${mediaUser}.name} ${config.users.users.${mediaUser}.group} -"
+      "d ${showsDir} 0775 ${config.users.users.${mediaUser}.name} ${config.users.users.${mediaUser}.group} -"
+      "d ${moviesDir} 0775 ${config.users.users.${mediaUser}.name} ${config.users.users.${mediaUser}.group} -"
+      "d ${podcastsDir} 0775 ${config.users.users.${mediaUser}.name} ${config.users.users.${mediaUser}.group} -"
     ];
     networking.firewall.interfaces.${config.vars.wireguard_server.interfaceName}.allowedTCPPorts = [443];
-    security.acme.acceptTerms = true;
+    security.acme.acceptTerms = true; # note: move this to dns/vpn module
     services.nginx = {
       enable = true;
       recommendedOptimisation = true;
@@ -208,6 +240,16 @@
         };
         "seerr.${config.vars.wireguard_server.domain}" = {
           locations."/".proxyPass = "http://localhost:${toString config.services.seerr.port}";
+          enableACME = true;
+          forceSSL = true;
+        };
+        "audiobookshelf.${config.vars.wireguard_server.domain}" = {
+          locations."/".proxyPass = "http://localhost:${toString config.services.audiobookshelf.port}";
+          enableACME = true;
+          forceSSL = true;
+        };
+        "podgrab.${config.vars.wireguard_server.domain}" = {
+          locations."/".proxyPass = "http://localhost:${toString config.services.podgrab.port}";
           enableACME = true;
           forceSSL = true;
         };
