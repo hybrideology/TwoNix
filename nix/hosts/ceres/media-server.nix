@@ -90,6 +90,11 @@
     };
     vars.persistence.dirs = [
       {
+        directory = config.services.transmission.home;
+        user = config.services.transmission.user;
+        group = config.services.transmission.group;
+      }
+      {
         directory = config.services.lidarr.dataDir;
         user = config.services.lidarr.user;
         group = config.services.lidarr.group;
@@ -139,11 +144,6 @@
     ];
     vars.persistence.laDirs = [
       srvDir
-      {
-        directory = config.services.transmission.home;
-        user = config.services.transmission.user;
-        group = config.services.transmission.group;
-      }
     ];
     systemd.tmpfiles.rules = [
       "d ${torrentDir} 0755 ${config.services.transmission.user} ${config.services.transmission.group} -"
@@ -152,63 +152,64 @@
       "d ${mediaDir}/shows 0775 ${config.users.users.${mediaUser}.name} ${config.users.users.${mediaUser}.group} -"
       "d ${mediaDir}/movies 0775 ${config.users.users.${mediaUser}.name} ${config.users.users.${mediaUser}.group} -"
     ];
-    networking.firewall.interfaces.${config.vars.wireguard_server.interfaceName}.allowedTCPPorts = [80];
+    networking.firewall.interfaces.${config.vars.wireguard_server.interfaceName}.allowedTCPPorts = [443];
+    security.acme.acceptTerms = true;
     services.nginx = {
       enable = true;
       recommendedOptimisation = true;
       recommendedGzipSettings = true;
       recommendedProxySettings = true;
       virtualHosts = {
+        "transmission.${config.vars.wireguard_server.domain}" = {
+          locations."/" = {
+            proxyPass = "http://${config.vpnNamespaces.${torrentNamespace}.namespaceAddress}:${toString config.services.transmission.settings.rpc-port}"; #uses vpn address
+            proxyWebsockets = true;
+          };
+          enableACME = true;
+          forceSSL = true;
+        };
         "lidarr.${config.vars.wireguard_server.domain}" = {
           locations."/".proxyPass = "http://localhost:${toString config.services.lidarr.settings.server.port}";
-          # enableACME = true;
-          # forceSSL = true;
+          enableACME = true;
+          forceSSL = true;
         };
         "radarr.${config.vars.wireguard_server.domain}" = {
           locations."/".proxyPass = "http://localhost:${toString config.services.radarr.settings.server.port}";
-          # enableACME = true;
-          # forceSSL = true;
+          enableACME = true;
+          forceSSL = true;
         };
         "sonarr.${config.vars.wireguard_server.domain}" = {
           locations."/".proxyPass = "http://localhost:${toString config.services.sonarr.settings.server.port}";
-          # enableACME = true;
-          # forceSSL = true;
+          enableACME = true;
+          forceSSL = true;
         };
         "prowlarr.${config.vars.wireguard_server.domain}" = {
           locations."/".proxyPass = "http://localhost:${toString config.services.prowlarr.settings.server.port}";
-          # enableACME = true;
-          # forceSSL = true;
+          enableACME = true;
+          forceSSL = true;
         };
         "bazarr.${config.vars.wireguard_server.domain}" = {
           locations."/".proxyPass = "http://localhost:${toString config.services.bazarr.listenPort}";
-          # enableACME = true;
-          # forceSSL = true;
+          enableACME = true;
+          forceSSL = true;
         };
         "jackett.${config.vars.wireguard_server.domain}" = {
           locations."/".proxyPass = "http://localhost:${toString config.services.jackett.port}";
-          # enableACME = true;
-          # forceSSL = true;
+          enableACME = true;
+          forceSSL = true;
         };
         "jellyfin.${config.vars.wireguard_server.domain}" = {
           locations."/" = {
             proxyPass = "http://localhost:8096";
             proxyWebsockets = true;
           };
-          # enableACME = true;
-          # forceSSL = true;
+          enableACME = true;
+          forceSSL = true;
         };
         "seerr.${config.vars.wireguard_server.domain}" = {
           locations."/".proxyPass = "http://localhost:${toString config.services.seerr.port}";
-          # enableACME = true;
-          # forceSSL = true;
-        };
-        "transmission.${config.vars.wireguard_server.domain}" = {
-          locations."/" = {
-            proxyPass = "http://${config.vpnNamespaces.${torrentNamespace}.namespaceAddress}:${toString config.services.transmission.settings.rpc-port}"; #uses vpn address
-            proxyWebsockets = true;
-          };
-          # enableACME = true;
-          # forceSSL = true;
+          enableACME = true;
+          forceSSL = true;
         };
       };
     };
