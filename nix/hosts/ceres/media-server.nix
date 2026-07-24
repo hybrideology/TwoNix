@@ -82,7 +82,6 @@
       # Servers
       jellyfin.enable = true;
       seerr.enable = true;
-      audiobookshelf.enable = true;
     };
     systemd.services.transmission.vpnConfinement = {
       enable = true;
@@ -165,11 +164,6 @@
         user = config.services.podgrab.user;
         group = config.services.podgrab.group;
       }
-      {
-        directory = "/var/lib/${config.services.audiobookshelf.dataDir}"; #podgrab module hard-codes this
-        user = config.services.podgrab.user;
-        group = config.services.podgrab.group;
-      }
       # do not mount prowlarr, it auto mounts under systemd private
       # do not mount seerr, it auto mounts under systemd private
     ];
@@ -240,11 +234,6 @@
         };
         "seerr.${config.vars.wireguard_server.domain}" = {
           locations."/".proxyPass = "http://localhost:${toString config.services.seerr.port}";
-          enableACME = true;
-          forceSSL = true;
-        };
-        "audiobookshelf.${config.vars.wireguard_server.domain}" = {
-          locations."/".proxyPass = "http://localhost:${toString config.services.audiobookshelf.port}";
           enableACME = true;
           forceSSL = true;
         };
