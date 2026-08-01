@@ -64,8 +64,8 @@
       };
       # Index Tools
       flaresolverr.enable = true;
-      prowlarr.enable = true;
       jackett.enable = true;
+      bitmagnet.enable = true;
       #Download Clients
       transmission = {
         enable = true;
@@ -164,7 +164,6 @@
         user = config.services.podgrab.user;
         group = config.services.podgrab.group;
       }
-      # do not mount prowlarr, it auto mounts under systemd private
       # do not mount seerr, it auto mounts under systemd private
     ];
     vars.persistence.laDirs = [
@@ -209,11 +208,6 @@
           enableACME = true;
           forceSSL = true;
         };
-        "prowlarr.${config.vars.wireguard_server.domain}" = {
-          locations."/".proxyPass = "http://localhost:${toString config.services.prowlarr.settings.server.port}";
-          enableACME = true;
-          forceSSL = true;
-        };
         "bazarr.${config.vars.wireguard_server.domain}" = {
           locations."/".proxyPass = "http://localhost:${toString config.services.bazarr.listenPort}";
           enableACME = true;
@@ -239,6 +233,11 @@
         };
         "podgrab.${config.vars.wireguard_server.domain}" = {
           locations."/".proxyPass = "http://localhost:${toString config.services.podgrab.port}";
+          enableACME = true;
+          forceSSL = true;
+        };
+        "bitmagnet.${config.vars.wireguard_server.domain}" = {
+          locations."/".proxyPass = "http://localhost${toString config.services.bitmagnet.settings.http_server.local_address}";
           enableACME = true;
           forceSSL = true;
         };
