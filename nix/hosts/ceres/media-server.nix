@@ -160,7 +160,7 @@
         group = config.services.jellyfin.group;
       }
       {
-        directory = config.systemd.services.podgrab.serviceConfig.WorkingDirectory; #podgrab module hard-codes this
+        directory = "/var/lib/podgrab"; #podgrab module hard-codes this
         user = config.services.podgrab.user;
         group = config.services.podgrab.group;
       }
