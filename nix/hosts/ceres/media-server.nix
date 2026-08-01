@@ -160,9 +160,14 @@
         group = config.services.jellyfin.group;
       }
       {
-        directory = "/var/lib/podgrab"; #podgrab module hard-codes this
+        directory = config.systemd.services.podgrab.serviceConfig.WorkingDirectory; #podgrab module hard-codes this
         user = config.services.podgrab.user;
         group = config.services.podgrab.group;
+      }
+      {
+        directory = config.services.postgresql.dataDir;
+        user = config.users.users.postgres.name; # postgres requires this user
+        group = config.users.groups.postgres.name; # postgres requires this group
       }
       # do not mount seerr, it auto mounts under systemd private
     ];
