@@ -65,7 +65,7 @@
       # Index Tools
       flaresolverr.enable = true;
       jackett.enable = true;
-      bitmagnet.enable = true;
+      # bitmagnet.enable = true;
       #Download Clients
       transmission = {
         enable = true;
