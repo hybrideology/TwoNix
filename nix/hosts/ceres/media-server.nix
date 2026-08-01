@@ -65,7 +65,7 @@
       # Index Tools
       flaresolverr.enable = true;
       jackett.enable = true;
-      # bitmagnet.enable = true;
+      bitmagnet.enable = true;
       #Download Clients
       transmission = {
         enable = true;
@@ -83,9 +83,15 @@
       jellyfin.enable = true;
       seerr.enable = true;
     };
-    systemd.services.transmission.vpnConfinement = {
-      enable = true;
-      vpnNamespace = torrentNamespace;
+    systemd.services = {
+      transmission.vpnConfinement = {
+        enable = true;
+        vpnNamespace = torrentNamespace;
+      };
+      bitmagnet.vpnConfinement = {
+        enable = true;
+        vpnNamespace = torrentNamespace;
+      };
     };
     vpnNamespaces.${torrentNamespace} = {
       enable = true;
