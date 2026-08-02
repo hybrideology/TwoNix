@@ -111,8 +111,8 @@
           protocol = "tcp";
         }
         {
-          from = lib.toInt builtins.substring 1 (-1) config.services.bitmagnet.settings.http_server.local_address;
-          to = lib.toInt builtins.substring 1 (-1) config.services.bitmagnet.settings.http_server.local_address;
+          from = lib.toInt (builtins.substring 1 (-1) config.services.bitmagnet.settings.http_server.local_address);
+          to = lib.toInt (builtins.substring 1 (-1) config.services.bitmagnet.settings.http_server.local_address);
           protocol = "tcp";
         }
       ];
