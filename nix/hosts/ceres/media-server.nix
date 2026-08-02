@@ -69,7 +69,7 @@
       # Index Tools
       flaresolverr.enable = true;
       jackett.enable = true;
-      # bitmagnet.enable = true;
+      bitmagnet.enable = true;
       #Download Clients
       transmission = {
         enable = true;
@@ -110,11 +110,11 @@
           to = config.services.transmission.settings.rpc-port;
           protocol = "tcp";
         }
-        # {
-        #   from = lib.toInt builtins.substring 1 (-1) config.services.bitmagnet.settings.http_server.local_address;
-        #   to = lib.toInt builtins.substring 1 (-1) config.services.bitmagnet.settings.http_server.local_address;
-        #   protocol = "tcp";
-        # }
+        {
+          from = lib.toInt builtins.substring 1 (-1) config.services.bitmagnet.settings.http_server.local_address;
+          to = lib.toInt builtins.substring 1 (-1) config.services.bitmagnet.settings.http_server.local_address;
+          protocol = "tcp";
+        }
       ];
       openVPNPorts = [
         {
@@ -180,11 +180,11 @@
         user = config.services.podgrab.user;
         group = config.services.podgrab.group;
       }
-      # {
-      #   directory = config.services.postgresql.dataDir;
-      #   user = config.users.users.postgres.name; # postgres requires this user
-      #   group = config.users.groups.postgres.name; # postgres requires this group
-      # }
+      {
+        directory = config.services.postgresql.dataDir;
+        user = config.users.users.postgres.name; # postgres requires this user
+        group = config.users.groups.postgres.name; # postgres requires this group
+      }
       # do not mount seerr, it auto mounts under systemd private
     ];
     vars.persistence.laDirs = [
@@ -257,11 +257,11 @@
           enableACME = true;
           forceSSL = true;
         };
-        # "bitmagnet.${config.vars.wireguard_server.domain}" = {
-        #   locations."/".proxyPass = "http://localhost${toString config.services.bitmagnet.settings.http_server.local_address}";
-        #   enableACME = true;
-        #   forceSSL = true;
-        # };
+        "bitmagnet.${config.vars.wireguard_server.domain}" = {
+          locations."/".proxyPass = "http://localhost${toString config.services.bitmagnet.settings.http_server.local_address}";
+          enableACME = true;
+          forceSSL = true;
+        };
       };
     };
   };
