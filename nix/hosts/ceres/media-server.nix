@@ -69,7 +69,10 @@
       jackett.enable = true;
       bitmagnet = {
         enable = true;
-        settings.dht_server.port = 38362;
+        settings = {
+          dht_server.port = 38362;
+          processor.concurrency = 3;
+        };
       };
       #Download Clients
       transmission = {
