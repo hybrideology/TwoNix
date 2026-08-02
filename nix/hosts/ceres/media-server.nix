@@ -258,7 +258,7 @@
           forceSSL = true;
         };
         "bitmagnet.${config.vars.wireguard_server.domain}" = {
-          locations."/".proxyPass = "http://localhost${toString config.services.bitmagnet.settings.http_server.local_address}";
+          locations."/".proxyPass = "http://${config.vpnNamespaces.${torrentNamespace}.namespaceAddress}${toString config.services.bitmagnet.settings.http_server.local_address}";
           enableACME = true;
           forceSSL = true;
         };
