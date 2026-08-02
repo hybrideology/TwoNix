@@ -9,7 +9,6 @@
     mediaUser = "media";
     torrentDir = "${srvDir}/torrent";
     torrentNamespace = "torrent";
-    torrentPeerPort = 15758;
     moviesDir = "${mediaDir}/movies";
     showsDir = "${mediaDir}/shows";
     musicDir = "${mediaDir}/music";
@@ -64,17 +63,19 @@
       podgrab = {
         enable = true;
         dataDirectory = podcastsDir;
-        port = 4242;
       };
       # Index Tools
       flaresolverr.enable = true;
       jackett.enable = true;
-      bitmagnet.enable = true;
+      bitmagnet = {
+        enable = true;
+        settings.dht_server.port = 38362;
+      };
       #Download Clients
       transmission = {
         enable = true;
         settings = {
-          peer-port = torrentPeerPort;
+          peer-port = 15758;
           download-dir = torrentDir;
           incomplete-dir-enabled = false;
           rpc-bind-address = config.vpnNamespaces.${torrentNamespace}.namespaceAddress;
@@ -121,7 +122,10 @@
           port = config.services.transmission.settings.peer-port;
           protocol = "both";
         }
-        # need bittorrent port for bitmagnet
+        {
+          port = config.services.bitmagnet.settings.dht_server.port;
+          protocol = "both";
+        }
       ];
     };
     vars.persistence.dirs = [
