@@ -15,11 +15,19 @@
     podcastsDir = "${mediaDir}/podcasts";
   in {
     imports = [inputs.vpn-confinement.nixosModules.default];
-    sops.secrets.vpn_proxy_conf = {
-      sopsFile = inputs.secrets.ceres-vpn-proxy;
-      mode = "440";
-      format = "binary";
-      owner = "root";
+    sops.secrets = {
+      vpn_proxy_conf = {
+        sopsFile = inputs.secrets.ceres-vpn-proxy;
+        mode = "440";
+        format = "binary";
+        owner = "root";
+      };
+      ceres_bitmagnet_secrets = {
+        sopsFile = inputs.secrets.ceres-bitmagnet-secrets;
+        mode = "440";
+        format = "binary";
+        owner = "root";
+      };
     };
     users = {
       users.${mediaUser} = {
@@ -96,9 +104,12 @@
         enable = true;
         vpnNamespace = torrentNamespace;
       };
-      bitmagnet.vpnConfinement = {
-        enable = true;
-        vpnNamespace = torrentNamespace;
+      bitmagnet = {
+        serviceConfig.EnvironmentFile = config.sops.secrets.ceres_bitmagnet_secrets.path; #TODO fill
+        vpnConfinement = {
+          enable = true;
+          vpnNamespace = torrentNamespace;
+        };
       };
     };
     vpnNamespaces.${torrentNamespace} = {
