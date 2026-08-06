@@ -28,6 +28,16 @@
         format = "binary";
         owner = "root";
       };
+      radarr_api_key = {
+        sopsFile = inputs.secrets.ceres;
+        mode = "440";
+        owner = "root";
+      };
+      sonarr_api_key = {
+        sopsFile = inputs.secrets.ceres;
+        mode = "440";
+        owner = "root";
+      };
     };
     users = {
       users.${mediaUser} = {
@@ -72,6 +82,37 @@
         enable = true;
         dataDirectory = podcastsDir;
       };
+      recyclarr = {
+        enable = true;
+        configuration = {
+          radarr.radarr-main = {
+            api_key._secret = config.sops.secrets.radarr_api_key.path;
+            base_url = "http://localhost:${toString config.services.radarr.settings.server.port}";
+            instance_name = "main";
+            quality_definition.type = "movie";
+            delete_old_custom_formats = true;
+            quality_profiles = [
+              {
+                trash_id = "d1d310673359205736b4b84acd5ea8c8"; # Remux 2160p (Combined)
+                reset_unmatched_scores.enabled = true;
+              }
+            ];
+          };
+          sonarr.sonarr-main = {
+            api_key._secret = config.sops.secrets.sonarr_api_key.path;
+            base_url = "http://localhost:${toString config.services.sonarr.settings.server.port}";
+            instance_name = "main";
+            quality_definition.type = "series";
+            delete_old_custom_formats = true;
+            quality_profiles = [
+              {
+                trash_id = "911df0e05a395c19d8b3efc76a7467c1"; # Remux 2160p (Combined)
+                reset_unmatched_scores.enabled = true;
+              }
+            ];
+          };
+        };
+      };
       # Index Tools
       flaresolverr.enable = true;
       jackett.enable = true;
@@ -105,7 +146,7 @@
         vpnNamespace = torrentNamespace;
       };
       bitmagnet = {
-        serviceConfig.EnvironmentFile = config.sops.secrets.ceres_bitmagnet_secrets.path; #TODO fill
+        serviceConfig.EnvironmentFile = config.sops.secrets.ceres_bitmagnet_secrets.path;
         vpnConfinement = {
           enable = true;
           vpnNamespace = torrentNamespace;

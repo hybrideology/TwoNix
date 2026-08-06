@@ -10,6 +10,7 @@
       self.nixosModules.wireguard-server
       self.nixosModules.i2pd
       self.nixosModules.will
+      self.nixosModules.actual-budget
     ];
   };
   flake.nixosModules.ceres = {...}: {
