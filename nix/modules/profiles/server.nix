@@ -2,6 +2,7 @@
   flake.nixosModules.server = {
     imports = [
       self.nixosModules.base
+      self.nixosModules.actual-budget
     ];
   };
 }
