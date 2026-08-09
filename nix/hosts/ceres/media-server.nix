@@ -150,6 +150,14 @@
           vpnNamespace = torrentNamespace;
         };
       };
+      ${torrentNamespace} = {
+        after = [
+          "nss-lookup.target"
+        ];
+        wants = [
+          "nss-lookup.target"
+        ];
+      };
     };
     vpnNamespaces.${torrentNamespace} = {
       enable = true;
