@@ -88,7 +88,6 @@
           radarr.radarr-main = {
             api_key._secret = config.sops.secrets.radarr_api_key.path;
             base_url = "http://localhost:${toString config.services.radarr.settings.server.port}";
-            instance_name = "main";
             quality_definition.type = "movie";
             delete_old_custom_formats = true;
             quality_profiles = [
@@ -101,7 +100,6 @@
           sonarr.sonarr-main = {
             api_key._secret = config.sops.secrets.sonarr_api_key.path;
             base_url = "http://localhost:${toString config.services.sonarr.settings.server.port}";
-            instance_name = "main";
             quality_definition.type = "series";
             delete_old_custom_formats = true;
             quality_profiles = [
