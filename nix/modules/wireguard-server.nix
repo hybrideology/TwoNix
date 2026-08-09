@@ -47,6 +47,7 @@ _: {
         enable = true;
         networks."60-${config.vars.wireguard_server.interfaceName}" = {
           matchConfig.Name = config.vars.wireguard_server.interfaceName;
+          linkConfig.RequiredForOnline = "no";
           address = ["${config.vars.wireguard_server.serverIp}/24"];
         };
         netdevs."60-${config.vars.wireguard_server.interfaceName}" = {
