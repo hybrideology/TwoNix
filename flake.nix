@@ -20,7 +20,7 @@
     secrets.url = "git+ssh://git@github.com/hybrideology/sops-secrets.git";
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
-    noctalia-shell.url = "github:noctalia-dev/noctalia-shell";
+    noctalia-shell.url = "github:noctalia-dev/noctalia-shell/5311e14d2000af2f523789c76a3d869dcb42f130";
     noctalia-shell.inputs.nixpkgs.follows = "nixpkgs";
     systems.url = "github:nix-systems/default-linux";
     treefmt-nix.url = "github:numtide/treefmt-nix";
