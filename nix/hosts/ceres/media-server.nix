@@ -92,10 +92,21 @@
             delete_old_custom_formats = true;
             quality_profiles = [
               {
-                trash_id = "d1d310673359205736b4b84acd5ea8c8"; # Remux 2160p (Combined)
+                trash_id = "92e9a65a52ae48478fb8e9f34238d823"; # Base Profile
+                reset_unmatched_scores.enabled = true;
+              }
+              {
+                trash_id = "722b624f9af1e492284c4bc842153a38"; # Anime
                 reset_unmatched_scores.enabled = true;
               }
             ];
+            media_naming = {
+              folder = "default";
+              movie = {
+                rename = true;
+                standard = "standard";
+              };
+            };
           };
           sonarr.sonarr-main = {
             api_key._secret = config.sops.secrets.sonarr_api_key.path;
@@ -104,10 +115,24 @@
             delete_old_custom_formats = true;
             quality_profiles = [
               {
-                trash_id = "911df0e05a395c19d8b3efc76a7467c1"; # Remux 2160p (Combined)
+                trash_id = "e58cf4e090184db3b3d7c79c1a9e9b4a"; # Base Profile
+                reset_unmatched_scores.enabled = true;
+              }
+              {
+                trash_id = "20e0fc959f1f1704bed501f23bdae76f"; # Anime
                 reset_unmatched_scores.enabled = true;
               }
             ];
+            media_naming = {
+              series = "default";
+              season = "default";
+              episodes = {
+                rename = true;
+                standard = "default";
+                daily = "default";
+                anime = "default";
+              };
+            };
           };
         };
       };
