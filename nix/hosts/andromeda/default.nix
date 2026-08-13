@@ -16,6 +16,7 @@
     time.timeZone = "America/Chicago";
     networking.hostName = "andromeda";
     networking.hostId = "10465c4e"; # random, required by zfs
+    system.stateVersion = "26.11";
 
     # Hardware
     imports = [inputs.nixos-hardware.nixosModules.common-cpu-amd-pstate];
@@ -57,7 +58,6 @@
 
     # VPN
     sops.secrets.personal_vpn_key.sopsFile = inputs.secrets.andromeda;
-    system.stateVersion = "26.11";
     vars.wireguard_client = {
       clientIp = "10.0.0.2";
       serverPublicKey = "QWwLEg0SjMm0ZNyb8iPa9V/29/VnHLKt9ZpVUaiE7j0=";
