@@ -12,7 +12,7 @@
     ];
   };
 
-  flake.nixosModules.betelgeuse = _: {
+  flake.nixosModules.betelgeuse = {config, ...}: {
     nixpkgs.hostPlatform = "x86_64-linux";
     time.timeZone = "America/Chicago";
     networking.hostName = "betelgeuse";
@@ -45,10 +45,16 @@
     };
 
     # VPN
-    sops.secrets.personal_vpn_key.sopsFile = inputs.secrets.betelgeuse;
+    sops.secrets.personal_vpn_key = {
+      sopsFile = inputs.secrets.betelgeuse;
+      mode = "440";
+      owner = config.users.users.systemd-network.name;
+      group = config.users.users.systemd-network.group;
+    };
     vars.wireguard_client = {
       clientIp = "10.0.0.5";
       serverPublicKey = "QWwLEg0SjMm0ZNyb8iPa9V/29/VnHLKt9ZpVUaiE7j0=";
+      privateKeyFile = config.sops.secrets.personal_vpn_key.path;
       endpoint = "465241395.xyz:51820";
     };
   };

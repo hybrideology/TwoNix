@@ -3,7 +3,9 @@ _: {
     config,
     lib,
     ...
-  }: {
+  }: let
+    cfg = config.vars.wireguard_client;
+  in {
     options.vars.wireguard_client = lib.mkOption {
       default = null;
       description = "WireGuard client configuration. Set to null to disable.";
@@ -22,6 +24,10 @@ _: {
             type = lib.types.str;
             description = "WireGuard server public key.";
           };
+          privateKeyFile = lib.mkOption {
+            type = lib.types.str;
+            description = "Path to private key file.";
+          };
           endpoint = lib.mkOption {
             type = lib.types.str;
             description = "WireGuard server endpoint (e.g. host:51820).";
@@ -35,36 +41,31 @@ _: {
       });
     };
 
-    config = lib.mkIf (config.vars.wireguard_client != null) {
-      vars.openssh.firewallInterfaces = lib.mkDefault [config.vars.wireguard_client.interfaceName];
-      networking.networkmanager.unmanaged = [config.vars.wireguard_client.interfaceName];
-      sops.secrets.personal_vpn_key = {
-        mode = "440";
-        owner = config.users.users.systemd-network.name;
-        inherit (config.users.users.systemd-network) group;
-      };
+    config = lib.mkIf (cfg != null) {
+      vars.openssh.firewallInterfaces = lib.mkDefault [cfg.interfaceName];
+      networking.networkmanager.unmanaged = [cfg.interfaceName];
       networking.useNetworkd = true;
       systemd.network = {
         enable = true;
-        networks."50-${config.vars.wireguard_client.interfaceName}" = {
-          matchConfig.Name = config.vars.wireguard_client.interfaceName;
-          address = ["${config.vars.wireguard_client.clientIp}/24"];
-          dns = [config.vars.wireguard_client.dnsIp];
+        networks."50-${cfg.interfaceName}" = {
+          matchConfig.Name = cfg.interfaceName;
+          address = ["${cfg.clientIp}/24"];
+          dns = [cfg.dnsIp];
         };
-        netdevs."50-${config.vars.wireguard_client.interfaceName}" = {
+        netdevs."50-${cfg.interfaceName}" = {
           netdevConfig = {
             Kind = "wireguard";
-            Name = config.vars.wireguard_client.interfaceName;
+            Name = cfg.interfaceName;
           };
           wireguardConfig = {
-            PrivateKeyFile = config.sops.secrets.personal_vpn_key.path;
+            PrivateKeyFile = cfg.privateKeyFile;
             RouteTable = "main";
           };
           wireguardPeers = [
             {
-              PublicKey = config.vars.wireguard_client.serverPublicKey;
+              PublicKey = cfg.serverPublicKey;
               AllowedIPs = ["10.0.0.0/24"];
-              Endpoint = config.vars.wireguard_client.endpoint;
+              Endpoint = cfg.endpoint;
             }
           ];
         };
