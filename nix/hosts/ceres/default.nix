@@ -13,12 +13,26 @@
       self.nixosModules.actual-budget
     ];
   };
-  flake.nixosModules.ceres = {...}: {
+  flake.nixosModules.ceres = {config, ...}: {
     nixpkgs.hostPlatform = "x86_64-linux";
     time.timeZone = "America/Chicago";
     networking.hostName = "ceres";
     networking.hostId = "e0fdcfa7"; # random, required by zfs
     system.stateVersion = "26.11";
+
+    sops.secrets = {
+      personal_vpn_key = {
+        sopsFile = inputs.secrets.ceres;
+        mode = "440";
+        owner = config.users.users.systemd-network.name;
+        group = config.users.users.systemd-network.group;
+      };
+      update_ssh_key = {
+        owner = "root";
+        group = "root";
+        mode = "0400";
+      };
+    };
 
     # Hardware
     imports = [inputs.nixos-hardware.nixosModules.common-cpu-amd-pstate];
@@ -34,33 +48,38 @@
     };
 
     # VPN
-    sops.secrets.personal_vpn_key.sopsFile = inputs.secrets.ceres;
-    vars.wireguard_server.peers = [
-      # andromeda
-      {
-        PublicKey = "7ZLGJ8bowq9sDPkNYBXFfQKEoVbFdMAkqW7xQqYwJXM=";
-        AllowedIPs = ["10.0.0.2/32"];
-      }
-      # sam desktop
-      {
-        PublicKey = "Bu8uY1wrJVfWEOf7kGuyBYfVA5d1H91FZmEF8gvlCxY=";
-        AllowedIPs = ["10.0.0.3/32"];
-      }
-      # rr desktop
-      {
-        PublicKey = "NaTVs1SRJydEc26nJrnHNt2SgT7U9y5qGwUbj+eeaCE=";
-        AllowedIPs = ["10.0.0.4/32"];
-      }
-      # betelgeuse
-      {
-        PublicKey = "aVeaKlXy5YAootyBmWr0SnZVShrWFcDjQaNKQV//JCI=";
-        AllowedIPs = ["10.0.0.5/32"];
-      }
-      # tp desktop
-      {
-        PublicKey = "aJNiOUMakABDExfDvysoX9j9nD/9Nzym0QrOrC9mrhE=";
-        AllowedIPs = ["10.0.0.6/32"];
-      }
-    ];
+    vars = {
+      auto-upgrade.sshKeyPath = config.sops.secrets.update_ssh_key.path;
+      wireguard_server = {
+        privateKeyFile = config.sops.secrets.update_ssh_key.path;
+        peers = [
+          # andromeda
+          {
+            PublicKey = "7ZLGJ8bowq9sDPkNYBXFfQKEoVbFdMAkqW7xQqYwJXM=";
+            AllowedIPs = ["10.0.0.2/32"];
+          }
+          # sam desktop
+          {
+            PublicKey = "Bu8uY1wrJVfWEOf7kGuyBYfVA5d1H91FZmEF8gvlCxY=";
+            AllowedIPs = ["10.0.0.3/32"];
+          }
+          # rr desktop
+          {
+            PublicKey = "NaTVs1SRJydEc26nJrnHNt2SgT7U9y5qGwUbj+eeaCE=";
+            AllowedIPs = ["10.0.0.4/32"];
+          }
+          # betelgeuse
+          {
+            PublicKey = "aVeaKlXy5YAootyBmWr0SnZVShrWFcDjQaNKQV//JCI=";
+            AllowedIPs = ["10.0.0.5/32"];
+          }
+          # tp desktop
+          {
+            PublicKey = "aJNiOUMakABDExfDvysoX9j9nD/9Nzym0QrOrC9mrhE=";
+            AllowedIPs = ["10.0.0.6/32"];
+          }
+        ];
+      };
+    };
   };
 }

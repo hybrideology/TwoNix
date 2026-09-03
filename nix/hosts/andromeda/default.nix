@@ -18,6 +18,20 @@
     networking.hostId = "10465c4e"; # random, required by zfs
     system.stateVersion = "26.11";
 
+    sops.secrets = {
+      personal_vpn_key = {
+        sopsFile = inputs.secrets.andromeda;
+        mode = "440";
+        owner = config.users.users.systemd-network.name;
+        group = config.users.users.systemd-network.group;
+      };
+      update_ssh_key = {
+        owner = "root";
+        group = "root";
+        mode = "0400";
+      };
+    };
+
     # Hardware
     imports = [inputs.nixos-hardware.nixosModules.common-cpu-amd-pstate];
     services.xserver.videoDrivers = [
@@ -56,18 +70,14 @@
       };
     };
 
-    # VPN
-    sops.secrets.personal_vpn_key = {
-      sopsFile = inputs.secrets.andromeda;
-      mode = "440";
-      owner = config.users.users.systemd-network.name;
-      group = config.users.users.systemd-network.group;
-    };
-    vars.wireguard_client = {
-      clientIp = "10.0.0.2";
-      serverPublicKey = "QWwLEg0SjMm0ZNyb8iPa9V/29/VnHLKt9ZpVUaiE7j0=";
-      privateKeyFile = config.sops.secrets.personal_vpn_key.path;
-      endpoint = "465241395.xyz:51820";
+    vars = {
+      auto-upgrade.sshKeyPath = config.sops.secrets.update_ssh_key.path;
+      wireguard_client = {
+        clientIp = "10.0.0.2";
+        serverPublicKey = "QWwLEg0SjMm0ZNyb8iPa9V/29/VnHLKt9ZpVUaiE7j0=";
+        privateKeyFile = config.sops.secrets.personal_vpn_key.path;
+        endpoint = "465241395.xyz:51820";
+      };
     };
   };
 }

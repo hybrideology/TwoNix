@@ -22,6 +22,10 @@ _: {
         type = lib.types.int;
         description = "WireGuard listen port, will be opened on UDP";
       };
+      privateKeyFile = lib.mkOption {
+        type = lib.types.str;
+        description = "Path to private key file.";
+      };
       subnet = lib.mkOption {
         default = "10.0.0.0/24";
         type = lib.types.str;
@@ -43,11 +47,6 @@ _: {
       subnetMask = builtins.elemAt (builtins.split "/" cfg.subnet) 2;
     in {
       vars.openssh.firewallInterfaces = lib.mkDefault [cfg.interfaceName];
-      sops.secrets.personal_vpn_key = {
-        mode = "440";
-        owner = config.users.users.systemd-network.name;
-        group = config.users.users.systemd-network.group;
-      };
       networking = {
         useNetworkd = true;
         firewall.allowedUDPPorts = [cfg.listenPort];
@@ -66,7 +65,7 @@ _: {
           };
           wireguardConfig = {
             ListenPort = cfg.listenPort;
-            PrivateKeyFile = config.sops.secrets.personal_vpn_key.path;
+            PrivateKeyFile = cfg.privateKeyFile;
             RouteTable = "main";
           };
           wireguardPeers = cfg.peers;
