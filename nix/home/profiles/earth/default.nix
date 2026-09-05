@@ -19,7 +19,6 @@
       self.homeModules.vesktop
       self.homeModules.wl-clip-persist
     ];
-    programs.noctalia-shell.settings = ./noctalia-settings.json;
     home = {
       pointerCursor = {
         enable = true;

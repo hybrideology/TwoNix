@@ -20,12 +20,12 @@
     secrets.url = "git+ssh://git@github.com/hybrideology/sops-secrets.git";
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
-    noctalia-shell.url = "github:noctalia-dev/noctalia-shell/5311e14d2000af2f523789c76a3d869dcb42f130";
-    noctalia-shell.inputs.nixpkgs.follows = "nixpkgs";
     systems.url = "github:nix-systems/default-linux";
     treefmt-nix.url = "github:numtide/treefmt-nix";
     treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
     vpn-confinement.url = "github:Maroka-chan/VPN-Confinement";
+    wrapper-modules.url = "github:BirdeeHub/nix-wrapper-modules";
+    wrapper-modules.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   # outputs

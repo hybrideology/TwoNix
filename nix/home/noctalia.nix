@@ -1,20 +1,19 @@
-{inputs, ...}: {
+{self, ...}: {
   flake.homeModules.noctalia = {
-    config,
     lib,
+    pkgs,
     ...
-  }: {
-    imports = [inputs.noctalia-shell.homeModules.default];
+  }: let
+    pkg = self.packages.${pkgs.stdenv.hostPlatform.system}.noctalia-shell;
+  in {
     config = {
       vars.persistence.files = [
         ".cache/noctalia/wallpapers.json"
       ];
-      programs.noctalia-shell.enable = true;
-
       wayland.windowManager.hyprland.settings = {
-        "$noctaliaIpc" = "${lib.getExe config.programs.noctalia-shell.package} ipc call";
+        "$noctaliaIpc" = "${lib.getExe pkg} ipc call";
         exec-once = [
-          "uwsm app -- ${lib.getExe config.programs.noctalia-shell.package}"
+          "uwsm app -- ${lib.getExe pkg}"
         ];
         bind = [
           "$mainMod, D, exec, $noctaliaIpc launcher toggle"
