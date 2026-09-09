@@ -1,11 +1,12 @@
 Directions for improvement
 ==========================
 
-1. Add Secure Boot with lanzaboote on the workstation machines.
-   - Biggest remaining workstation security improvement.
+1. Add Secure Boot
 
-2. Add a push-based deployment workflow for ceres.
-   - Evaluate colmena or deploy-rs so server changes can be applied in a controlled way instead of relying only on pull-based upgrades.
+2. Add ZFS maintenance automation.
 
-3. Add ZFS maintenance automation.
-   - Enable regular scrub scheduling and consider snapshot automation, especially on ceres.
+3. Home Manager -> Hjem
+
+4. Package-ify all single-package modules
+
+5. Impermanence -> Preservation
