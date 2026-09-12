@@ -50,7 +50,7 @@
     vars = {
       auto-upgrade.sshKeyPath = config.sops.secrets.update_ssh_key.path;
       wireguard_server = {
-        privateKeyFile = config.sops.secrets.update_ssh_key.path;
+        privateKeyFile = config.sops.secrets.personal_vpn_key.path;
         peers = [
           # andromeda
           {
