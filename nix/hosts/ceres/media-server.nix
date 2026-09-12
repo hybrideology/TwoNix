@@ -9,6 +9,7 @@
     mediaUser = "media";
     torrentDir = "${srvDir}/torrent";
     torrentNamespace = "torrent";
+    booksDir = "${mediaDir}/books";
     moviesDir = "${mediaDir}/movies";
     showsDir = "${mediaDir}/shows";
     musicDir = "${mediaDir}/music";
@@ -274,6 +275,7 @@
     ];
     systemd.tmpfiles.rules = [
       "d ${torrentDir} 0755 ${config.services.transmission.user} ${config.services.transmission.group} -"
+      "d ${booksDir} 0775 ${config.users.users.${mediaUser}.name} ${config.users.users.${mediaUser}.group} -"
       "d ${mediaDir} 0755 ${config.users.users.${mediaUser}.name} ${config.users.users.${mediaUser}.group} -"
       "d ${musicDir} 0775 ${config.users.users.${mediaUser}.name} ${config.users.users.${mediaUser}.group} -"
       "d ${showsDir} 0775 ${config.users.users.${mediaUser}.name} ${config.users.users.${mediaUser}.group} -"
