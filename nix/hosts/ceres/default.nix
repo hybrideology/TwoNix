@@ -77,6 +77,11 @@
             PublicKey = "aJNiOUMakABDExfDvysoX9j9nD/9Nzym0QrOrC9mrhE=";
             AllowedIPs = ["10.0.0.6/32"];
           }
+          # ag laptop
+          {
+            PublicKey = "WKsRcALMnx5jTAjzEmtpZbqbrT+zd0MYAxDda5+hswI=";
+            AllowedIPs = ["10.0.0.8/32"];
+          }
         ];
       };
     };
