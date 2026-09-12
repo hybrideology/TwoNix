@@ -8,7 +8,6 @@
       self.nixosModules.ceres
       self.nixosModules.server
       self.nixosModules.wireguard-server
-      self.nixosModules.i2pd
       self.nixosModules.will
       self.nixosModules.actual-budget
     ];
