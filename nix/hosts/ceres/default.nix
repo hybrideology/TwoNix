@@ -63,9 +63,9 @@
             PublicKey = "Bu8uY1wrJVfWEOf7kGuyBYfVA5d1H91FZmEF8gvlCxY=";
             AllowedIPs = ["10.0.0.3/32"];
           }
-          # rr desktop
+          # rr laptop
           {
-            PublicKey = "NaTVs1SRJydEc26nJrnHNt2SgT7U9y5qGwUbj+eeaCE=";
+            PublicKey = "5Bt5nY6wErRCW7EtS54afoVzMiWhm/snjdNl1uBYGzQ=";
             AllowedIPs = ["10.0.0.4/32"];
           }
           # betelgeuse
