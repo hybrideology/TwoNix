@@ -6,12 +6,10 @@
       self.homeModules.gimp
       self.homeModules.godot
       self.homeModules.home-dirs
-      self.homeModules.hyprland
       self.homeModules.kitty
       self.homeModules.libresprite
       self.homeModules.librewolf
       self.homeModules.mpv
-      self.homeModules.noctalia
       self.homeModules.rnote
       self.homeModules.signal
       self.homeModules.tor-browser

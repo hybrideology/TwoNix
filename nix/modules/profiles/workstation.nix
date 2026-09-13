@@ -4,7 +4,7 @@
       self.nixosModules.auto-mount
       self.nixosModules.base
       self.nixosModules.bluetooth
-      self.nixosModules.hyprland
+      self.nixosModules.niri
       self.nixosModules.power
       self.nixosModules.pipewire
       self.nixosModules.printing
