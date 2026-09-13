@@ -4,7 +4,7 @@
     users.users.will = {
       uid = 1000; # required for migration script
       isNormalUser = true; # set group to users and creates a home dir
-      extraGroups = ["wheel"];
+      extraGroups = ["wheel" "dialout"];
       hashedPasswordFile = config.sops.secrets."will_password".path;
       openssh.authorizedKeys.keyFiles = [./will.pub];
       description = "Will";
