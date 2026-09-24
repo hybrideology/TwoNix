@@ -54,8 +54,8 @@
           "Mod+Shift+Alt+Right".move-column-to-monitor-right = {};
           "Mod+Shift+Alt+Left".move-column-to-monitor-left = {};
           # Media Controls
-          "XF86AudioRaiseVolume".spawn = [(lib.getExe' pkgs.wireplumber "wpctl") "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1+"];
-          "XF86AudioLowerVolume".spawn = [(lib.getExe' pkgs.wireplumber "wpctl") "set-volume" "@DEFAULT_AUDIO_SINK@j" "0.1-"];
+          "XF86AudioRaiseVolume".spawn = [(lib.getExe' pkgs.wireplumber "wpctl") "set-volume" "@DEFAULT_AUDIO_SINK@" "0.05+"];
+          "XF86AudioLowerVolume".spawn = [(lib.getExe' pkgs.wireplumber "wpctl") "set-volume" "@DEFAULT_AUDIO_SINK@" "0.05-"];
           "XF86AudioMute".spawn = [(lib.getExe' pkgs.wireplumber "wpctl") "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle"];
           "XF86AudioMicMute".spawn = [(lib.getExe' pkgs.wireplumber "wpctl") "set-mute" "@DEFAULT_AUDIO_SOURCE@" "toggle"];
           "XF86MonBrightnessUp".spawn = [(lib.getExe pkgs.brightnessctl) "set" "5%+"];
@@ -67,6 +67,8 @@
           "Mod+Q".spawn-sh = lib.getExe pkgs.kitty;
           "Mod+D".spawn-sh = "${lib.getExe self'.packages.noctalia-shell} ipc call launcher toggle";
           "Mod+U".spawn-sh = "${lib.getExe self'.packages.noctalia-shell} ipc call lockScreen lock";
+          "Mod+P".screenshot-screen = {};
+          "Mod+Alt+P".spawn-sh = "${lib.getExe' pkgs.wl-clipboard-rs "wl-paste"} | ${lib.getExe pkgs.satty} -f -";
           "Mod+C".close-window = {};
           "Mod+Escape".quit = {};
         };
