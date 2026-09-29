@@ -1,4 +1,14 @@
-{inputs, ...}: {
+{
+  inputs,
+  self,
+  ...
+}: {
+  flake.nixosModules.niri = {pkgs, ...}: {
+    programs.niri = {
+      enable = true;
+      package = self.packages.${pkgs.stdenv.hostPlatform.system}.niri;
+    };
+  };
   perSystem = {
     pkgs,
     lib,
@@ -64,7 +74,7 @@
           "XF86AudioPrev".spawn = [(lib.getExe pkgs.playerctl) "previous"];
           "XF86AudioNext".spawn = [(lib.getExe pkgs.playerctl) "next"];
           # Spawn/Close Programs
-          "Mod+Q".spawn-sh = lib.getExe pkgs.kitty;
+          "Mod+Q".spawn-sh = lib.getExe self'.packages.alacritty;
           "Mod+D".spawn-sh = "${lib.getExe self'.packages.noctalia-shell} ipc call launcher toggle";
           "Mod+U".spawn-sh = "${lib.getExe self'.packages.noctalia-shell} ipc call lockScreen lock";
           "Mod+P".screenshot-screen = {};

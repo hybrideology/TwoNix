@@ -6,7 +6,6 @@
       self.homeModules.gimp
       self.homeModules.godot
       self.homeModules.home-dirs
-      self.homeModules.kitty
       self.homeModules.libresprite
       self.homeModules.librewolf
       self.homeModules.mpv

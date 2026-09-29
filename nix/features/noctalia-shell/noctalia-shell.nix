@@ -2,9 +2,11 @@
   perSystem = {pkgs, ...}: {
     packages.noctalia-shell = inputs.wrapper-modules.wrappers.noctalia-shell.wrap {
       inherit pkgs;
-      settings =
-        (builtins.fromJSON
-          (builtins.readFile ./noctalia-shell.json)).settings;
+      inherit
+        ((builtins.fromJSON
+          (builtins.readFile ./noctalia-shell.json)))
+        settings
+        ;
     };
   };
 }
