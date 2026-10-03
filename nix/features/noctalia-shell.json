@@ -633,12 +633,7 @@
             "syncGsettings": true
         },
         "templates": {
-            "activeTemplates": [
-                {
-                    "enabled": true,
-                    "id": "kitty"
-                }
-            ],
+            "activeTemplates": [],
             "enableUserTheming": false
         },
         "nightLight": {
