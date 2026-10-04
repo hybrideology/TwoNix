@@ -2,7 +2,6 @@
   flake.homeModules.earth = {pkgs, ...}: {
     imports = [
       self.homeModules.base
-      self.homeModules.element-desktop
       self.homeModules.gimp
       self.homeModules.godot
       self.homeModules.home-dirs
