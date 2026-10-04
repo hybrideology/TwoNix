@@ -8,7 +8,7 @@
     packages.alacritty = inputs.wrapper-modules.wrappers.alacritty.wrap {
       inherit pkgs;
       settings = {
-        terminal.shell = lib.getExe self'.packages.fish;
+        terminal.shell = lib.getExe self'.packages.nushell;
       };
     };
   };
