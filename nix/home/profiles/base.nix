@@ -10,7 +10,6 @@
       self.homeModules.ssh
       self.homeModules.unar
       self.homeModules.wireguard-tools
-      self.homeModules.yazi
     ];
   };
 }
