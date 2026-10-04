@@ -2,7 +2,6 @@
   flake.homeModules.base = {
     imports = [
       self.homeModules.persistence
-      self.homeModules.helix
       self.homeModules.jujutsu
       self.homeModules.nh
       self.homeModules.nixos-anywhere

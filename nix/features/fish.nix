@@ -11,6 +11,7 @@
         pkgs.fishPlugins.hydro
       ];
       configFile.content = ''
+        set -x EDITOR ${lib.getExe self'.packages.helix}
         function y
         	set tmp (mktemp -t "yazi-cwd.XXXXXX")
         	command ${lib.getExe self'.packages.yazi} $argv --cwd-file="$tmp"
