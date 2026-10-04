@@ -20,6 +20,7 @@
          }
          rm -fp $tmp
         }
+        $env.config.show_banner = false
       '';
     };
   };
