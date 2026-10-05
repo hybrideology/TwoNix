@@ -3,17 +3,14 @@
     imports = [
       self.homeModules.base
       self.homeModules.gimp
-      self.homeModules.godot
       self.homeModules.home-dirs
       self.homeModules.libresprite
       self.homeModules.librewolf
       self.homeModules.mpv
-      self.homeModules.rnote
       self.homeModules.signal
       self.homeModules.tor-browser
       self.homeModules.udiskie
       self.homeModules.vesktop
-      self.homeModules.wl-clip-persist
     ];
     home = {
       pointerCursor = {
