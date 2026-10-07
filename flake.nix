@@ -41,7 +41,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     systems.url = "github:nix-systems/default-linux";
-    vpn-confinement.url = "github:Maroka-chan/VPN-Confinement";
   };
 
   # outputs

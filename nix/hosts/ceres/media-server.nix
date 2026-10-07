@@ -1,34 +1,16 @@
 {inputs, ...}: {
-  flake.nixosModules.ceres = {
-    config,
-    lib,
-    ...
-  }: let
+  flake.nixosModules.ceres = {config, ...}: let
     srvDir = "/srv";
     mediaDir = "${srvDir}/media";
     mediaUser = "media";
     torrentDir = "${srvDir}/torrent";
-    torrentNamespace = "torrent";
     booksDir = "${mediaDir}/books";
     moviesDir = "${mediaDir}/movies";
     showsDir = "${mediaDir}/shows";
     musicDir = "${mediaDir}/music";
     podcastsDir = "${mediaDir}/podcasts";
   in {
-    imports = [inputs.vpn-confinement.nixosModules.default];
     sops.secrets = {
-      vpn_proxy_conf = {
-        sopsFile = inputs.secrets.ceres-vpn-proxy;
-        mode = "440";
-        format = "binary";
-        owner = "root";
-      };
-      ceres_bitmagnet_secrets = {
-        sopsFile = inputs.secrets.ceres-bitmagnet-secrets;
-        mode = "440";
-        format = "binary";
-        owner = "root";
-      };
       radarr_api_key = {
         sopsFile = inputs.secrets.ceres;
         mode = "440";
@@ -137,82 +119,11 @@
           };
         };
       };
-      # Index Tools
-      flaresolverr.enable = true;
-      jackett.enable = true;
-      bitmagnet = {
-        enable = true;
-        settings = {
-          dht_server.port = 38362;
-          processor.concurrency = 3;
-        };
-      };
-      #Download Clients
-      transmission = {
-        enable = true;
-        settings = {
-          peer-port = 15758;
-          download-dir = torrentDir;
-          incomplete-dir-enabled = false;
-          rpc-bind-address = config.vpnNamespaces.${torrentNamespace}.namespaceAddress;
-          rpc-host-whitelist-enabled = false;
-          rpc-whitelist-enabled = true;
-          rpc-whitelist = config.vpnNamespaces.${torrentNamespace}.bridgeAddress;
-        };
-      };
       # Servers
       jellyfin.enable = true;
       seerr.enable = true;
     };
-    systemd.services = {
-      transmission.vpnConfinement = {
-        enable = true;
-        vpnNamespace = torrentNamespace;
-      };
-      bitmagnet = {
-        serviceConfig.EnvironmentFile = config.sops.secrets.ceres_bitmagnet_secrets.path;
-        vpnConfinement = {
-          enable = true;
-          vpnNamespace = torrentNamespace;
-        };
-      };
-    };
-    vpnNamespaces.${torrentNamespace} = {
-      enable = true;
-      wireguardConfigFile = config.sops.secrets.vpn_proxy_conf.path;
-      accessibleFrom = [
-        "127.0.0.0/8"
-        "::1/128"
-      ];
-      portMappings = [
-        {
-          from = config.services.transmission.settings.rpc-port;
-          to = config.services.transmission.settings.rpc-port;
-          protocol = "tcp";
-        }
-        {
-          from = lib.toInt (builtins.substring 1 (-1) config.services.bitmagnet.settings.http_server.local_address);
-          to = lib.toInt (builtins.substring 1 (-1) config.services.bitmagnet.settings.http_server.local_address);
-          protocol = "tcp";
-        }
-      ];
-      openVPNPorts = [
-        {
-          port = config.services.transmission.settings.peer-port;
-          protocol = "both";
-        }
-        {
-          port = config.services.bitmagnet.settings.dht_server.port;
-          protocol = "both";
-        }
-      ];
-    };
     vars.persistence.dirs = [
-      {
-        directory = config.services.transmission.home;
-        user = config.services.transmission.user;
-        group = config.services.transmission.group;
-      }
       {
         directory = config.services.lidarr.dataDir;
         user = config.services.lidarr.user;
@@ -232,11 +143,6 @@
         directory = config.services.bazarr.dataDir;
         user = config.services.bazarr.user;
         group = config.services.bazarr.group;
-      }
-      {
-        directory = config.services.jackett.dataDir;
-        user = config.services.jackett.user;
-        group = config.services.jackett.group;
       }
       {
         directory = config.services.jellyfin.cacheDir;
@@ -263,11 +169,6 @@
         user = config.services.podgrab.user;
         group = config.services.podgrab.group;
       }
-      {
-        directory = config.services.postgresql.dataDir;
-        user = config.users.users.postgres.name; # postgres requires this user
-        group = config.users.groups.postgres.name; # postgres requires this group
-      }
       # do not mount seerr, it auto mounts under systemd private
     ];
     vars.persistence.laDirs = [
@@ -290,14 +191,6 @@
       recommendedGzipSettings = true;
       recommendedProxySettings = true;
       virtualHosts = {
-        "transmission.${config.vars.wireguard_server.domain}" = {
-          locations."/" = {
-            proxyPass = "http://${config.vpnNamespaces.${torrentNamespace}.namespaceAddress}:${toString config.services.transmission.settings.rpc-port}"; #uses vpn address
-            proxyWebsockets = true;
-          };
-          enableACME = true;
-          forceSSL = true;
-        };
         "lidarr.${config.vars.wireguard_server.domain}" = {
           locations."/".proxyPass = "http://localhost:${toString config.services.lidarr.settings.server.port}";
           enableACME = true;
@@ -318,11 +211,6 @@
           enableACME = true;
           forceSSL = true;
         };
-        "jackett.${config.vars.wireguard_server.domain}" = {
-          locations."/".proxyPass = "http://localhost:${toString config.services.jackett.port}";
-          enableACME = true;
-          forceSSL = true;
-        };
         "jellyfin.${config.vars.wireguard_server.domain}" = {
           locations."/" = {
             proxyPass = "http://localhost:8096";
@@ -338,11 +226,6 @@
         };
         "podgrab.${config.vars.wireguard_server.domain}" = {
           locations."/".proxyPass = "http://localhost:${toString config.services.podgrab.port}";
-          enableACME = true;
-          forceSSL = true;
-        };
-        "bitmagnet.${config.vars.wireguard_server.domain}" = {
-          locations."/".proxyPass = "http://${config.vpnNamespaces.${torrentNamespace}.namespaceAddress}${toString config.services.bitmagnet.settings.http_server.local_address}";
           enableACME = true;
           forceSSL = true;
         };
