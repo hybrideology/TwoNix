@@ -1,4 +1,11 @@
-{inputs, ...}: {
+{
+  inputs,
+  self,
+  ...
+}: {
+  flake.nixosModules.nushell = {pkgs, ...}: {
+    environment.systemPackages = [self.packages.${pkgs.stdenv.hostPlatform.system}.nushell];
+  };
   perSystem = {
     pkgs,
     self',
